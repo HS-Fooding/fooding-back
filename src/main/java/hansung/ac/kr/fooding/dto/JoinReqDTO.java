@@ -20,7 +20,6 @@ public class JoinReqDTO {
     String name;
     String nickName;
     Boolean sex;
-    String email;
     String birthDate;
     List<Favor> favor;
     Set<Role> role;

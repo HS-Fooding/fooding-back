@@ -9,15 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "roles")
 public class Role {
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Column(name = "role_id")
     private Long id;
 
     private String roleName;
 
     @ManyToMany(mappedBy = "roles")
-    private List<Member> members;
+    private List<Account> accounts;
 
     public Role(String roleName) {
         this.roleName = roleName;
