@@ -26,7 +26,7 @@ public class Member extends Account {
         this.password = req.getPassword();
         this.name = req.getName();
         this.nickName = req.getNickName();
-        this.birthDate = LocalDate.parse(req.getBirthDate());
+        this.age = req.getAge();
         this.sex = req.getSex();
         this.job = req.getJob();
         this.favor = req.getFavor();

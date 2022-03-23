@@ -6,21 +6,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Account extends BaseEntity{
+public class Account extends BaseTimeEntity{
     @Id @GeneratedValue
     protected long id;
     protected String identifier;
     protected String password;
     protected String name;
     protected String nickName;
-    protected LocalDate birthDate;
+    protected int age;
     protected boolean sex;
 
     @Enumerated(value = EnumType.STRING)

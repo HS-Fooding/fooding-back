@@ -5,7 +5,6 @@ import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.enumeration.Job;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class JoinReqDTO {
     String name;
     String nickName;
     Boolean sex;
-    String birthDate;
+    int age;
     List<Favor> favor;
     Set<Role> role;
     Job job;

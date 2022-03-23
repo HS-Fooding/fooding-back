@@ -2,7 +2,6 @@ package hansung.ac.kr.fooding.domain;
 
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
-import hansung.ac.kr.fooding.domain.image.RestaurantImage;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 
 import javax.persistence.*;
@@ -37,8 +36,7 @@ public class Restaurant extends BaseEntity{
     private WorkHour weekendsWorkHour;
     private String intro;
 
-    @OneToMany
-    //@JoinColumn(name = "restaurant_id")
+    @OneToMany(mappedBy = "restaurant")
     private List<Image> images;
 
     @Embedded
