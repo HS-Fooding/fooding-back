@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Review;
+import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.dto.ReviewPostDTO;
 import hansung.ac.kr.fooding.dto.ReviewSimpleResDTO;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
@@ -17,19 +18,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Api(tags = {SwaggerConfig.API_REVIEW})
 @RestController
 @RequiredArgsConstructor
-public class ReviewController {
+public class ReviewApiController {
     @Autowired private final ReviewRepository reviewRepository;
     @Autowired private final ReviewService reviewService;
 
@@ -54,6 +53,15 @@ public class ReviewController {
         // TODO : Redirection 해야 함
 
         ReviewPostDTO result = reviewService.postReview(userDetails.getUsername(), reviewPostDTO, images);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "특정 리뷰 가져오기")
+    @GetMapping("/review/{reviewId}")
+    public ResponseEntity<Optional<ReviewDetailResDTO>> getReview(@PathVariable Long reviewId) {
+        Optional<ReviewDetailResDTO> result = reviewRepository.findById(reviewId)
+                .map(m -> new ReviewDetailResDTO(m));
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
