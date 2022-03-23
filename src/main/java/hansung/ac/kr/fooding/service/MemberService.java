@@ -8,6 +8,7 @@ import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
 
     // 회원 가입
     @Transactional
@@ -28,6 +31,8 @@ public class MemberService {
             roleRepository.save(role);
         }
         Member member = new Member(req);
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
         member.setRoles(req.getRole());
         memberRepository.save(member);
 
