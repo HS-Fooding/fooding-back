@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.domain.image.Image;
+import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.dto.ReviewPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
 import hansung.ac.kr.fooding.repository.ImageRepository;
@@ -50,5 +51,15 @@ public class ReviewService {
         imageRepository.saveImages(savedImages);
 
         return reviewPostDto;
+    }
+
+    @Transactional
+    public ReviewDetailResDTO findReviewWithComments(Long reviewId) {
+        Review review = reviewRepository.findReviewWithComments(reviewId).orElse(null);
+        review.setViewCount(review.getViewCount() + 1);
+
+        ReviewDetailResDTO reviewDetailResDTO = new ReviewDetailResDTO(review);
+
+        return reviewDetailResDTO;
     }
 }
