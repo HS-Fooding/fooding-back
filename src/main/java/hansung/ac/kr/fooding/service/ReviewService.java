@@ -56,6 +56,8 @@ public class ReviewService {
     @Transactional
     public ReviewDetailResDTO findReviewWithComments(Long reviewId) {
         Review review = reviewRepository.findReviewWithComments(reviewId).orElse(null);
+        if(review == null)
+            System.out.println("fuck!!!!!!!!!!");
         review.setViewCount(review.getViewCount() + 1);
 
         ReviewDetailResDTO reviewDetailResDTO = new ReviewDetailResDTO(review);

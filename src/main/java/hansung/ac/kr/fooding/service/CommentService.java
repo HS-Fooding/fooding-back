@@ -4,7 +4,6 @@ import hansung.ac.kr.fooding.domain.Comment;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.dto.CommentPostDTO;
-import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)

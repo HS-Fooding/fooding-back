@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentPostDTO {
-    private Long id;
     private Long parent = 0L;
     private String content;
 }

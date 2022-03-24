@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class ReviewDetailResDTO {
     private Long id;
     private String title;
-    private String author;
+    private String nickName;
     private String content;
     private List<ImageResDTO> images;
     private List<CommentResDTO> comments;
@@ -30,7 +30,7 @@ public class ReviewDetailResDTO {
     public ReviewDetailResDTO(Review review) {
         this.id = review.getId();
         this.title = review.getTitle();
-        this.author = review.getAuthor().getName();
+        this.nickName = review.getAuthor().getNickName();
         this.content = review.getContent();
         if(review.getImages() != null) {
             this.images = review.getImages().stream()

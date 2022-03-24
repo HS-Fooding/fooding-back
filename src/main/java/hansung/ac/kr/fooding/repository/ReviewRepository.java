@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("select r from Review r " +
-            "join fetch r.comments " +
+//            "join fetch r.comments " +
             "where r.id = :reviewId")
     Optional<Review> findReviewWithComments(@Param("reviewId") Long reviewId);
 }
