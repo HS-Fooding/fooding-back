@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 public class Comment extends BaseEntity{
     @Id @GeneratedValue
-    private long id;
+    private Long id;
     private String content;
 
     ///////////////////////
