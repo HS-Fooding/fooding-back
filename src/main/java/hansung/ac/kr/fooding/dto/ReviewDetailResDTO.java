@@ -11,6 +11,7 @@ import org.apache.tomcat.jni.Local;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -20,8 +21,8 @@ public class ReviewDetailResDTO {
     private String title;
     private String author;
     private String content;
-    private List<String> images = new ArrayList<>();
-    private List<Comment> comments = new ArrayList<>();
+    private List<ImageResDTO> images;
+    private List<CommentResDTO> comments;
     private String createdDate;
     private float star;
     private int viewCount;
@@ -32,14 +33,14 @@ public class ReviewDetailResDTO {
         this.author = review.getAuthor().getName();
         this.content = review.getContent();
         if(review.getImages() != null) {
-            for (Image image : review.getImages()) {
-                this.images.add(image.getPath());
-            }
+            this.images = review.getImages().stream()
+                    .map(m -> new ImageResDTO(m))
+                    .collect(Collectors.toList());
         }
         if(review.getComments() != null) {
-            for (Comment comment : comments) {
-                this.comments = review.getComments();
-            }
+            this.comments = review.getComments().stream()
+                    .map(m -> new CommentResDTO(m))
+                    .collect(Collectors.toList());
         }
         this.star = review.getStar();
         this.viewCount = review.getViewCount();

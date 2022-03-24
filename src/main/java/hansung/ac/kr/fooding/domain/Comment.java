@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hansung.ac.kr.fooding.dto.CommentPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,10 +21,11 @@ public class Comment extends BaseEntity{
     private long id;
     private String content;
 
+    ///////////////////////
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "author")
     private Member user;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "review_id")
     private Review comment_review;
@@ -32,6 +34,7 @@ public class Comment extends BaseEntity{
     @JoinColumn(name = "parent_id")
     private Comment parent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 

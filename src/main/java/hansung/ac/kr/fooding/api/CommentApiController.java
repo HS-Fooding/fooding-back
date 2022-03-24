@@ -29,8 +29,8 @@ public class CommentApiController {
     public ResponseEntity postComment(@PathVariable(value = "reviewId") Long reviewId,
                                                           @RequestBody CommentPostDTO dto) {
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        Member member = memberRepository.findByIdentifier(name);
-        commentService.postComment(reviewId, member, dto);
+
+        commentService.postComment(reviewId, name, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

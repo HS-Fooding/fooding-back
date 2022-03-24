@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class Role {
 
     private String roleName;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private List<Account> accounts;
 

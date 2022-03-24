@@ -14,17 +14,18 @@ import java.util.stream.Collectors;
 public class ReviewSimpleResDTO {
     private Long id;
     private String title;
-    private String author;
+    private String nickName;
     private String content;
     private List<ImageResDTO> image;
     private float star;
     private int viewCount;
     private String registerDate;
+    private int commentCount;
 
     public ReviewSimpleResDTO(Review review) {
         this.id = review.getId();
         this.title = review.getTitle();
-        this.author = review.getAuthor().getName();
+        this.nickName = review.getAuthor().getNickName();
         this.content = review.getContent();
         this.image = review.getImages().stream()
                 .map(m -> new ImageResDTO(m)).collect(Collectors.toList());

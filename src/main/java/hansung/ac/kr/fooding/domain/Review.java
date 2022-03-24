@@ -11,6 +11,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.List;
 
+import static javax.persistence.FetchType.*;
+
 @Entity
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -20,7 +22,8 @@ public class Review extends BaseEntity{
 
     private String title;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = LAZY)
     private Member author;
 
     private String content;
@@ -28,9 +31,7 @@ public class Review extends BaseEntity{
     @OneToMany(mappedBy = "review")
     private List<Image> images;
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "review_id")
+    @OneToMany(fetch = LAZY, mappedBy = "comment_review")
     private List<Comment> comments;
 
     private float star;
