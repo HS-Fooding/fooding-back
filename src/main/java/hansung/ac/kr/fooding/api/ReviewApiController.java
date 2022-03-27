@@ -27,7 +27,7 @@ import java.util.List;
 public class ReviewApiController {
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
-    private final SecurityService securityHandler;
+    private final SecurityService securityService;
 
     @ApiOperation(value = "리뷰 리스트 불러오기")
     @GetMapping("/review")
@@ -46,7 +46,8 @@ public class ReviewApiController {
                                      @RequestPart(value = "image", required = false) List<MultipartFile> images) {
 
         // 현재 로그인한 사용자의 identifier
-        String userIdentifier = securityHandler.getUserIdentifier();
+        String userIdentifier = securityService.getUserIdentifier();
+//        System.out.println(securityService.getUserIdentifier().get);
 
         // TODO : Redirection 해야 함
 

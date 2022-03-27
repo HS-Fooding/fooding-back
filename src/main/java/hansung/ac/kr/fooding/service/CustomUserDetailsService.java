@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.service;
 
+import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Member member = memberRepository.findByIdentifier(userId);
-        org.springframework.security.core.userdetails.User result = createUser(member.getIdentifier(), member);
+        Account account = memberRepository.findByIdentifier(userId);
+        org.springframework.security.core.userdetails.User result = createUser(account.getIdentifier(), account);
 
         /*System.out.println("!!!!!!!!!!!!!!!!!!!!I'm here bro!!!!!!!!!!!!!!!");
         List<GrantedAuthority> authorities = new ArrayList<>();
@@ -33,11 +34,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         return result;
     }
 
-    private org.springframework.security.core.userdetails.User createUser(String userId, Member member) {
-        List<GrantedAuthority> grantedAuthorities = member.getRoles().stream()
+    private org.springframework.security.core.userdetails.User createUser(String userId, Account account) {
+        List<GrantedAuthority> grantedAuthorities = account.getRoles().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getRoleName()))
                 .collect(Collectors.toList());
-        return new org.springframework.security.core.userdetails.User(member.getIdentifier(),
-                member.getPassword(), grantedAuthorities);
+        return new org.springframework.security.core.userdetails.User(account.getIdentifier(),
+                account.getPassword(), grantedAuthorities);
     }
 }

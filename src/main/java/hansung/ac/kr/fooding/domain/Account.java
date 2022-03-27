@@ -12,6 +12,7 @@ import java.util.Set;
 @Entity
 @Getter @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn()
 public class Account extends BaseTimeEntity{
     @Id @GeneratedValue
     protected long id;
