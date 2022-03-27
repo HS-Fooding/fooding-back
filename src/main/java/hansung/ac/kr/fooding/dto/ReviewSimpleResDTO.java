@@ -32,5 +32,6 @@ public class ReviewSimpleResDTO {
         this.star = review.getStar();
         this.viewCount = review.getViewCount();
         this.registerDate = review.getCreatedDate().toString();
+        this.commentCount = review.getComments().size();
     }
 }

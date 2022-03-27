@@ -1,12 +1,10 @@
 package hansung.ac.kr.fooding.dto;
 
 import hansung.ac.kr.fooding.domain.Comment;
-import hansung.ac.kr.fooding.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Data
