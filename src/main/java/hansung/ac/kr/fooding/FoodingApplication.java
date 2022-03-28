@@ -22,6 +22,9 @@ public class FoodingApplication {
 
 	@Bean
 	public AuditorAware<String> auditorProvider() {
+		if (SecurityContextHolder.getContext() == null) {
+			return () -> null;
+		}
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }

@@ -1,11 +1,16 @@
 package hansung.ac.kr.fooding.domain;
 
 import hansung.ac.kr.fooding.domain.image.Image;
+import hansung.ac.kr.fooding.dto.MenuPostDTO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor
 public class Menu extends BaseEntity{
     @Id
     @GeneratedValue
@@ -14,10 +19,16 @@ public class Menu extends BaseEntity{
     /*@ManyToOne
     @JoinColumn(name = "image_id")
     private Image image;*/
+    private String description;
+    private int price;
 
     @OneToOne(mappedBy = "restaurant")
     private Image image;
 
-    private String description;
-    private int price;
+    public Menu(MenuPostDTO menuPostDTO, Image image){
+        this.name = menuPostDTO.getName();
+        this.description = menuPostDTO.getDescription();
+        this.price = menuPostDTO.getPrice();
+        this.image = image;
+    }
 }

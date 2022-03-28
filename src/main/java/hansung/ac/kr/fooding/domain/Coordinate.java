@@ -1,14 +1,24 @@
 package hansung.ac.kr.fooding.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor @NoArgsConstructor
 public class Coordinate {
-    private int x;
-    private int y;
+    private float x;
+    private float y;
+
+    @Override
+    public String toString() {
+        return "Coordinate{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

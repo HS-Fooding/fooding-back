@@ -27,6 +27,9 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public static final String API_LOGIN = "로그인 및 회원가입";
     public static final String API_REVIEW = "리뷰";
     public static final String API_COMMENT = "댓글";
+    public static final String API_GEOCODE = "Geocode";
+    public static final String API_ADMIN_RESTAURANT = "관리자 매장";
+    public static final String API_RESTAURANT = "매장";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -44,6 +47,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apis(RequestHandlerSelectors.basePackage("hansung.ac.kr.fooding.api"))
                 .paths(PathSelectors.any())
                 .build()
+                .tags(new Tag(API_GEOCODE, "Geocode 조회"))
                 .tags(new Tag(API_LOGIN, "로그인 및 회원가입 API"))
                 .tags(new Tag(API_REVIEW, "리뷰 작성, 리뷰 리스트 조회, 특정 리뷰 조회"))
                 .tags(new Tag(API_COMMENT, "댓글 작성"));

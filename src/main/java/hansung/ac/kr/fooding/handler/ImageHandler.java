@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.handler;
 
+import hansung.ac.kr.fooding.var.Variable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -39,9 +40,7 @@ public class ImageHandler {
             System.out.println("[os] : " + "Windows");
             System.out.println("=======================================");
             System.out.println("\n");
-//                folderRoot = "c:/Home/Resource/assets/"; //윈도우 경로 (디스크 필요)
-//            rootFolder = "D://dev/images/"; //윈도우 경로 (디스크 필요)
-            rootFolder = "C:/Users/bs860/IdeaProjects/sample_project/images/";
+            rootFolder = Variable.LOCAL_FILE_PATH; //윈도우 경로 (디스크 필요)
 
         } else if (os.contains("linux")) {
             System.out.println("\n");
@@ -50,9 +49,7 @@ public class ImageHandler {
             System.out.println("[os] : " + "Linux");
             System.out.println("=======================================");
             System.out.println("\n");
-//                folderRoot = "/Home/Resource/assets/"; //리눅스 경로
-//            rootFolder = "/capstone/sample_project_jhs/"; //리눅스 경로
-            rootFolder = "C:/Users/bs860/IdeaProjects/sample_project/images/";
+            rootFolder = Variable.SERVER_FILE_PATH;
         } else {
             System.out.println("\n");
             System.out.println("=======================================");

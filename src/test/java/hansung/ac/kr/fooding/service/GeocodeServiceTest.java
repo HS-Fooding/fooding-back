@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.service;
 
+import hansung.ac.kr.fooding.domain.Location;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,17 +20,15 @@ class GeocodeServiceTest {
         String address = "경기도 파주시 교하로 100";
 
         //when
-        Map result1 = geocodeService.getGeocode(wrongAddress);
-        Map result2 = geocodeService.getGeocode(wrongAddress1);
-        Map result3 = geocodeService.getGeocode(address);
+        Location result1 = geocodeService.getGeocode(wrongAddress);
+        Location result2 = geocodeService.getGeocode(wrongAddress1);
+        Location result3 = geocodeService.getGeocode(address);
 
 
         //then
-        System.out.println(result1.toString());
-        System.out.println(result2.toString());
         System.out.println(result3.toString());
-        assertThat(result1.isEmpty()).isTrue();
-        assertThat(result2.isEmpty()).isTrue();
-        assertThat(result3.isEmpty()).isFalse();
+        assertThat(result1 == null).isTrue();
+        assertThat(result2 == null).isTrue();
+        assertThat(result3 == null).isFalse();
     }
 }
