@@ -25,7 +25,7 @@ public class RestaurantService {
 
     @Transactional
     public void save(RestaurantPostDTO postDTO) throws SecurityException{
-//        if(!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authoriza
+        if(!(securityService.getAccount() instanceof Member)) throw new SecurityException("No Authorization");
         Member admin = (Member)securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
         Restaurant restaurant = new Restaurant(postDTO, admin);
         restaurantRepository.save(restaurant);

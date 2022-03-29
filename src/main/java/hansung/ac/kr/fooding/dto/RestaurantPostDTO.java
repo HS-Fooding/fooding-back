@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

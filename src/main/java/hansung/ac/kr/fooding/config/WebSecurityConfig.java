@@ -68,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/logout").permitAll()
                 .antMatchers("/restaurant/**").permitAll()
                 .antMatchers("/admin/**").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
 
                 .and()

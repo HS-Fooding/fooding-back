@@ -8,6 +8,7 @@ import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,12 +27,12 @@ public class AdminRestaurantApiController {
 
     @ApiOperation(value = "매장 등록")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity postRestaurant(@RequestPart RestaurantPostDTO dto,
+    public ResponseEntity postRestaurant(@RequestPart(value = "restaurant") RestaurantPostDTO dto,
                                          @RequestPart(value = "image", required = false) List<MultipartFile> images){
         try {
             restaurantService.save(dto);
         } catch (SecurityException e){
-            return new ResponseEntity<String>("Fooding-Not Admin", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok().build();
     }
