@@ -22,12 +22,13 @@ public class MenuService {
     private final MenuRepository menuRepository;
     private final SecurityService securityService;
 
-    public void addMenu(MenuPostDTO menuPostDTO, MultipartFile image, Long id) throws IllegalStateException{
+    public void addMenu(MenuPostDTO menuPostDTO, MultipartFile image, Long id) throws IllegalStateException, SecurityException{
         Member loginAccount = (Member)securityService.getAccount();
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optional.get();
-        if(restaurant.getAdmin() != loginAccount) throw new SecurityException("Unauthorization");
+        if(restaurant.getAdmin() != loginAccount) throw new SecurityException("No Authorization");
+        System.out.println("##########"+menuPostDTO.toString());
         Menu menu = new Menu(menuPostDTO, null);
         restaurant.addMenu(menu);
         menuRepository.save(menu);

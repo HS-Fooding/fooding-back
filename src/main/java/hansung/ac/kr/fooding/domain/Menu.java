@@ -21,6 +21,7 @@ public class Menu extends BaseEntity{
     private Image image;*/
     private String description;
     private int price;
+    private boolean isRepresentative;
 
     @OneToOne(mappedBy = "restaurant")
     private Image image;
@@ -29,6 +30,7 @@ public class Menu extends BaseEntity{
         this.name = menuPostDTO.getName();
         this.description = menuPostDTO.getDescription();
         this.price = menuPostDTO.getPrice();
+        this.isRepresentative = menuPostDTO.getIsRepresentative();
         this.image = image;
     }
 }

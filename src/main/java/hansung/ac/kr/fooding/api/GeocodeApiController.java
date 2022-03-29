@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,8 +25,8 @@ public class GeocodeApiController {
 
     @ApiOperation(value = "주소 변환")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity getGeocode(String string){
-        Location location = geocodeService.getGeocode(string);
+    public ResponseEntity getGeocode(@RequestBody String address){
+        Location location = geocodeService.getGeocode(address);
         if (location == null) return new ResponseEntity<String>("Fooding-Location Not Found",HttpStatus.NO_CONTENT);
         return new ResponseEntity<Location>(location, HttpStatus.OK);
     }
