@@ -35,9 +35,9 @@ class RestaurantServiceTest {
         tel.add("3456");
         WorkHour weekday = new WorkHour("1", "1");
         WorkHour weekend = new WorkHour("1","1");
-        RestaurantPostDTO dto = new RestaurantPostDTO("TestRestaurnat", tel, weekday, weekend, "intro", null, location, null);
+        // RestaurantPostDTO dto = new RestaurantPostDTO("TestRestaurnat", tel, weekday, weekend, "intro", null, location, null);
         //when
-        restaurantService.save(dto);
+        //restaurantService.save(dto);
 
         //then
     }

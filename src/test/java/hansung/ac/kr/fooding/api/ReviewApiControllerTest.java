@@ -2,7 +2,6 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.domain.Comment;
 import hansung.ac.kr.fooding.domain.Review;
-import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +12,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 class ReviewApiControllerTest {
-    @Autowired MemberRepository memberRepository;
     @Autowired ReviewRepository reviewRepository;
 
     @PersistenceContext

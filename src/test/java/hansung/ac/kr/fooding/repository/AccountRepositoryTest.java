@@ -22,7 +22,6 @@ class AccountRepositoryTest {
     EntityManager em;
 
     @Autowired AccountRepository accountRepository;
-    @Autowired MemberRepository memberRepository;
 
    /* @Test
     public void test() {

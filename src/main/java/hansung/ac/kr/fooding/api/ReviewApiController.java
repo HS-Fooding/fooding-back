@@ -49,8 +49,6 @@ public class ReviewApiController {
         String userIdentifier = securityService.getUserIdentifier();
 //        System.out.println(securityService.getUserIdentifier().get);
 
-        // TODO : Redirection 해야 함
-
         ReviewPostDTO result = reviewService.postReview(userIdentifier, reviewPostDTO, images);
 
         return new ResponseEntity<>(result, HttpStatus.OK);

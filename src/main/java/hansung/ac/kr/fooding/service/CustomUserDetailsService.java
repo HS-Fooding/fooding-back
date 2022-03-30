@@ -1,9 +1,8 @@
 package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.Account;
-import hansung.ac.kr.fooding.domain.Member;
-import hansung.ac.kr.fooding.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import hansung.ac.kr.fooding.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,13 +16,14 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired private MemberRepository memberRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-        Account account = memberRepository.findByIdentifier(userId);
+        Account account = accountRepository.findByIdentifier(userId);
         org.springframework.security.core.userdetails.User result = createUser(account.getIdentifier(), account);
 
         /*System.out.println("!!!!!!!!!!!!!!!!!!!!I'm here bro!!!!!!!!!!!!!!!");

@@ -2,7 +2,6 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.CommentPostDTO;
-import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CommentApiController {
     private final CommentService commentService;
-    private final MemberRepository memberRepository;
     private final SecurityService securityService;
 
     @ApiOperation(value = "댓글 작성")

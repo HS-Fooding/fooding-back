@@ -24,7 +24,7 @@ public class Review extends BaseEntity{
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
-    private Member author;
+    private Account author;
 
     private String content;
 

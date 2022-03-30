@@ -23,7 +23,7 @@ public class Comment extends BaseEntity{
 
     ///////////////////////
     @ManyToOne(fetch = LAZY)
-    private Member user;
+    private Account user;
 
     @JsonIgnore
     @ManyToOne(fetch = LAZY)
@@ -38,9 +38,9 @@ public class Comment extends BaseEntity{
     @OneToMany(mappedBy = "parent")
     private List<Comment> child = new ArrayList<>();
 
-    public Comment(Review review, Member member, CommentPostDTO commentPostDTO) {
+    public Comment(Review review, Account account, CommentPostDTO commentPostDTO) {
         this.content = commentPostDTO.getContent();
-        this.user = member;
+        this.user = account;
         this.parent = this;
         addReview(review);
     }

@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
 @Getter @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn()
+@DiscriminatorColumn(name = "dtype")
 public class Account extends BaseTimeEntity{
     @Id @GeneratedValue
     protected long id;
@@ -36,8 +37,12 @@ public class Account extends BaseTimeEntity{
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "member_role",
+            name = "account_role",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
+
+    public void setRoles(List<Role> roles) {
+        this.roles = new HashSet<>(roles);
+    }
 }

@@ -7,8 +7,9 @@ import hansung.ac.kr.fooding.dto.LoginReqDTO;
 import hansung.ac.kr.fooding.dto.TokenResDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
+import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;
 import hansung.ac.kr.fooding.provider.JwtTokenProvider;
-import hansung.ac.kr.fooding.service.MemberService;
+import hansung.ac.kr.fooding.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LogInApiController {
 
-    private final MemberService memberService;
+    private final AccountService accountService;
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -37,8 +38,8 @@ public class LogInApiController {
     @PostMapping("/join")
     public ResponseEntity join(@RequestBody JoinReqDTO request) throws
             X_IdAlreadyExistsException,
-            X_NickNameAlreadyExistsException {
-        memberService.join(request);
+            X_NickNameAlreadyExistsException, X_NotRegisteredRole {
+        accountService.join(request);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

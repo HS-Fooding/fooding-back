@@ -5,8 +5,8 @@ import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.dto.ReviewPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
+import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.ImageRepository;
-import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.List;
 public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final ImageRepository imageRepository;
-    private final MemberRepository memberRepository;
+    private final AccountRepository accountRepository;
 
     @Transactional
     public ReviewPostDTO postReview(String id, ReviewPostDTO reviewPostDto, List<MultipartFile> images) {
@@ -32,9 +32,8 @@ public class ReviewService {
             imagePaths = ImageHandler.upload(images);
         }
 
-
         Review review = new Review(reviewPostDto);
-        review.setAuthor(memberRepository.findByIdentifier(id));
+        review.setAuthor(accountRepository.findByIdentifier(id));
 
         reviewRepository.save(review);
 
@@ -56,8 +55,7 @@ public class ReviewService {
     @Transactional
     public ReviewDetailResDTO findReviewWithComments(Long reviewId) {
         Review review = reviewRepository.findReviewWithComments(reviewId).orElse(null);
-        if(review == null)
-            System.out.println("fuck!!!!!!!!!!");
+
         review.setViewCount(review.getViewCount() + 1);
 
         ReviewDetailResDTO reviewDetailResDTO = new ReviewDetailResDTO(review);
