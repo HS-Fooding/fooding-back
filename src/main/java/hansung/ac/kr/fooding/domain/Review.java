@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.*;
@@ -28,8 +29,8 @@ public class Review extends BaseEntity{
 
     private String content;
 
-    @OneToMany(mappedBy = "review")
-    private List<Image> images;
+    @OneToMany
+    private List<Image> images = new ArrayList<Image>();
 
     @OneToMany(fetch = LAZY, mappedBy = "comment_review")
     private List<Comment> comments;
@@ -41,6 +42,12 @@ public class Review extends BaseEntity{
     public void addImages(Image... image) {
         for (Image i : image) {
             images.add(i);
+        }
+    }
+
+    public void addImages(List<Image> images){
+        for (Image image : images){
+            images.add(image);
         }
     }
 

@@ -25,29 +25,15 @@ public class ReviewService {
     private final AccountRepository accountRepository;
 
     @Transactional
-    public ReviewPostDTO postReview(String id, ReviewPostDTO reviewPostDto, List<MultipartFile> images) {
+    public ReviewPostDTO postReview(String id, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages) {
 
-        List<String> imagePaths = new ArrayList<>();
-        if(images != null) {
-            imagePaths = ImageHandler.upload(images);
-        }
-
+        List<Image> images = ImageHandler.upload(multipartImages);
         Review review = new Review(reviewPostDto);
         review.setAuthor(accountRepository.findByIdentifier(id));
 
         reviewRepository.save(review);
-
-        List<Image> savedImages = new ArrayList<>();
-        if (imagePaths.size() > 0) {
-            for (String imagePath : imagePaths) {
-                Image savedImage = new Image();
-                savedImage.setPath(imagePath);
-                savedImage.setReview(review);
-                savedImages.add(savedImage);
-            }
-        }
-        review.setImages(savedImages);
-        imageRepository.saveImages(savedImages);
+        imageRepository.saveImages(images);
+        review.addImages(images);
 
         return reviewPostDto;
     }

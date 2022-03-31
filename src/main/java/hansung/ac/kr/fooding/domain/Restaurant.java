@@ -22,7 +22,7 @@ public class Restaurant extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
-    private Member admin;
+    private Admin admin;
 
     @ElementCollection
     @CollectionTable(name="tel", joinColumns = @JoinColumn(name = "restaurant_id"))
@@ -43,8 +43,8 @@ public class Restaurant extends BaseEntity{
     private WorkHour weekendsWorkHour;
     private String intro;
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<Image> images;
+    @OneToMany
+    private List<Image> images = new ArrayList<Image>();
 
     @Embedded
     private Location location;
@@ -70,8 +70,13 @@ public class Restaurant extends BaseEntity{
     public void addMenu(Menu menu){
         menus.add(menu);
     }
+    public void addImages(List<Image> images) {
+        for(Image image : images){
+            this.images.add(image);
+        }
+    }
 
-    public Restaurant(RestaurantPostDTO dto, Member admin){
+    public Restaurant(RestaurantPostDTO dto, Admin admin){
         this.name = dto.getName();
         this.admin = admin;
         this.tel = dto.getTel();
@@ -79,5 +84,6 @@ public class Restaurant extends BaseEntity{
         this.weekendsWorkHour = dto.getWeekendsWorkHour();
         this.location = dto.getLocation();
         this.intro = dto.getIntro();
+        this.category = dto.getCategory();
     }
 }

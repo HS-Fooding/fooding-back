@@ -4,8 +4,11 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.dto.RestInfoGetDTO;
 import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
+import hansung.ac.kr.fooding.handler.ImageHandler;
+import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,21 +25,29 @@ import java.util.Optional;
 public class RestaurantService {
     private final SecurityService securityService;
     private final RestaurantRepository restaurantRepository;
+    private final ImageRepository imageRepository;
 
     @Transactional
-    public void save(RestaurantPostDTO postDTO) throws SecurityException{
-        if(!(securityService.getAccount() instanceof Member)) throw new SecurityException("No Authorization");
-        Member admin = (Member)securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
+    public Long save(RestaurantPostDTO postDTO) throws SecurityException{
+        if(!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authorization");
+        Admin admin = (Admin)securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
         Restaurant restaurant = new Restaurant(postDTO, admin);
         restaurantRepository.save(restaurant);
+        return restaurant.getId();
     }
 
     @Transactional
-    public void saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> images) throws SecurityException{
-//        if(!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authoriza
-        Member admin = (Member)securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
-        Restaurant restaurant = new Restaurant(postDTO, admin);
+    public Long saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> multipartImages) throws SecurityException{
+        Account account = securityService.getAccount();
+        if(!(account instanceof Admin)) throw new SecurityException("No Authorization");
+
+        Restaurant restaurant = new Restaurant(postDTO, (Admin)account);
+        List<Image> images = ImageHandler.upload(multipartImages);
+
+        imageRepository.saveImages(images);
         restaurantRepository.save(restaurant);
+        restaurant.addImages(images);
+        return restaurant.getId();
     }
 
     public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException{

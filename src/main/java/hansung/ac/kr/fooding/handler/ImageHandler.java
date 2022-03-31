@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.handler;
 
+import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.var.Variable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,23 +12,40 @@ import java.util.Date;
 import java.util.List;
 
 public class ImageHandler {
-    public static List<String> upload(List<MultipartFile> images){
-        List<String> imagePath = new ArrayList<>();
-        if(images == null)
+    public static List<Image> upload(List<MultipartFile> multipartImages){
+        List<Image> resultImages = new ArrayList<Image>();
+        if(multipartImages == null)
             return null;
-        for(MultipartFile image : images) {
+        for(MultipartFile multipartImage : multipartImages) {
             String path = getRootFolder();
-            String fileName = getNowTime24()  + "_" +image.getOriginalFilename();
+            String fileName = getNowTime24()  + "_" +multipartImage.getOriginalFilename();
 
             try {
-                image.transferTo(new File(path+fileName));
-                imagePath.add("http://13.124.207.219:8080/sample_project/image/"+fileName);
+                multipartImage.transferTo(new File(path+fileName));
+                String imagePath = "http://13.124.207.219:8080/sample_project/image/"+fileName;
+                Image resultImage = new Image(imagePath);
+                resultImages.add(resultImage);
             } catch (IllegalStateException | IOException e) {
                 e.printStackTrace();
                 return null;
             }
         }
-        return imagePath;
+        return resultImages;
+    }
+
+    public static Image upload(MultipartFile multipartImage){
+        if (multipartImage == null) return null;
+        String path = getRootFolder();
+        String fileName = getNowTime24()  + "_" +multipartImage.getOriginalFilename();
+
+        try {
+            multipartImage.transferTo(new File(path+fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        String imagePath = "http://13.124.207.219:8080/sample_project/image/"+fileName;
+        return new Image(imagePath);
     }
 
     private static String getRootFolder() throws IllegalStateException{
@@ -62,7 +80,7 @@ public class ImageHandler {
         return rootFolder;
     }
 
-    public static String getNowTime24() {
+    private static String getNowTime24() {
         long time = System.currentTimeMillis();
         //SimpleDateFormat dayTime = new SimpleDateFormat("hh:mm:ss");
         SimpleDateFormat dayTime = new SimpleDateFormat("yyyyMMddkkmmss");

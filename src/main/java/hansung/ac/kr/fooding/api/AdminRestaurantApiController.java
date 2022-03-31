@@ -29,12 +29,13 @@ public class AdminRestaurantApiController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity postRestaurant(@RequestPart(value = "restaurant") RestaurantPostDTO dto,
                                          @RequestPart(value = "image", required = false) List<MultipartFile> images){
+        Long id;
         try {
-            restaurantService.save(dto);
+            id = restaurantService.saveWithImage(dto, images);
         } catch (SecurityException e){
             return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
 
     @ApiOperation(value = "메뉴 등록")

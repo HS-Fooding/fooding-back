@@ -5,8 +5,10 @@ import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
+import hansung.ac.kr.fooding.domain.image.Image;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,6 +20,7 @@ public class RestInfoGetDTO {
     private WorkHour weekdaysWorkHour;
     private WorkHour weekendsWorkHour;
     private String intro;
+    private List<String> images = new ArrayList<String>();
     private Location location;
     private List<Favor> category;
 
@@ -33,6 +36,9 @@ public class RestInfoGetDTO {
         location = restaurant.getLocation();
         if(restaurant.getCategory() != null)
         category = restaurant.getCategory();
+        if(!restaurant.getImages().isEmpty())
+            for(Image image : restaurant.getImages())
+                images.add(image.getPath());
     }
 
     public static RestInfoGetDTO from(Restaurant restaurant){
