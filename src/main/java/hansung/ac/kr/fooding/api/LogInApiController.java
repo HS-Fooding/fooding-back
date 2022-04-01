@@ -36,10 +36,16 @@ public class LogInApiController {
 
     @ApiOperation(value = "회원 가입")
     @PostMapping("/join")
-    public ResponseEntity join(@RequestBody JoinReqDTO request) throws
-            X_IdAlreadyExistsException,
-            X_NickNameAlreadyExistsException, X_NotRegisteredRole {
-        accountService.join(request);
+    public ResponseEntity join(@RequestBody JoinReqDTO request) {
+        try {
+            accountService.join(request);
+        } catch (X_IdAlreadyExistsException e) {
+            return new ResponseEntity<>("Fooding-"+e.getClass(), HttpStatus.BAD_REQUEST);
+        } catch (X_NickNameAlreadyExistsException e) {
+            return new ResponseEntity<>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (X_NotRegisteredRole e) {
+            return new ResponseEntity<>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
