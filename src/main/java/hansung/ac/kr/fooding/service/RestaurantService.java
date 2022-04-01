@@ -28,31 +28,34 @@ public class RestaurantService {
     private final ImageRepository imageRepository;
 
     @Transactional
-    public Long save(RestaurantPostDTO postDTO) throws SecurityException{
-        if(!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authorization");
-        Admin admin = (Admin)securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
+    public Long save(RestaurantPostDTO postDTO) throws SecurityException {
+        if (!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authorization");
+        Admin admin = (Admin) securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
         Restaurant restaurant = new Restaurant(postDTO, admin);
         restaurantRepository.save(restaurant);
         return restaurant.getId();
     }
 
     @Transactional
-    public Long saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> multipartImages) throws SecurityException{
+    public Long saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> multipartImages) throws SecurityException {
         Account account = securityService.getAccount();
-        if(!(account instanceof Admin)) throw new SecurityException("No Authorization");
+        if (!(account instanceof Admin)) throw new SecurityException("No Authorization");
 
-        Restaurant restaurant = new Restaurant(postDTO, (Admin)account);
-        List<Image> images = ImageHandler.upload(multipartImages);
-
-        imageRepository.saveImages(images);
+        Restaurant restaurant = new Restaurant(postDTO, (Admin) account);
         restaurantRepository.save(restaurant);
-        restaurant.addImages(images);
+
+        if (multipartImages != null) {
+            List<Image> images = ImageHandler.upload(multipartImages);
+            imageRepository.saveImages(images);
+            restaurant.addImages(images);
+        }
+
         return restaurant.getId();
     }
 
-    public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException{
+    public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optional.get();
         return RestInfoGetDTO.from(restaurant);
     }
