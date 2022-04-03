@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider implements InitializingBean {
     private final String AUTHORITIES_KEY = "auth";
     private final String secret;
-    private final long tokenValidityInMilliseconds;
+    private final long tokenValidityInseconds;
     private Key key;
 
     public JwtTokenProvider(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
+        this.tokenValidityInseconds = tokenValidityInMilliseconds * 100;
     }
 
     @Override   // Bean 생성 ->  의존성 주입 받음 -> 그 이후의 동작을 수행하기 위해 존재
@@ -44,7 +44,7 @@ public class JwtTokenProvider implements InitializingBean {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date validity = new Date(now + this.tokenValidityInseconds);
 
         // 발급
         return Jwts.builder()

@@ -28,12 +28,12 @@ public class AdminRestaurantApiController {
     @ApiOperation(value = "매장 등록")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity postRestaurant(@RequestPart(value = "restaurant") RestaurantPostDTO dto,
-                                         @RequestPart(value = "image", required = false) List<MultipartFile> images){
+                                         @RequestPart(value = "image", required = false) List<MultipartFile> images) {
         Long id;
         try {
             id = restaurantService.saveWithImage(dto, images);
-        } catch (SecurityException e){
-            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (SecurityException e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
@@ -42,13 +42,13 @@ public class AdminRestaurantApiController {
     @RequestMapping(path = "/{id}/menu", method = RequestMethod.POST)
     public ResponseEntity postMenu(@PathVariable(value = "id") Long id,
                                    @RequestPart(value = "menu") MenuPostDTO menuPostDTO,
-                                   @RequestPart(required = false) MultipartFile image){
+                                   @RequestPart(required = false) MultipartFile image) {
         try {
             menuService.addMenu(menuPostDTO, image, id);
-        } catch (IllegalStateException e){
-            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (SecurityException e) {
-            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok().build();
     }
