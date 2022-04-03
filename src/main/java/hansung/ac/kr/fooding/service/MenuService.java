@@ -51,4 +51,14 @@ public class MenuService {
         restaurant.getMenus().forEach(m-> result.add(MenuGetDTO.from(m)));
         return result;
     }
+    
+    public void deleteMenu(Long restId, Long menuId){
+        Optional<Restaurant> optional = restaurantRepository.findById(restId);
+        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        Restaurant restaurant = optional.get();
+        Optional<Menu> optionalMenu = restaurant.getMenuById(menuId);
+        if(optionalMenu.isEmpty()) throw new IllegalStateException("Menu Not Found");
+        Menu menu = optionalMenu.get();
+        menuRepository.delete(menu);
+    }
 }

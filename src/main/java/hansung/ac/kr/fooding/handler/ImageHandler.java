@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 public class ImageHandler {
+    private static final String urlPath = "http://13.124.207.219:8080/fooding/image/";
     public static List<Image> upload(List<MultipartFile> multipartImages){
         List<Image> resultImages = new ArrayList<Image>();
         if(multipartImages == null)
@@ -22,7 +23,7 @@ public class ImageHandler {
 
             try {
                 multipartImage.transferTo(new File(path+fileName));
-                String imagePath = "http://13.124.207.219:8080/sample_project/image/"+fileName;
+                String imagePath = urlPath+fileName;
                 Image resultImage = new Image(imagePath);
                 resultImages.add(resultImage);
             } catch (IllegalStateException | IOException e) {
@@ -44,7 +45,7 @@ public class ImageHandler {
             e.printStackTrace();
             return null;
         }
-        String imagePath = "http://13.124.207.219:8080/sample_project/image/"+fileName;
+        String imagePath = urlPath+fileName;
         return new Image(imagePath);
     }
 

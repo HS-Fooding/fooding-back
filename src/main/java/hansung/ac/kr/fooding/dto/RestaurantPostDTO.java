@@ -19,7 +19,9 @@ public class RestaurantPostDTO {
     private List<String> tel;
     private WorkHour weekdaysWorkHour;
     private WorkHour weekendsWorkHour;
+    private String parkingInfo;
     private String intro;
     private Location location;
     private List<Favor> category;
+    private float maximumUsageTime;
 }

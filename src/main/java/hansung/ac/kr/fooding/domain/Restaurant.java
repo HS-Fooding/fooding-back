@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -41,7 +42,9 @@ public class Restaurant extends BaseEntity{
             @AttributeOverride(name = "close", column = @Column(name = "ends_close"))
     })
     private WorkHour weekendsWorkHour;
+    private String parkingInfo;
     private String intro;
+    private float maximumUsageTime;
 
     @OneToMany
     private List<Image> images = new ArrayList<Image>();
@@ -70,6 +73,20 @@ public class Restaurant extends BaseEntity{
     public void addMenu(Menu menu){
         menus.add(menu);
     }
+
+    public Optional<Menu> getMenuById(Long id){
+        for(Menu menu : menus){
+            if (menu.getId() == id){
+                return Optional.of(menu);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public void deleteMenu (Menu menu){
+        menus.remove(menu);
+    }
+
     public void addImages(List<Image> images) {
         for(Image image : images){
             this.images.add(image);
@@ -85,5 +102,7 @@ public class Restaurant extends BaseEntity{
         this.location = dto.getLocation();
         this.intro = dto.getIntro();
         this.category = dto.getCategory();
+        this.maximumUsageTime = dto.getMaximumUsageTime();
+        this.parkingInfo = dto.getParkingInfo();
     }
 }

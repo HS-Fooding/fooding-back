@@ -2,14 +2,17 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.config.filter.JwtFilter;
+import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.dto.JoinReqDTO;
 import hansung.ac.kr.fooding.dto.LoginReqDTO;
+import hansung.ac.kr.fooding.dto.LoginResDTO;
 import hansung.ac.kr.fooding.dto.TokenResDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;
 import hansung.ac.kr.fooding.provider.JwtTokenProvider;
 import hansung.ac.kr.fooding.service.AccountService;
+import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +36,7 @@ public class LogInApiController {
     private final AccountService accountService;
     private final JwtTokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final SecurityService securityService;
 
     @ApiOperation(value = "회원 가입")
     @PostMapping("/join")
@@ -45,7 +49,7 @@ public class LogInApiController {
 
     @ApiOperation(value = "로그인")
     @PostMapping("/login")
-    public ResponseEntity<TokenResDTO> login(@RequestBody LoginReqDTO request) {
+    public ResponseEntity<LoginResDTO> login(@RequestBody LoginReqDTO request) {
         // userId와 userPassword로 authentication 토큰 생성
 
         UsernamePasswordAuthenticationToken authenticationToken =
@@ -62,7 +66,9 @@ public class LogInApiController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        System.out.println("###########################왜안되지");
+        LoginResDTO loginResDTO = new LoginResDTO(new TokenResDTO(jwt), (Admin)securityService.getAccount());
 
-        return new ResponseEntity<>(new TokenResDTO(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<LoginResDTO>(loginResDTO, httpHeaders, HttpStatus.OK);
     }
 }

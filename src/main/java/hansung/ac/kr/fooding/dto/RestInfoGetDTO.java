@@ -19,6 +19,8 @@ public class RestInfoGetDTO {
     private List<String> tel;
     private WorkHour weekdaysWorkHour;
     private WorkHour weekendsWorkHour;
+    private String parkingInfo;
+    private float maximumUsageTime;
     private String intro;
     private List<String> images = new ArrayList<String>();
     private Location location;
@@ -31,6 +33,8 @@ public class RestInfoGetDTO {
         tel = restaurant.getTel();
         weekdaysWorkHour = restaurant.getWeekdaysWorkHour();
         weekendsWorkHour = restaurant.getWeekendsWorkHour();
+        parkingInfo = restaurant.getParkingInfo();
+        maximumUsageTime = restaurant.getMaximumUsageTime();
         intro = restaurant.getIntro();
         if(restaurant.getLocation() != null)
         location = restaurant.getLocation();

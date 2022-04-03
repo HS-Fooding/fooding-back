@@ -52,4 +52,16 @@ public class AdminRestaurantApiController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @ApiOperation(value="메뉴 삭제")
+    @RequestMapping(path = "/{restId}/menu/{menuId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteMenu(@PathVariable(value = "restId") Long restId,
+                                     @PathVariable(value = "menuId") Long menuId){
+        try {
+            menuService.deleteMenu(restId, menuId);
+        } catch(IllegalStateException e){
+            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
+    }
 }
