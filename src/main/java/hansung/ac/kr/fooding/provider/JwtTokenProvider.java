@@ -29,7 +29,7 @@ public class JwtTokenProvider implements InitializingBean {
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.token-validity-in-seconds}") long tokenValidityInMilliseconds) {
         this.secret = secret;
-        this.tokenValidityInseconds = tokenValidityInMilliseconds * 100;
+        this.tokenValidityInseconds = tokenValidityInMilliseconds * 1000;
     }
 
     @Override   // Bean 생성 ->  의존성 주입 받음 -> 그 이후의 동작을 수행하기 위해 존재
