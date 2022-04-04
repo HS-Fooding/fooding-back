@@ -37,8 +37,10 @@ public class MenuService {
         System.out.println("##########"+menuPostDTO.toString());
         Menu menu = new Menu(menuPostDTO, null);
         Image image = ImageHandler.upload(multipartImage);
-        imageRepository.save(image);
-        menu.setImage(image);
+        if (image != null) {
+            imageRepository.save(image);
+            menu.setImage(image);
+        }
         restaurant.addMenu(menu);
         menuRepository.save(menu);
     }
@@ -59,6 +61,11 @@ public class MenuService {
         Optional<Menu> optionalMenu = restaurant.getMenuById(menuId);
         if(optionalMenu.isEmpty()) throw new IllegalStateException("Menu Not Found");
         Menu menu = optionalMenu.get();
+        if(menu.getImage() != null) {
+            Image image = menu.getImage();
+            menu.setImage(null);
+            imageRepository.delete(image);
+        }
         menuRepository.delete(menu);
     }
 }

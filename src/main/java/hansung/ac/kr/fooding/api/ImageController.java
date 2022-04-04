@@ -19,8 +19,8 @@ public class ImageController {
     @RequestMapping("/image/{imageName:.+}")
     @ResponseBody
     public ResponseEntity getImage(@PathVariable("imageName") String imageName){
-        //String path = Variable.SERVER_FILE_PATH;
-        String path = Variable.LOCAL_FILE_PATH;
+        String path = Variable.SERVER_FILE_PATH;
+        //String path = Variable.LOCAL_FILE_PATH;
         //String path = "d:/dev/images/";
 
         byte[] byteArr = null;
