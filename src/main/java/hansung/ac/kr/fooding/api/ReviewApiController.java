@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = {SwaggerConfig.API_REVIEW})
 @RestController
@@ -31,12 +32,11 @@ public class ReviewApiController {
     private final SecurityService securityService;
 
     @ApiOperation(value = "리뷰 리스트 불러오기")
-    @GetMapping("/review")
-    public Page<ReviewSimpleResDTO> getReviews(Pageable pageable) {
-        Page<Review> page = reviewRepository.findAll(pageable);
-        Page<ReviewSimpleResDTO> result = page.map(m -> new ReviewSimpleResDTO(m));
+    @GetMapping("/restaurant/{id}/review")
+    public List<ReviewSimpleResDTO> getReviews(@PathVariable(value = "id") Long restId, Pageable pageable) {
+        List<Review> reviewsOnly = reviewService.getReviewsOnly(restId);
 
-        return result;
+        return reviewsOnly.stream().map(m -> new ReviewSimpleResDTO(m)).collect(Collectors.toList());
     }
 
     @ApiOperation(value = "리뷰 작성하기")

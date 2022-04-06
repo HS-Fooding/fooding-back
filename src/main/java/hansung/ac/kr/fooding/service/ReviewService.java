@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +60,14 @@ public class ReviewService {
         ReviewDetailResDTO reviewDetailResDTO = new ReviewDetailResDTO(review);
 
         return reviewDetailResDTO;
+    }
+
+    public List<Review> getReviewsOnly(Long restId) {
+        Optional<Restaurant> optional = restaurantRepository.findById(restId);
+        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+
+        Restaurant restaurant = optional.get();
+
+        return restaurant.getReviews();
     }
 }
