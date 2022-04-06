@@ -47,7 +47,7 @@ public class Restaurant extends BaseEntity{
     private float maximumUsageTime;
 
     @OneToMany
-    private List<Image> images = new ArrayList<Image>();
+    private List<Image> images = new ArrayList<>();
 
     @Embedded
     private Location location;
@@ -55,22 +55,22 @@ public class Restaurant extends BaseEntity{
     @ElementCollection
     @CollectionTable(name = "category",
             joinColumns = @JoinColumn(name = "restaurant_id"))
-    private List<Favor> category;
+    private List<Favor> category = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "restaurant_id")
-    private List<Floor> floors;
+    private List<Floor> floors = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "restaurant_id")
-    private List<Menu> menus = new ArrayList<Menu>();
+    private List<Menu> menus = new ArrayList<>();
 
     @OneToMany
     @JoinColumn(name = "restaurant_id")
-    private List<Reservation> reservations;
+    private List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany
-    @JoinColumn(name = "review_id")
+    @JoinColumn(name = "restaurant_id")
     private List<Review> reviews = new ArrayList<>();
 
     private int viewCount;

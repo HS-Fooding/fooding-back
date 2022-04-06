@@ -39,8 +39,8 @@ public class ReviewService {
         review.setAuthor(account);
 
         if(images != null) {
-            review.addImages(images);
             imageRepository.saveImages(images);
+            review.addImages(images);
         }
 
         Restaurant restaurant = optional.get();

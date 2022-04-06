@@ -30,25 +30,17 @@ public class Review extends BaseEntity{
     private String content;
 
     @OneToMany
-    private List<Image> images = new ArrayList<Image>();
+    private List<Image> images = new ArrayList<>();
 
-    @OneToMany(fetch = LAZY, mappedBy = "comment_review")
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "comment_review")
+    private List<Comment> comments = new ArrayList<>();
 
     private float star;
 
     private int viewCount;
 
-    public void addImages(Image... image) {
-        for (Image i : image) {
-            images.add(i);
-        }
-    }
-
-    public void addImages(List<Image> images){
-        for (Image image : images){
-            images.add(image);
-        }
+    public void addImages(List<Image> imageList){
+        images.addAll(imageList);
     }
 
     public Review(ReviewPostDTO dto){

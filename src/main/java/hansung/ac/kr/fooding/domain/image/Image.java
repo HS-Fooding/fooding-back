@@ -17,7 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Image extends BaseEntity {
     @Id @GeneratedValue
-    private long id;
+    private Long id;
     private String path;
 
     public Image(String path){

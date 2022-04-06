@@ -54,8 +54,10 @@ public class ReviewApiController {
     }
 
     @ApiOperation(value = "특정 리뷰 가져오기")
-    @GetMapping("/review/{reviewId}")
-    public ResponseEntity<ReviewDetailResDTO> getReview(@PathVariable Long reviewId) {
+    @GetMapping("/restaurant/{id}/review/{reviewId}")
+    public ResponseEntity<ReviewDetailResDTO> getReview(
+            @PathVariable Long id,
+            @PathVariable Long reviewId) {
 
         ReviewDetailResDTO result = reviewService.findReviewWithComments(reviewId);
 

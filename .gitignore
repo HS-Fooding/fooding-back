@@ -5,6 +5,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 application.yml
+Variable.java
+var\
+ImageHandler.java
 
 ### STS ###
 .apt_generated
@@ -36,3 +39,4 @@ out/
 
 ### VS Code ###
 .vscode/
+Variable.java

@@ -44,8 +44,11 @@ public class RestaurantService {
         Restaurant restaurant = new Restaurant(postDTO, (Admin) account);
         restaurantRepository.save(restaurant);
 
-        if (multipartImages != null) {
-            List<Image> images = ImageHandler.upload(multipartImages);
+        List<Image> images = ImageHandler.upload(multipartImages);
+
+        System.out.println("111111111111111111111111111111");
+        if (images != null) {
+            System.out.println("22222222222222222222222222");
             imageRepository.saveImages(images);
             restaurant.addImages(images);
         }
