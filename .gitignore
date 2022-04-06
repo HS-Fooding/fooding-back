@@ -5,9 +5,11 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 application.yml
-Variable.java
-var\
-ImageHandler.java
+#Variable.java
+#var\
+#ImageHandler.java
+./src/main/java/hansung/ac/kr/fooding/handler/ImageHandler.java
+.src/main/java/hansung/ac/kr/fooding/var/Variable.java
 
 ### STS ###
 .apt_generated
@@ -39,4 +41,3 @@ out/
 
 ### VS Code ###
 .vscode/
-Variable.java

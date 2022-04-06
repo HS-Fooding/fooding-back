@@ -59,7 +59,9 @@ public class ImageHandler {
             System.out.println("[os] : " + "Windows");
             System.out.println("=======================================");
             System.out.println("\n");
-            rootFolder = Variable.LOCAL_FILE_PATH; //윈도우 경로 (디스크 필요)
+//            rootFolder = Variable.LOCAL_FILE_PATH; //윈도우 경로 (디스크 필요)
+            rootFolder = Variable.LOCAL_FILE_PATH_JHS; //윈도우 경로 (디스크 필요)
+
 
         } else if (os.contains("linux")) {
             System.out.println("\n");
