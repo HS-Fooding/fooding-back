@@ -3,12 +3,14 @@ package hansung.ac.kr.fooding;
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.JoinReqDTO;
 import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
+import hansung.ac.kr.fooding.dto.ReviewPostDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.service.AccountService;
+import hansung.ac.kr.fooding.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -40,6 +42,7 @@ public class InitData {
         @Autowired RestaurantRepository restaurantRepository;
         @Autowired AccountRepository accountRepository;
         @Autowired AccountService accountService;
+        @Autowired ReviewService reviewService;
         @Autowired EntityManager em;
 
         @Transactional
@@ -75,6 +78,13 @@ public class InitData {
 
             Restaurant restaurant = new Restaurant(restaurantPostDTO, (Admin) account);
             restaurantRepository.save(restaurant);
+
+            // when
+            ReviewPostDTO reviewPostDTO1 = new ReviewPostDTO("title1", "content1", 1.5f);
+            ReviewPostDTO reviewPostDTO2 = new ReviewPostDTO("title2", "content2", 2.5f);
+
+            reviewService.postReview(account, reviewPostDTO1, null, restaurant.getId());
+            reviewService.postReview(account, reviewPostDTO2, null, restaurant.getId());
         }
     }
 

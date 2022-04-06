@@ -18,16 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final AccountRepository accountRepository;
     private final ReviewRepository reviewRepository;
 
     // 댓글 등록
     @Transactional
-    public void postComment(Long reviewId, String name, CommentPostDTO dto) {
+    public void postComment(Long reviewId, Account account, CommentPostDTO dto) {
 
         // 누가, 어느 review id에, 어떤 comment를?
         Review review = reviewRepository.findById(reviewId).orElse(null);
-        Account account = accountRepository.findByIdentifier(name);
         Comment comment = new Comment(review, account, dto);
 
         if(dto.getParent() != null) {

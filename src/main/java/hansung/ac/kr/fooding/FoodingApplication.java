@@ -17,13 +17,13 @@ public class FoodingApplication {
         SpringApplication.run(FoodingApplication.class, args);
     }
 
-    @Bean
+   /* @Bean
     public AuditorAware<String> auditorProvider() {
         if (SecurityContextHolder.getContext() == null) {
             return () -> null;
         }
         return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
-    }
+    }*/
 }
 
 

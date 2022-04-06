@@ -1,6 +1,7 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.dto.CommentPostDTO;
 import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.SecurityService;
@@ -22,13 +23,13 @@ public class CommentApiController {
     private final SecurityService securityService;
 
     @ApiOperation(value = "댓글 작성")
-    @PostMapping("/review/{reviewId}/comment")
+    @PostMapping("/restaurant/review/{reviewId}/comment")
     public ResponseEntity postComment(@PathVariable(value = "reviewId") Long reviewId,
                                       @RequestBody CommentPostDTO dto) {
 
-        String identifier = securityService.getUserIdentifier();
+        Account account = securityService.getAccount();
 
-        commentService.postComment(reviewId, identifier, dto);
+        commentService.postComment(reviewId, account, dto);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

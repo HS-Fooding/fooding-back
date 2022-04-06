@@ -1,9 +1,11 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.domain.*;
-import hansung.ac.kr.fooding.dto.ReviewPostDTO;
+import hansung.ac.kr.fooding.dto.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +21,19 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class ReviewApiControllerTest {
-    @Autowired
-    EntityManager em;
-    @Autowired
-    RestaurantRepository restaurantRepository;
-    @Autowired
-    AccountRepository accountRepository;
-    @Autowired
-    ReviewService reviewService;
+    @Autowired EntityManager em;
+    @Autowired RestaurantRepository restaurantRepository;
+    @Autowired AccountRepository accountRepository;
+    @Autowired ReviewService reviewService;
+    @Autowired CommentService commentService;
 
     // 리뷰 작성
     @Test
     public void postReview() throws Exception {
-        // given
         Account account = accountRepository.findByIdentifier("testIdentifier");
         Restaurant restaurant = restaurantRepository.findByName("restName");
 
-        // when
-        ReviewPostDTO reviewPostDTO1 = new ReviewPostDTO("title1", "content1", 1.5f);
-        ReviewPostDTO reviewPostDTO2 = new ReviewPostDTO("title2", "content2", 2.5f);
-
-        reviewService.postReview(account, reviewPostDTO1, null, restaurant.getId());
-        reviewService.postReview(account, reviewPostDTO2, null, restaurant.getId());
-
-        // when
+        // then
         assertThat(account.getIdentifier()).isEqualTo("testIdentifier");
         assertThat(restaurant.getName()).isEqualTo("restName");
 
@@ -62,12 +53,6 @@ class ReviewApiControllerTest {
         Account account = accountRepository.findByIdentifier("testIdentifier");
         Restaurant restaurant = restaurantRepository.findByName("restName");
 
-        ReviewPostDTO reviewPostDTO1 = new ReviewPostDTO("title1", "content1", 1.5f);
-        ReviewPostDTO reviewPostDTO2 = new ReviewPostDTO("title2", "content2", 2.5f);
-
-        reviewService.postReview(account, reviewPostDTO1, null, restaurant.getId());
-        reviewService.postReview(account, reviewPostDTO2, null, restaurant.getId());
-
         // when
         List<Review> reviews = reviewService.getReviewsOnly(restaurant.getId());
 
@@ -75,5 +60,34 @@ class ReviewApiControllerTest {
         assertThat(reviews.size()).isEqualTo(2);
         assertThat(restaurant.getAdmin()).isEqualTo(account);
         assertThat(reviews.get(0).getAuthor()).isEqualTo(account);
+    }
+
+
+    @Test
+    public void getReview() throws Exception {
+        // given
+        Account account = accountRepository.findByIdentifier("testIdentifier");
+        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Review review = restaurant.getReviews().get(0);
+
+        // when
+        CommentPostDTO dto1 = new CommentPostDTO(null, "comment1");
+        CommentPostDTO dto2 = new CommentPostDTO(null, "comment2");
+        CommentPostDTO dto3 = new CommentPostDTO(null, "comment3");
+        CommentPostDTO dto4 = new CommentPostDTO(null, "comment4");
+
+        commentService.postComment(review.getId(), account, dto1);
+        commentService.postComment(review.getId(), account, dto2);
+        commentService.postComment(review.getId(), account, dto3);
+        commentService.postComment(review.getId(), account, dto4);
+
+        em.flush();
+        em.clear();
+
+        //then
+        ReviewDetailResDTO result = reviewService.findReviewWithComments(review.getId());
+
+        assertThat(result.getComments().size()).isEqualTo(4);
+        assertThat(result.getTitle()).isEqualTo("title1");
     }
 }
