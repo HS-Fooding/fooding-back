@@ -1,6 +1,7 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.dto.ReviewPostDTO;
@@ -37,19 +38,17 @@ public class ReviewApiController {
 
         return result;
     }
-    
+
     @ApiOperation(value = "리뷰 작성하기")
-    @Transactional
-    @PostMapping("/review")
+    @PostMapping("/restaurant/{id}/review")
     public ResponseEntity<ReviewPostDTO> postReview(
-                                    @RequestPart(value = "review") ReviewPostDTO reviewPostDTO,
-                                     @RequestPart(value = "image", required = false) List<MultipartFile> images) {
+            @PathVariable(value = "id") Long restId,
+            @RequestPart(value = "review") ReviewPostDTO reviewPostDTO,
+            @RequestPart(value = "image", required = false) List<MultipartFile> images) {
 
-        // 현재 로그인한 사용자의 identifier
-        String userIdentifier = securityService.getUserIdentifier();
-//        System.out.println(securityService.getUserIdentifier().get);
+        Account account = securityService.getAccount();
 
-        ReviewPostDTO result = reviewService.postReview(userIdentifier, reviewPostDTO, images);
+        ReviewPostDTO result = reviewService.postReview(account, reviewPostDTO, images, restId);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

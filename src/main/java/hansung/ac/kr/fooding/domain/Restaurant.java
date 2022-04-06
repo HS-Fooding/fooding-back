@@ -18,7 +18,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class Restaurant extends BaseEntity{
     @Id @GeneratedValue
-    private long id;
+    private Long id;
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -68,11 +68,18 @@ public class Restaurant extends BaseEntity{
     @OneToMany
     @JoinColumn(name = "restaurant_id")
     private List<Reservation> reservations;
+
+    @OneToMany
+    @JoinColumn(name = "review_id")
+    private List<Review> reviews = new ArrayList<>();
+
     private int viewCount;
 
     public void addMenu(Menu menu){
         menus.add(menu);
     }
+
+    public void addReview(Review review) { reviews.add(review); }
 
     public Optional<Menu> getMenuById(Long id){
         for(Menu menu : menus){

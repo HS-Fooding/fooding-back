@@ -29,8 +29,8 @@ public class AccountService {
 
     // 회원 가입
     @Transactional
-    public void join(JoinReqDTO req) throws
-            X_IdAlreadyExistsException,
+    public void join(JoinReqDTO req)
+            throws X_IdAlreadyExistsException,
             X_NickNameAlreadyExistsException, X_NotRegisteredRole {
         validateSignUpInfo(req);
         List<Role> roleList = new ArrayList<>();
@@ -48,18 +48,18 @@ public class AccountService {
             }
         }
 
-        Account account = new Account();
+        Account account = null;
 
         for (int i = 0; i < roleList.size(); i++) {
-            if(roleList.get(i).getRoleName().matches("ROLE_ADMIN")) {
+            if (roleList.get(i).getRoleName().matches("ROLE_ADMIN")) {
                 account = new Admin(req);
                 break;
             }
-            if(i == roleList.size()-1)
+            if (i == roleList.size() - 1) {
                 account = new Member(req);
+            }
         }
 
-        System.out.println(account.getNickName());
         String encryptedPassword = passwordEncoder.encode(account.getPassword());
         account.setPassword(encryptedPassword);
         account.setRoles(roleList); // validation이 없음

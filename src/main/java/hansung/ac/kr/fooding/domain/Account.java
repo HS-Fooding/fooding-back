@@ -2,7 +2,9 @@ package hansung.ac.kr.fooding.domain;
 
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.enumeration.Job;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -11,12 +13,15 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "dtype")
-public class Account extends BaseTimeEntity{
-    @Id @GeneratedValue
-    protected long id;
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Account extends BaseTimeEntity {
+    @Id
+    @GeneratedValue
+    protected Long id;
     protected String identifier;
     protected String password;
     protected String name;
@@ -29,7 +34,7 @@ public class Account extends BaseTimeEntity{
 
     @Enumerated(value = EnumType.STRING)
     @ElementCollection
-    @CollectionTable(name="favor", joinColumns = @JoinColumn(name = "member_id"))
+    @CollectionTable(name = "favor", joinColumns = @JoinColumn(name = "member_id"))
     protected List<Favor> favor;
 
     /*@Enumerated(value = EnumType.STRING)
@@ -40,9 +45,10 @@ public class Account extends BaseTimeEntity{
             name = "account_role",
             joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    protected Set<Role> roles = new HashSet<>();
 
     public void setRoles(List<Role> roles) {
         this.roles = new HashSet<>(roles);
     }
+
 }
