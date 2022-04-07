@@ -1,10 +1,12 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.dto.StructPostDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
+import hansung.ac.kr.fooding.service.StructService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ import java.util.List;
 public class AdminRestaurantApiController {
     private final RestaurantService restaurantService;
     private final MenuService menuService;
+    private final StructService structService;
 
     @ApiOperation(value = "매장 등록")
     @RequestMapping(method = RequestMethod.POST)
@@ -61,5 +64,16 @@ public class AdminRestaurantApiController {
             return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
+    }
+
+    @RequestMapping(path="/{restId}/structure", method = RequestMethod.POST)
+    public ResponseEntity postStructure(@PathVariable(value = "restId") Long restId,
+                                        @RequestBody StructPostDTO structPostDTO){
+        try{
+            structService.postStruct(structPostDTO, restId);
+        } catch (Exception e){
+
+        }
+        return null;
     }
 }

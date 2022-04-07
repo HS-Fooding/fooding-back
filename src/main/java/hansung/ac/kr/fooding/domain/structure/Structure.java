@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.domain.structure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import hansung.ac.kr.fooding.domain.BaseEntity;
 
 import javax.persistence.*;
@@ -8,12 +9,14 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
 public abstract class Structure extends BaseEntity {
-    @Id @GeneratedValue
+    @JsonIgnore
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private float x;
     private float y;
-    private float angle;
+    private float rotation;
     private float width;
     private float height;
-    private String color;
+    //private String color;
 }
