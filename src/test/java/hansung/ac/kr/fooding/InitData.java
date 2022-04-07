@@ -1,10 +1,10 @@
 package hansung.ac.kr.fooding;
 
 import hansung.ac.kr.fooding.domain.*;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
-import hansung.ac.kr.fooding.dto.JoinReqDTO;
-import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
-import hansung.ac.kr.fooding.dto.ReviewPostDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewPostDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;

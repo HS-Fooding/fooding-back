@@ -4,7 +4,7 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Role;
-import hansung.ac.kr.fooding.dto.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;

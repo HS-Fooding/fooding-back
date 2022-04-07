@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.comment;
 
 import hansung.ac.kr.fooding.domain.Comment;
 import lombok.AllArgsConstructor;

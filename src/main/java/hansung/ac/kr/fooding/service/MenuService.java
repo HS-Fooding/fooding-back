@@ -1,12 +1,11 @@
 package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.Account;
-import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Menu;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.image.Image;
-import hansung.ac.kr.fooding.dto.MenuGetDTO;
-import hansung.ac.kr.fooding.dto.MenuPostDTO;
+import hansung.ac.kr.fooding.dto.menu.MenuGetDTO;
+import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
 import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.MenuRepository;

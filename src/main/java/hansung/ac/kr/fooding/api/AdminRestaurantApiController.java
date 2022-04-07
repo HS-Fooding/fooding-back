@@ -1,14 +1,12 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
-import hansung.ac.kr.fooding.dto.MenuPostDTO;
-import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
-import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

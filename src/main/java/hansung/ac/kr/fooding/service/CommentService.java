@@ -2,10 +2,8 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Comment;
-import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Review;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
-import hansung.ac.kr.fooding.repository.AccountRepository;
+import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
 import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package hansung.ac.kr.fooding.domain;
 
-import hansung.ac.kr.fooding.dto.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
 import lombok.*;
 
 import javax.persistence.CollectionTable;

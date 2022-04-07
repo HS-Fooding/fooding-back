@@ -2,7 +2,7 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
 import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;

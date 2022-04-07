@@ -1,8 +1,7 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.domain.*;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
-import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.service.CommentService;
@@ -50,7 +49,8 @@ class ReviewApiControllerTest {
     @Test
     public void getReviews() throws Exception {
         // given
-        Account account = accountRepository.findByIdentifier("testIdentifier");
+        Account user1 = accountRepository.findByIdentifier("userID");
+        Account admin = accountRepository.findByIdentifier("adminID");
         Restaurant restaurant = restaurantRepository.findByName("restName");
 
         // when
@@ -58,8 +58,8 @@ class ReviewApiControllerTest {
 
         // then
         assertThat(reviews.size()).isEqualTo(2);
-        assertThat(restaurant.getAdmin()).isEqualTo(account);
-        assertThat(reviews.get(0).getAuthor()).isEqualTo(account);
+        assertThat(reviews.get(0).getAuthor()).isEqualTo(user1);
+        assertThat(restaurant.getAdmin()).isEqualTo(admin);
     }
 
 

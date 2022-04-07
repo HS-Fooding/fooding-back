@@ -3,8 +3,7 @@ package hansung.ac.kr.fooding.domain;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.domain.structure.Floor;
-import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
-import lombok.AllArgsConstructor;
+import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.login;
 
 import hansung.ac.kr.fooding.domain.Role;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;

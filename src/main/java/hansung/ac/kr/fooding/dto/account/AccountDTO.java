@@ -1,8 +1,7 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.account;
 
 import hansung.ac.kr.fooding.domain.Account;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 public class AccountDTO {

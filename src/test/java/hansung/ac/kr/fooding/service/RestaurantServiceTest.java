@@ -1,10 +1,7 @@
 package hansung.ac.kr.fooding.service;
 
-import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Location;
-import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.WorkHour;
-import hansung.ac.kr.fooding.dto.RestaurantPostDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,8 +10,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebAppConfiguration
 @SpringBootTest

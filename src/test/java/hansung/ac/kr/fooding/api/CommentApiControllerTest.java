@@ -1,23 +1,13 @@
 package hansung.ac.kr.fooding.api;
 
-import hansung.ac.kr.fooding.domain.Account;
-import hansung.ac.kr.fooding.domain.Comment;
-import hansung.ac.kr.fooding.domain.Restaurant;
-import hansung.ac.kr.fooding.domain.Review;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
 import hansung.ac.kr.fooding.service.CommentService;
-import hansung.ac.kr.fooding.service.ReviewService;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @SpringBootTest
 @Transactional

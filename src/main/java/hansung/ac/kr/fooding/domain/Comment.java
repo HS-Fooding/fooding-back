@@ -1,7 +1,7 @@
 package hansung.ac.kr.fooding.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import hansung.ac.kr.fooding.dto.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

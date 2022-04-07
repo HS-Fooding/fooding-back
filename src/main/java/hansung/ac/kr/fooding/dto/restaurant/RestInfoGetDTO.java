@@ -1,11 +1,11 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.restaurant;
 
-import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
+import hansung.ac.kr.fooding.dto.account.AccountDTO;
 import lombok.Data;
 
 import java.util.ArrayList;

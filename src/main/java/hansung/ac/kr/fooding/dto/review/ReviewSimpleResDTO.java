@@ -1,6 +1,7 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.review;
 
 import hansung.ac.kr.fooding.domain.Review;
+import hansung.ac.kr.fooding.dto.image.ImageResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
