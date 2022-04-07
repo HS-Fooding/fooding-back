@@ -32,7 +32,7 @@ public class Review extends BaseEntity{
     @OneToMany
     private List<Image> images = new ArrayList<>();
 
-    @OneToMany(mappedBy = "comment_review")
+    @OneToMany(mappedBy = "comment_review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     private float star;

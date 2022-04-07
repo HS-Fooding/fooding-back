@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class ReviewApiController {
-    private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
     private final SecurityService securityService;
 
@@ -52,11 +51,26 @@ public class ReviewApiController {
     }
 
     @ApiOperation(value = "특정 리뷰 가져오기 (댓글도 함께 가져옴)")
-    @GetMapping("/restaurant/review/{reviewId}")
-    public ResponseEntity<ReviewDetailResDTO> getReview(@PathVariable Long reviewId) {
+    @GetMapping("/restaurant/{id}/review/{reviewId}")
+    public ResponseEntity<ReviewDetailResDTO> getReview(
+            @PathVariable Long id,
+            @PathVariable Long reviewId) {
 
         ReviewDetailResDTO result = reviewService.findReviewWithComments(reviewId);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "특정 리뷰 지우기 (댓글도 함께 지움)")
+    @DeleteMapping("/restaurant/{id}/review/{reviewId}")
+    public ResponseEntity deleteReview(
+            @PathVariable Long id,
+            @PathVariable Long reviewId) {
+        try {
+            reviewService.deleteReview(reviewId);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
     }
 }

@@ -45,9 +45,7 @@ public class LogInApiController {
             accountService.join(request);
         } catch (X_IdAlreadyExistsException e) {
             return new ResponseEntity<>("Fooding-"+e.getClass(), HttpStatus.BAD_REQUEST);
-        } catch (X_NickNameAlreadyExistsException e) {
-            return new ResponseEntity<>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (X_NotRegisteredRole e) {
+        } catch (X_NickNameAlreadyExistsException | X_NotRegisteredRole e) {
             return new ResponseEntity<>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -72,7 +70,6 @@ public class LogInApiController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        System.out.println("###########################왜안되지");
         LoginResDTO loginResDTO = new LoginResDTO(new TokenResDTO(jwt), (Admin)securityService.getAccount());
 
         return new ResponseEntity<LoginResDTO>(loginResDTO, httpHeaders, HttpStatus.OK);

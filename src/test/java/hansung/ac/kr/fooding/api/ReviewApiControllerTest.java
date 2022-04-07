@@ -3,7 +3,9 @@ package hansung.ac.kr.fooding.api;
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
+import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import hansung.ac.kr.fooding.repository.ReviewRepository;
 import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.ReviewService;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -20,11 +23,18 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class ReviewApiControllerTest {
-    @Autowired EntityManager em;
-    @Autowired RestaurantRepository restaurantRepository;
-    @Autowired AccountRepository accountRepository;
-    @Autowired ReviewService reviewService;
-    @Autowired CommentService commentService;
+    @Autowired
+    EntityManager em;
+    @Autowired
+    RestaurantRepository restaurantRepository;
+    @Autowired
+    AccountRepository accountRepository;
+    @Autowired
+    ReviewRepository reviewRepository;
+    @Autowired
+    ReviewService reviewService;
+    @Autowired
+    CommentRepository commentRepository;
 
     // 리뷰 작성
     @Test
@@ -37,9 +47,9 @@ class ReviewApiControllerTest {
         assertThat(restaurant.getName()).isEqualTo("restName");
 
         assertThat(restaurant.getReviews().get(0).getTitle()).isEqualTo("title1");
-        assertThat(restaurant.getReviews().get(0).getContent()).isEqualTo("content1");
+        assertThat(restaurant.getReviews().get(0).getContent()).isEqualTo("review1");
         assertThat(restaurant.getReviews().get(1).getTitle()).isEqualTo("title2");
-        assertThat(restaurant.getReviews().get(1).getContent()).isEqualTo("content2");
+        assertThat(restaurant.getReviews().get(1).getContent()).isEqualTo("review2");
         assertThat(restaurant.getReviews().size()).isEqualTo(2);
 
         assertThat(restaurant.getAdmin()).isEqualTo(account);
@@ -73,12 +83,41 @@ class ReviewApiControllerTest {
 
         Review review = restaurant.getReviews().get(0); // 첫 번째 리뷰 가져오기
         assertThat(review.getTitle()).isEqualTo("title1");
-        assertThat(review.getContent()).isEqualTo("content1");
+        assertThat(review.getContent()).isEqualTo("review1");
         assertThat(review.getComments().size()).isEqualTo(2);
 
         //then
         ReviewDetailResDTO result = reviewService.findReviewWithComments(review.getId());
         assertThat(result.getComments().size()).isEqualTo(2);
         assertThat(result.getComments().get(0).getContent()).isEqualTo("comment1");
+    }
+
+    // 리뷰 지우기 (댓글도 함께)
+    @Test
+    public void deleteReview() throws Exception {
+        // given
+        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Review review = restaurant.getReviews().get(0);
+
+        assertThat(restaurant.getReviews().size()).isEqualTo(2);
+        assertThat(review.getComments().get(0).getContent()).isEqualTo("comment1");
+
+        Comment comment = review.getComments().get(0);
+
+        // when
+        reviewService.deleteReview(review.getId());
+
+        em.flush();
+        em.clear();
+
+        // then
+        Restaurant _restaurant = restaurantRepository.findByName("restName");
+        Review _review = _restaurant.getReviews().get(0);
+
+        assertThat(_restaurant.getReviews().size()).isEqualTo(1);
+        assertThat(_review.getContent()).isEqualTo("review2");
+
+        Comment _comment = commentRepository.findById(comment.getId()).orElse(null);
+        assertThat(_comment).isNull();
     }
 }
