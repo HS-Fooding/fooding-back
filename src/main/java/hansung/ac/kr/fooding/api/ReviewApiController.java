@@ -41,14 +41,14 @@ public class ReviewApiController {
 
     @ApiOperation(value = "리뷰 작성하기")
     @PostMapping("/restaurant/{id}/review")
-    public ResponseEntity<ReviewPostDTO> postReview(
+    public ResponseEntity postReview(
             @PathVariable(value = "id") Long restId,
             @RequestPart(value = "review") ReviewPostDTO reviewPostDTO,
             @RequestPart(value = "image", required = false) List<MultipartFile> images) {
 
         Account account = securityService.getAccount();
 
-        ReviewPostDTO result = reviewService.postReview(account, reviewPostDTO, images, restId);
+        Long result = reviewService.postReview(account, reviewPostDTO, images, restId);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

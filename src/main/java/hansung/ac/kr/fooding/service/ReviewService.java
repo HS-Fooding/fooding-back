@@ -28,7 +28,7 @@ public class ReviewService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    public ReviewPostDTO postReview(Account account, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages, Long restId) {
+    public Long postReview(Account account, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages, Long restId) {
 
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
         if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
@@ -46,9 +46,9 @@ public class ReviewService {
         Restaurant restaurant = optional.get();
         restaurant.addReview(review);
 
-        reviewRepository.save(review);
+        Review saved = reviewRepository.save(review);
 
-        return reviewPostDto;
+        return saved.getId();
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class CommentApiControllerTest {
 
 
     // 댓글 달기
-    @Test
+    /*@Test
     public void postComment() throws Exception {
         // given
         Account account = accountRepository.findByIdentifier("testIdentifier");
@@ -51,5 +51,7 @@ public class CommentApiControllerTest {
         // then
         List<Comment> all = commentRepository.findAll();
         Assertions.assertThat(all.size()).isEqualTo(4);
-    }
+    }*/
+
+
 }

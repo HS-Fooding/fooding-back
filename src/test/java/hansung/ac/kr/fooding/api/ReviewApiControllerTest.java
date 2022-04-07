@@ -63,31 +63,22 @@ class ReviewApiControllerTest {
     }
 
 
+    // 단일 리뷰 가져오기 (댓글도 함께 가져옴)
     @Test
     public void getReview() throws Exception {
         // given
-        Account account = accountRepository.findByIdentifier("testIdentifier");
         Restaurant restaurant = restaurantRepository.findByName("restName");
-        Review review = restaurant.getReviews().get(0);
+        assertThat(restaurant.getAdmin().getIdentifier()).isEqualTo("adminID");
+        assertThat(restaurant.getReviews().size()).isEqualTo(2);
 
-        // when
-        CommentPostDTO dto1 = new CommentPostDTO(null, "comment1");
-        CommentPostDTO dto2 = new CommentPostDTO(null, "comment2");
-        CommentPostDTO dto3 = new CommentPostDTO(null, "comment3");
-        CommentPostDTO dto4 = new CommentPostDTO(null, "comment4");
-
-        commentService.postComment(review.getId(), account, dto1);
-        commentService.postComment(review.getId(), account, dto2);
-        commentService.postComment(review.getId(), account, dto3);
-        commentService.postComment(review.getId(), account, dto4);
-
-        em.flush();
-        em.clear();
+        Review review = restaurant.getReviews().get(0); // 첫 번째 리뷰 가져오기
+        assertThat(review.getTitle()).isEqualTo("title1");
+        assertThat(review.getContent()).isEqualTo("content1");
+        assertThat(review.getComments().size()).isEqualTo(2);
 
         //then
         ReviewDetailResDTO result = reviewService.findReviewWithComments(review.getId());
-
-        assertThat(result.getComments().size()).isEqualTo(4);
-        assertThat(result.getTitle()).isEqualTo("title1");
+        assertThat(result.getComments().size()).isEqualTo(2);
+        assertThat(result.getComments().get(0).getContent()).isEqualTo("comment1");
     }
 }
