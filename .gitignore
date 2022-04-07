@@ -8,8 +8,8 @@ application.yml
 #Variable.java
 #var\
 #ImageHandler.java
-src/main/java/hansung/ac/kr/fooding/handler/ImageHandler.java
-src/main/java/hansung/ac/kr/fooding/var/Variable.java
+#src/main/java/hansung/ac/kr/fooding/handler/ImageHandler.java
+#src/main/java/hansung/ac/kr/fooding/var/Variable.java
 
 ### STS ###
 .apt_generated
