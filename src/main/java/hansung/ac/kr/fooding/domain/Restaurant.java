@@ -17,7 +17,8 @@ import java.util.Optional;
 @Getter
 @NoArgsConstructor
 public class Restaurant extends BaseEntity{
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
@@ -98,6 +99,10 @@ public class Restaurant extends BaseEntity{
         for(Image image : images){
             this.images.add(image);
         }
+    }
+
+    public void addFloor(Floor floor){
+        floors.add(floor);
     }
 
     public Restaurant(RestaurantPostDTO dto, Admin admin){

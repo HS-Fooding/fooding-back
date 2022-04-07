@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Menu extends BaseEntity{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     /*@ManyToOne

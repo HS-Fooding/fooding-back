@@ -5,7 +5,6 @@ import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.service.GeocodeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +28,11 @@ public class GeocodeApiController {
         Location location = geocodeService.getGeocode(address);
         if (location == null) return new ResponseEntity<String>("Fooding-Location Not Found",HttpStatus.NO_CONTENT);
         return new ResponseEntity<Location>(location, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/address", method = RequestMethod.POST)
+    public ResponseEntity getAddrFromGeocode(@RequestBody Map<String, Float> geocode){
+        // TODO: 2022-04-06 좌표로 부터 주소 반환 필요
+        return null;
     }
 }

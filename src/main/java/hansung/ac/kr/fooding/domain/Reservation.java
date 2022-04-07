@@ -6,7 +6,8 @@ import javax.persistence.*;
 
 @Entity
 public class Reservation extends BaseEntity{
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @ManyToOne
     @JoinColumn(name = "tableasd")

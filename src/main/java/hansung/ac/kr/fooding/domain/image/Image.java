@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Getter @Setter
 @NoArgsConstructor
 public class Image extends BaseEntity {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String path;
 
