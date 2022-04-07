@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.image;
 
 import hansung.ac.kr.fooding.domain.image.Image;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.menu;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

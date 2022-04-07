@@ -1,12 +1,11 @@
 package hansung.ac.kr.fooding.domain;
 
 import hansung.ac.kr.fooding.domain.image.Image;
-import hansung.ac.kr.fooding.dto.MenuPostDTO;
+import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Getter

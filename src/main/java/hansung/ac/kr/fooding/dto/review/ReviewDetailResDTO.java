@@ -1,15 +1,12 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.review;
 
-import hansung.ac.kr.fooding.domain.Comment;
 import hansung.ac.kr.fooding.domain.Review;
-import hansung.ac.kr.fooding.domain.image.Image;
+import hansung.ac.kr.fooding.dto.image.ImageResDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.tomcat.jni.Local;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

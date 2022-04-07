@@ -2,7 +2,7 @@ package hansung.ac.kr.fooding.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import hansung.ac.kr.fooding.domain.image.Image;
-import hansung.ac.kr.fooding.dto.ReviewPostDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewPostDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

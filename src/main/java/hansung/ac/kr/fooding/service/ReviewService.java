@@ -4,10 +4,9 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.domain.image.Image;
-import hansung.ac.kr.fooding.dto.ReviewDetailResDTO;
-import hansung.ac.kr.fooding.dto.ReviewPostDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
-import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
@@ -28,7 +27,7 @@ public class ReviewService {
     private final RestaurantRepository restaurantRepository;
 
     @Transactional
-    public ReviewPostDTO postReview(Account account, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages, Long restId) {
+    public Long postReview(Account account, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages, Long restId) {
 
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
         if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
@@ -46,9 +45,9 @@ public class ReviewService {
         Restaurant restaurant = optional.get();
         restaurant.addReview(review);
 
-        reviewRepository.save(review);
+        Review saved = reviewRepository.save(review);
 
-        return reviewPostDto;
+        return saved.getId();
     }
 
     @Transactional

@@ -1,6 +1,5 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.restaurant;
 
-import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import lombok.Data;
 

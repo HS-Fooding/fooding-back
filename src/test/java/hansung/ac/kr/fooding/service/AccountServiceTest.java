@@ -3,7 +3,7 @@ package hansung.ac.kr.fooding.service;
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Role;
 import hansung.ac.kr.fooding.domain.enumeration.Job;
-import hansung.ac.kr.fooding.dto.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;
@@ -15,7 +15,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
