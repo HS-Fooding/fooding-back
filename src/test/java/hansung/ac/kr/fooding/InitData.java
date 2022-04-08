@@ -99,8 +99,8 @@ public class InitData {
             // 4. 사용자의 리뷰 작성 (일반 사용자1)
             Account user1Account = accountRepository.findByIdentifier("userId");
 
-            ReviewPostDTO reviewPostDTO1 = new ReviewPostDTO("title1", "content1", 1.5f);
-            ReviewPostDTO reviewPostDTO2 = new ReviewPostDTO("title2", "content2", 2.5f);
+            ReviewPostDTO reviewPostDTO1 = new ReviewPostDTO("title1", "review1", 1.5f);
+            ReviewPostDTO reviewPostDTO2 = new ReviewPostDTO("title2", "review2", 2.5f);
 
             Long review1 = reviewService.postReview(user1Account, reviewPostDTO1, null, restaurant.getId());
             Long review2 = reviewService.postReview(user1Account, reviewPostDTO2, null, restaurant.getId());

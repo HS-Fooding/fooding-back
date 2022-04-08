@@ -3,6 +3,7 @@ package hansung.ac.kr.fooding.domain;
 import lombok.*;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 
 @Embeddable
 @Getter @Setter @Builder
@@ -14,6 +15,7 @@ public class Location {
     private String region3Depth;
     private String roadName;
     private String buildingNo;
+    @Embedded
     private Coordinate coordinate;
 
     @Override

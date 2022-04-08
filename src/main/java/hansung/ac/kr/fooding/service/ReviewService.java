@@ -69,4 +69,12 @@ public class ReviewService {
 
         return restaurant.getReviews();
     }
+
+    public void deleteReview(Long reviewId) {
+        Optional<Review> optional = reviewRepository.findById(reviewId);
+        if(optional.isEmpty()) throw new IllegalStateException("Review Not Found");
+        Review review = optional.get();
+
+        reviewRepository.delete(review);
+    }
 }
