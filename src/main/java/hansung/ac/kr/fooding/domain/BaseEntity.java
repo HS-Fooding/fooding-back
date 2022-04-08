@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,8 +16,10 @@ import javax.persistence.MappedSuperclass;
 public abstract class BaseEntity extends BaseTimeEntity{
     @CreatedBy
     @Column(updatable = false)
+    @JsonIgnore
     private String createdBy;
 
     @LastModifiedBy
+    @JsonIgnore
     private String lastModifiedBy;
 }

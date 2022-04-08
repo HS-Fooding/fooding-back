@@ -29,7 +29,9 @@ public class Floor extends BaseEntity {
 
     public void addStructures(List structures){
         if (structures == null) return;
-        for(Object structure : structures)
+        for(Object structure : structures) {
             this.addStructure((Structure) structure);
+            System.out.println("##################" + structure.toString());
+        }
     }
 }

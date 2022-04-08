@@ -4,6 +4,9 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.image.Image;
+import hansung.ac.kr.fooding.domain.structure.Floor;
+import hansung.ac.kr.fooding.dtd.StructGetDTO;
+import hansung.ac.kr.fooding.dto.FloorDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestInfoGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
@@ -60,5 +63,17 @@ public class RestaurantService {
         if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optional.get();
         return RestInfoGetDTO.from(restaurant);
+    }
+
+    public StructGetDTO getRestaurantStructure(Long id){
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        Restaurant restaurant = optionalRestaurant.get();
+        List<Floor> floors = restaurant.getFloors();
+        if(floors == null) return null;
+        List<FloorDTO> floorDTOS = FloorDTO.from(floors);
+        StructGetDTO structGetDTO = new StructGetDTO();
+        structGetDTO.setFloors(floorDTOS);
+        return structGetDTO;
     }
 }

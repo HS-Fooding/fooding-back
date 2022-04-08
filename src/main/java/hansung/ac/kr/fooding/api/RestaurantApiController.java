@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestInfoGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
@@ -19,6 +20,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api(tags = {SwaggerConfig.API_RESTAURANT})
 @RequiredArgsConstructor
@@ -67,4 +69,16 @@ public class RestaurantApiController {
         }
         return new ResponseEntity<List<MenuGetDTO>>(menuGetDTOList, HttpStatus.OK);
     }
+
+    @RequestMapping(path = "/{id}/structure", method = RequestMethod.GET)
+    public ResponseEntity getStructure(@PathVariable(value = "id") Long id){
+        StructGetDTO structGetDTO;
+        try {
+            structGetDTO = restaurantService.getRestaurantStructure(id);
+        } catch (IllegalStateException e){
+            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<StructGetDTO>(structGetDTO, HttpStatus.OK);
+    }
+
 }
