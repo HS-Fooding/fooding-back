@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 public class Floor extends BaseEntity {
     @Id @GeneratedValue
-    private long id;
+    private Long id;
     private int floor;
 
     @OneToMany

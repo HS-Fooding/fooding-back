@@ -26,21 +26,21 @@ public class StructService {
     private final StructureRepository structureRepository;
 
     @Transactional
-    public void postStruct(StructPostDTO structPostDTO, Long restId) throws SecurityException, IllegalStateException{
+    public void postStruct(StructPostDTO structPostDTO, Long restId) throws SecurityException, IllegalStateException {
         Account account = securityService.getAccount();
-        if(account instanceof Member) throw new SecurityException("Account Not Admin");
+        if (account instanceof Member) throw new SecurityException("Account Not Admin");
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
-        if(optionalRestaurant.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optionalRestaurant.get();
-        if(restaurant.getAdmin() != (Admin)account) throw new SecurityException("Account Not Admin of Restaurant");
+        if (restaurant.getAdmin() != (Admin) account) throw new SecurityException("Account Not Admin of Restaurant");
 
         List<FloorDTO> floorDTOS = structPostDTO.getFloors();
-        if(floorDTOS == null) return;
-        if(!restaurant.getFloors().isEmpty()) restaurant.deleteFloors();
-        for(int i = 0; i < floorDTOS.size(); i++){
+        if (floorDTOS == null) return;
+        if (!restaurant.getFloors().isEmpty()) restaurant.deleteFloors();
+        for (int i = 0; i < floorDTOS.size(); i++) {
             FloorDTO floorDTO = floorDTOS.get(i);
             Floor floor = new Floor();
-            floor.setFloor(i+1);
+            floor.setFloor(i + 1);
             floor.addStructures(floorDTO.getTables());
             floor.addStructures(floorDTO.getDoors());
             floor.addStructures(floorDTO.getSeats());

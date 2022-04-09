@@ -66,14 +66,15 @@ public class AdminRestaurantApiController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "매장 구조 생성")
     @RequestMapping(path="/{restId}/structure", method = RequestMethod.POST)
     public ResponseEntity postStructure(@PathVariable(value = "restId") Long restId,
                                         @RequestBody StructPostDTO structPostDTO){
         try{
             structService.postStruct(structPostDTO, restId);
         } catch (Exception e){
-
+            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return null;
+        return ResponseEntity.ok().build();
     }
 }
