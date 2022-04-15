@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.api;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
@@ -119,5 +120,17 @@ class ReviewApiControllerTest {
 
         Comment _comment = commentRepository.findById(comment.getId()).orElse(null);
         assertThat(_comment).isNull();
+    }
+
+    // querydsl 동작 확인
+    @Test
+    public void querydslTest() throws Exception {
+        JPAQueryFactory query = new JPAQueryFactory(em);
+        List<Member> result = query
+                .selectFrom(QMember.member)
+                .fetch();
+
+        assertThat(result.size()).isEqualTo(2);
+        assertThat(result.get(0).getName()).isEqualTo("adminName");
     }
 }
