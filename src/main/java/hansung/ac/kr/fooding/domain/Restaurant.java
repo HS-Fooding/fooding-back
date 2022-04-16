@@ -79,6 +79,8 @@ public class Restaurant extends BaseEntity{
         this.viewCount = viewCount;
     }
 
+    public void addReservation(Reservation reservation) {reservations.add(reservation);}
+
     public void addMenu(Menu menu){
         menus.add(menu);
     }

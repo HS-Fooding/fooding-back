@@ -74,5 +74,4 @@ public class RestaurantApiController {
         }
         return new ResponseEntity<StructGetDTO>(structGetDTO, HttpStatus.OK);
     }
-
 }
