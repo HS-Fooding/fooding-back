@@ -8,11 +8,15 @@ import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.FloorDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestInfoGetDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetWithLocDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
 import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -62,6 +66,8 @@ public class RestaurantService {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optional.get();
+        restaurant.setViewCount(restaurant.getViewCount() + 1);
+
         return RestInfoGetDTO.from(restaurant);
     }
 
@@ -75,5 +81,16 @@ public class RestaurantService {
         StructGetDTO structGetDTO = new StructGetDTO();
         structGetDTO.setFloors(floorDTOS);
         return structGetDTO;
+    }
+
+    public Page getRestaurantList(String isCoord, Pageable pageable) {
+        Page<Restaurant> page = restaurantRepository.findAll(pageable);
+        Page result;
+        if (isCoord.equals("true")){
+            result = page.map(m -> RestSimpleGetWithLocDTO.from(m));
+        } else {
+            result = page.map(m -> RestSimpleGetDTO.from(m));
+        }
+        return result;
     }
 }

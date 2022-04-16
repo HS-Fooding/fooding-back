@@ -48,14 +48,8 @@ public class RestaurantApiController {
     @RequestMapping(method = RequestMethod.GET)
     public Page getRestaurants(
             @RequestParam(value = "coord", defaultValue = "false") String isCoord ,Pageable pageable) {
-        Page<Restaurant> page = restaurantRepository.findAll(pageable);
-        Page result;
-        if (isCoord.equals("true")){
-            result = page.map(m -> RestSimpleGetWithLocDTO.from(m));
-        } else {
-            result = page.map(m -> RestSimpleGetDTO.from(m));
-        }
-        return result;
+
+        return restaurantService.getRestaurantList(isCoord, pageable);
     }
 
     @ApiOperation("매장 메뉴 조회")
