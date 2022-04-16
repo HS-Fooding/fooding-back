@@ -1,18 +1,23 @@
 package hansung.ac.kr.fooding.api;
 
+import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.ReservPostDTO;
 import hansung.ac.kr.fooding.service.ReservationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Api(tags = {SwaggerConfig.API_RESERVATION})
 @RestController
 @RequestMapping(path = "/restaurant/{restId}")
 @RequiredArgsConstructor
 public class ReservationApiController {
     private final ReservationService reservationService;
 
+    @ApiOperation("예약 진행")
     @RequestMapping(path = "/reservation", method = RequestMethod.POST)
     public ResponseEntity postReservation(@PathVariable(value = "restId") Long restId,
                                           @RequestBody ReservPostDTO reservPostDTO){
@@ -24,7 +29,8 @@ public class ReservationApiController {
         }
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
-
+    
+    @ApiOperation("예약 취소")
     @RequestMapping(path = "/reservation/{reservId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteReservation(@PathVariable(value="restId") Long restId,
                                             @PathVariable(value = "reservId") Long reservId){

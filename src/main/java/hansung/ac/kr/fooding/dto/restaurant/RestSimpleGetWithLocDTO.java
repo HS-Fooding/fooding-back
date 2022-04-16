@@ -22,14 +22,17 @@ public class RestSimpleGetWithLocDTO {
     private int reviewCount;
     private float avgScore;
 
-    private RestSimpleGetWithLocDTO(Restaurant restaurant){
-        id= restaurant.getId();
+    private RestSimpleGetWithLocDTO(Restaurant restaurant) {
+        id = restaurant.getId();
         name = restaurant.getName();
         location = restaurant.getLocation();
-        if (restaurant.getImages().size() == 0)
+        // 이미지는 첫 번째로 나온 대표 메뉴로 보냄, 대표 메뉴가 없으면 첫 번째 메뉴로 보냄
+        if (restaurant.getMenus().size() == 0)
             image = null;
+        else if (restaurant.getMenus().stream().filter(m -> m.isRepresentative()).collect(Collectors.toList()).size() == 0)
+            image = restaurant.getMenus().get(0).getImage();
         else
-            image = restaurant.getImages().get(0);
+            image = restaurant.getMenus().stream().filter(m -> m.isRepresentative()).collect(Collectors.toList()).get(0).getImage();
         category = restaurant.getCategory();
         viewCount = restaurant.getViewCount();
         DoubleSummaryStatistics statistics = restaurant.getReviews().stream()
@@ -38,7 +41,7 @@ public class RestSimpleGetWithLocDTO {
         avgScore = (float) statistics.getAverage();
     }
 
-    public static RestSimpleGetWithLocDTO from(Restaurant restaurant){
+    public static RestSimpleGetWithLocDTO from(Restaurant restaurant) {
         return new RestSimpleGetWithLocDTO(restaurant);
     }
 }

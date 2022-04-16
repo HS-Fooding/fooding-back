@@ -25,10 +25,13 @@ public class RestSimpleGetDTO {
     private RestSimpleGetDTO(Restaurant restaurant) {
         id = restaurant.getId();
         name = restaurant.getName();
-        if (restaurant.getImages().size() == 0)
+        // 이미지는 첫 번째로 나온 대표 메뉴로 보냄, 대표 메뉴가 없으면 첫 번째 메뉴로 보냄
+        if (restaurant.getMenus().size() == 0)
             image = null;
+        else if (restaurant.getMenus().stream().filter(m -> m.isRepresentative()).collect(Collectors.toList()).size() == 0)
+            image = restaurant.getMenus().get(0).getImage();
         else
-            image = restaurant.getImages().get(0);
+            image = restaurant.getMenus().stream().filter(m -> m.isRepresentative()).collect(Collectors.toList()).get(0).getImage();
         category = restaurant.getCategory();
         viewCount = restaurant.getViewCount();
         DoubleSummaryStatistics statistics = restaurant.getReviews().stream()

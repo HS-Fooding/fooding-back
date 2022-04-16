@@ -30,6 +30,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public static final String API_GEOCODE = "Geocode";
     public static final String API_ADMIN_RESTAURANT = "관리자 매장";
     public static final String API_RESTAURANT = "매장";
+    public static final String API_RESERVATION = "예약";
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
