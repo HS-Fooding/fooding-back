@@ -18,6 +18,7 @@ import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -41,7 +42,7 @@ class StructServiceTest {
     @WithMockUser(username = "adminID")
     public void postStructTest() {
         //given
-        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
         StructPostDTO structPostDTO = new StructPostDTO();
         List<FloorDTO> floorDTOS = new ArrayList<>();
         FloorDTO floorDTO = new FloorDTO();

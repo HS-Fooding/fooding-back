@@ -76,4 +76,13 @@ class RestaurantServiceTest {
         Page result = restaurantService.getRestaurantList("", pageRequest);
         assertThat(result.getContent().size()).isEqualTo(2);
     }
+
+    @Test
+    public void searchByKeyword() throws Exception {
+        PageRequest pageRequest = PageRequest.of(0, 3,
+                Sort.by(Sort.Direction.DESC, "name"));
+
+        Page result = restaurantService.searchByKeyword("re", pageRequest);
+        assertThat(result.getContent().size()).isEqualTo(1);
+    }
 }

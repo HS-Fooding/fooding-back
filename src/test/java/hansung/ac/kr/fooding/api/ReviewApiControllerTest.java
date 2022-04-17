@@ -41,7 +41,7 @@ class ReviewApiControllerTest {
     @Test
     public void postReview() throws Exception {
         Account account = accountRepository.findByIdentifier("testIdentifier");
-        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
 
         // then
         assertThat(account.getIdentifier()).isEqualTo("testIdentifier");
@@ -62,7 +62,7 @@ class ReviewApiControllerTest {
         // given
         Account user1 = accountRepository.findByIdentifier("userID");
         Account admin = accountRepository.findByIdentifier("adminID");
-        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
 
         // when
         List<Review> reviews = reviewService.getReviewsOnly(restaurant.getId());
@@ -78,7 +78,7 @@ class ReviewApiControllerTest {
     @Test
     public void getReview() throws Exception {
         // given
-        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
         assertThat(restaurant.getAdmin().getIdentifier()).isEqualTo("adminID");
         assertThat(restaurant.getReviews().size()).isEqualTo(2);
 
@@ -97,7 +97,7 @@ class ReviewApiControllerTest {
     @Test
     public void deleteReview() throws Exception {
         // given
-        Restaurant restaurant = restaurantRepository.findByName("restName");
+        Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
         Review review = restaurant.getReviews().get(0);
 
         assertThat(restaurant.getReviews().size()).isEqualTo(2);
@@ -112,7 +112,7 @@ class ReviewApiControllerTest {
         em.clear();
 
         // then
-        Restaurant _restaurant = restaurantRepository.findByName("restName");
+        Restaurant _restaurant = restaurantRepository.findByName("restName").orElse(null);
         Review _review = _restaurant.getReviews().get(0);
 
         assertThat(_restaurant.getReviews().size()).isEqualTo(1);

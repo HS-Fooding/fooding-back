@@ -16,7 +16,8 @@ import java.nio.charset.Charset;
 @Service
 public class GeocodeService {
     private static String GEOCODE_URL = "http://dapi.kakao.com/v2/local/search/address.json?query=";
-    private static String GEOCODE_USER_INFO = Variable.KAKAO_KEY;
+//    private static String GEOCODE_USER_INFO = Variable.KAKAO_KEY;
+    private static String GEOCODE_USER_INFO = Variable.KAKAO_KEY_JHS;
 
     public Location getGeocode(String address){
         Location result = null;

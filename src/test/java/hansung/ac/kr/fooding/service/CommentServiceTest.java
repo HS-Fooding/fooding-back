@@ -39,7 +39,7 @@ class CommentServiceTest {
     @Test
     public void commentUpdate() throws Exception {
         // given
-        Restaurant restName = restaurantRepository.findByName("restName");
+        Restaurant restName = restaurantRepository.findByName("restName").orElse(null);
         List<Review> reviews = restName.getReviews();
         Review review = reviews.get(0);
 
@@ -56,7 +56,7 @@ class CommentServiceTest {
         em.clear();
 
         // then
-        Restaurant _restName = restaurantRepository.findByName("restName");
+        Restaurant _restName = restaurantRepository.findByName("restName").orElse(null);
         List<Review> _reviews = _restName.getReviews();
         Review _review = _reviews.get(0);
 
@@ -67,7 +67,7 @@ class CommentServiceTest {
     @Test
     public void deleteComment() throws Exception {
         // given
-        Restaurant restName = restaurantRepository.findByName("restName");
+        Restaurant restName = restaurantRepository.findByName("restName").orElse(null);
         List<Review> reviews = restName.getReviews();
         Review review = reviews.get(0);
 
