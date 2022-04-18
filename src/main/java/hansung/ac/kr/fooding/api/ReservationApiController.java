@@ -45,17 +45,18 @@ public class ReservationApiController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation("예약 가능 테이블 조회")
     @RequestMapping(path = "/reservation", method =RequestMethod.GET)
     public ResponseEntity getAvailReservation(@PathVariable(value = "restId") Long restId,
                                               @RequestParam(value = "date") String date,
                                               @RequestParam(value = "time") String time,
                                               @RequestParam(value = "num") int num){
-        ReservAvailGetDTO reservAvailGetDTO;
+        ReservAvailGetDTO reservAvailGetDTO = null;
         try{
             reservAvailGetDTO = reservationService.getAvailableReservation(restId, date, time, num);
-        } catch (Exception e){
-
+        } catch (IllegalStateException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return null;
+        return new ResponseEntity<ReservAvailGetDTO>(reservAvailGetDTO, HttpStatus.OK);
     }
 }

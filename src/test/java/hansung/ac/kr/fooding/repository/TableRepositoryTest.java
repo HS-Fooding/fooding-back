@@ -31,8 +31,11 @@ class TableRepositoryTest {
         String date = "1997-06-05";
         String time = "10:00";
         //when
+        List<Table> tables= tableRepository.findUnavailByRestIdWithDateAndTime(restId, num, date, time);
+        List<Table> tables1= tableRepository.findUnavailByRestIdWithDateAndTime(restId, 100, date, "123");
         //then
-        System.out.println(
-                tableRepository.findUnavailByRestIdWithDateAndTime(restId, num, date, time));
+        System.out.println("############"+tables);
+        System.out.println("############"+tables1);
+        System.out.println("############"+tableRepository.findAll());
     }
 }

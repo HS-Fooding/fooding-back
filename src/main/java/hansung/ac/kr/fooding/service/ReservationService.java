@@ -13,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -62,8 +60,7 @@ public class ReservationService {
         Restaurant restaurant;
         float maximumUsageTime;
         List<Table> tables;
-        List<Table> availableTables = new ArrayList<Table>();
-        List<Table> unavailableTables = new ArrayList<Table>();
+        Set<Table> unavailableTables = new HashSet<>();
         ReservAvailGetDTO reservAvailGetDTO = new ReservAvailGetDTO();
 
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
@@ -82,14 +79,12 @@ public class ReservationService {
         }
 
         tables = tableRepository.findByRestIdWithNum(restId, num);
-        System.out.println("#############"+tables.toString());
         tables.removeAll(unavailableTables);
-        System.out.println("########unavail: "+ unavailableTables);
         reservAvailGetDTO.setTables(tables);
         return reservAvailGetDTO;
     }
 
-    public static String fromMinutesToHHmm(int minutes) {
+    private static String fromMinutesToHHmm(int minutes) {
         long hours = TimeUnit.MINUTES.toHours(Long.valueOf(minutes));
         long remainMinutes = minutes - TimeUnit.HOURS.toMinutes(hours);
         return String.format("%02d:%02d", hours, remainMinutes);
