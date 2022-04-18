@@ -1,11 +1,16 @@
 package hansung.ac.kr.fooding.domain.structure;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import hansung.ac.kr.fooding.domain.Reservation;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "_table")
 @DiscriminatorValue("_table")
@@ -17,6 +22,10 @@ public class Table extends Structure{
     private int minPeople;
     private int maxPeople;
     private boolean available;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "table")
+    private List<Reservation> reserved = new ArrayList<>();
 
     @Override
     public String toString() {
