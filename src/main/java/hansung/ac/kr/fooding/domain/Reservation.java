@@ -4,12 +4,13 @@ import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dto.ReservPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
-@Getter
+@Getter @Setter
 public class Reservation extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

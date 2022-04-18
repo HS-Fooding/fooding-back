@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.structure.Table;
+import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.ReservPostDTO;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -12,7 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
@@ -51,5 +55,43 @@ public class ReservationService {
 
         restaurant.getReservations().remove(reservation);
         reservationRepository.delete(reservation);
+    }
+
+    @Transactional
+    public ReservAvailGetDTO getAvailableReservation(Long restId, String date, String time, int num){
+        Restaurant restaurant;
+        float maximumUsageTime;
+        List<Table> tables;
+        List<Table> availableTables = new ArrayList<Table>();
+        List<Table> unavailableTables = new ArrayList<Table>();
+        ReservAvailGetDTO reservAvailGetDTO = new ReservAvailGetDTO();
+
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
+        restaurant = optionalRestaurant.get();
+
+        maximumUsageTime = restaurant.getMaximumUsageTime();
+
+        int checkTime = (int)maximumUsageTime /30;
+        String[] strs = time.split(":");
+        int minute = Integer.parseInt(strs[0]) * 60 + Integer.parseInt(strs[1]);
+        for(int i = -checkTime; i <= checkTime; i++){
+            int res = minute + 30 * i;
+            String resString = fromMinutesToHHmm(res);
+            unavailableTables.addAll(tableRepository.findUnavailByRestIdWithDateAndTime(restId, num, date, resString));
+        }
+
+        tables = tableRepository.findByRestIdWithNum(restId, num);
+        System.out.println("#############"+tables.toString());
+        tables.removeAll(unavailableTables);
+        System.out.println("########unavail: "+ unavailableTables);
+        reservAvailGetDTO.setTables(tables);
+        return reservAvailGetDTO;
+    }
+
+    public static String fromMinutesToHHmm(int minutes) {
+        long hours = TimeUnit.MINUTES.toHours(Long.valueOf(minutes));
+        long remainMinutes = minutes - TimeUnit.HOURS.toMinutes(hours);
+        return String.format("%02d:%02d", hours, remainMinutes);
     }
 }

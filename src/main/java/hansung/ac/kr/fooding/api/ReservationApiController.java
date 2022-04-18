@@ -1,6 +1,7 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.ReservPostDTO;
 import hansung.ac.kr.fooding.service.ReservationService;
 import io.swagger.annotations.Api;
@@ -44,7 +45,17 @@ public class ReservationApiController {
         return ResponseEntity.ok().build();
     }
 
-//    @RequestMapping(path = "/reservation/{reservId}", method =RequestMethod.GET){
-//
-//    }
+    @RequestMapping(path = "/reservation", method =RequestMethod.GET)
+    public ResponseEntity getAvailReservation(@PathVariable(value = "restId") Long restId,
+                                              @RequestParam(value = "date") String date,
+                                              @RequestParam(value = "time") String time,
+                                              @RequestParam(value = "num") int num){
+        ReservAvailGetDTO reservAvailGetDTO;
+        try{
+            reservAvailGetDTO = reservationService.getAvailableReservation(restId, date, time, num);
+        } catch (Exception e){
+
+        }
+        return null;
+    }
 }
