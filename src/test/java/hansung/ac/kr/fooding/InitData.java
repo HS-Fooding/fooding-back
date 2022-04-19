@@ -160,6 +160,16 @@ public class InitData {
             reservation.setMember((Member)user1Account);
             restaurant.addReservation(reservation);
             reservationRepository.save(reservation);
+
+            Reservation reservation2 = new Reservation();
+            reservation2.setReserveDate("1997-06-05");
+            reservation2.setReserveTime("14:00");
+            reservation2.setCar(true);
+            reservation2.setTable(table);
+            reservation2.setReserveNum(2);
+            reservation2.setMember((Member)user1Account);
+            restaurant.addReservation(reservation2);
+            reservationRepository.save(reservation2);
         }
     }
 

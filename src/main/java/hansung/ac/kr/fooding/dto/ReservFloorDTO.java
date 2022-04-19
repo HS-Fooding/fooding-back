@@ -16,19 +16,19 @@ public class ReservFloorDTO {
     private List<Wall> walls = new ArrayList<>();
     private List<Window> windows = new ArrayList<>();
 
-    public ReservFloorDTO(Floor floor){
-        for (Structure structure : floor.getStructures()){
-            if(structure instanceof Table)
-                tables.add(new TableDTO((Table)structure));
+    public ReservFloorDTO(Floor floor) {
+        for (Structure structure : floor.getStructures()) {
+            if (structure instanceof Table)
+                tables.add(new TableDTO((Table) structure));
             else if (structure instanceof Seat)
-                seats.add((Seat)structure);
+                seats.add((Seat) structure);
             else if (structure instanceof Door)
-                doors.add((Door)structure);
+                doors.add((Door) structure);
             else if (structure instanceof Wall)
-                walls.add((Wall)structure);
+                walls.add((Wall) structure);
             else if (structure instanceof Window)
-                windows.add((Window)structure);
-            else;
+                windows.add((Window) structure);
+            else ;
         }
     }
 
@@ -52,10 +52,10 @@ public class ReservFloorDTO {
         return reservdto;
     }*/
 
-    public static List<ReservFloorDTO> from(List<Floor> floors){
+    public static List<ReservFloorDTO> from(List<Floor> floors) {
         if (floors == null) return null;
         List<ReservFloorDTO> floorDTOs = new ArrayList<>();
-        for(Floor floor : floors){
+        for (Floor floor : floors) {
             floorDTOs.add(new ReservFloorDTO(floor));
         }
         return floorDTOs;

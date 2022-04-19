@@ -5,9 +5,12 @@ import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
 import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
+import hansung.ac.kr.fooding.dto.ReservFloorDTO;
 import hansung.ac.kr.fooding.dto.ReservPostDTO;
+import hansung.ac.kr.fooding.dto.TableDTO;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,16 +20,20 @@ import org.springframework.test.annotation.Rollback;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceUnitUtil;
 import javax.persistence.PersistenceUtil;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(value = false)
 class ReservationServiceTest {
-    @Autowired ReservationService reservationService;
-    @Autowired ReservationRepository reservationRepository;
+    @Autowired
+    ReservationService reservationService;
+    @Autowired
+    ReservationRepository reservationRepository;
     @Autowired
     RestaurantRepository restaurantRepository;
     @Autowired
@@ -49,8 +56,8 @@ class ReservationServiceTest {
 
     @Test
     @WithMockUser(username = "userID")
-    public void deleteReservationTest(){
-        reservationService.deleteReservation(2L,1L);
+    public void deleteReservationTest() {
+        reservationService.deleteReservation(2L, 1L);
     }
 
     @Test
@@ -73,11 +80,27 @@ class ReservationServiceTest {
         Long restId = 1L;
         String date = "1997-06-05";
         String time = "10:00";
-        int num = 2;
+        int num = 3;
 
         // when
         ReservStructGetDTO availableStruct = reservationService.getAvailableReservation2(restId, date, time, num);
+        ReservFloorDTO reservFloorDTO = availableStruct.getFloors().get(0);
+        assertThat(reservFloorDTO.getTables().size()).isEqualTo(3);
+        assertThat(reservFloorDTO.getDoors().size()).isEqualTo(0);
 
+        List<TableDTO> tables = reservFloorDTO.getTables();
+        TableDTO table1 = tables.get(0);
+        TableDTO table2 = tables.get(1);
+        TableDTO table3 = tables.get(2);
+
+        assertThat(table1.getTableNum()).isEqualTo("Num0");
+        assertThat(table2.getTableNum()).isEqualTo("Num1");
+        assertThat(table3.getTableNum()).isEqualTo("Num2");
+
+
+        assertThat(table1.getCanReserv()).isFalse();
+        assertThat(table2.getCanReserv()).isTrue();
+        assertThat(table3.getCanReserv()).isFalse();
     }
 }
 

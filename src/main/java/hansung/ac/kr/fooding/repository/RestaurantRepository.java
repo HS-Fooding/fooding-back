@@ -15,20 +15,20 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Optional<Restaurant> findByName(String name);
 
     @Query("select r from Restaurant r where r.location.region2Depth = :region2Depth")
-    Page<Restaurant> findAllByRegion2Depth(@Param("region2Depth")String region2Depth, Pageable pageable);
+    Page<Restaurant> findAllByRegion2Depth(@Param("region2Depth") String region2Depth, Pageable pageable);
 
     @Query("select r from Restaurant r where r.location.region3Depth = :region3Depth")
-    Page<Restaurant> findAllByRegion3Depth(@Param("region3Depth")String region3Depth, Pageable pageable);
+    Page<Restaurant> findAllByRegion3Depth(@Param("region3Depth") String region3Depth, Pageable pageable);
 
     @Query("select r from Restaurant r where r.name like %:name%")
-    Page<Restaurant> findAllByName(@Param("name")String name, Pageable pageable);
+    Page<Restaurant> findAllByName(@Param("name") String name, Pageable pageable);
 
     @Query("select r from Restaurant r join r.menus m where m.name like %:menu%")
-    Page<Restaurant> findAllByMenu(@Param("menu")String menu, Pageable pageable);
+    Page<Restaurant> findAllByMenu(@Param("menu") String menu, Pageable pageable);
 
 
-    @EntityGraph(attributePaths = {"reservations"})
-    Optional<Restaurant> findByIdWithReservation(Long restId);
+    @EntityGraph(attributePaths = {"reservations", "reservations.table"})
+    Restaurant findResById(Long id);
 
 //    @Query("select r from Restaurant r where r.id = :restId")
 //    Optional<Restaurant> getReviewsOnly(Long restId);

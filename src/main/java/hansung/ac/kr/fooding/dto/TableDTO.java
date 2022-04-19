@@ -8,7 +8,7 @@ public class TableDTO {
     private String tableNum;
     private int minPeople;
     private int maxPeople;
-    private boolean canReserv = true;
+    private Boolean canReserv = true;
 
     public TableDTO(Table table) {
         tableNum = table.getTableNum();
