@@ -90,9 +90,10 @@ public class ReservationService {
     public ReservStructGetDTO getAvailableReservation2(Long restId, String date, String time, int num) {
         Restaurant restaurant;
         float maximumUsageTime;
-        Set<Table> unavailableTables;
+        Set<TableDTO> unavailableTables;
 
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        // 해당 레스토랑을 찾음 (예약 정보 페치 조인)
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findByIdWithReservation(restId);
         if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
         restaurant = optionalRestaurant.get();
 
@@ -108,31 +109,29 @@ public class ReservationService {
 
         // unavailable한 조건들을 가지는 예약들을 추출
         List<Reservation> unavailableReservations = reservations.stream().filter(m ->
-                Integer.parseInt(m.getReserveTime().split(":")[0]) * 60 + Integer.parseInt(m.getReserveTime().split(":")[1]) <= minute + 30 * -checkTime ||
-                Integer.parseInt(m.getReserveTime().split(":")[0]) * 60 + Integer.parseInt(m.getReserveTime().split(":")[1]) >= minute + 30 * checkTime ||
-                !m.getReserveDate().equals(date) ||
+                m.getReserveDate().equals(date) &&
+                (Integer.parseInt(m.getReserveTime().split(":")[0]) * 60 + Integer.parseInt(m.getReserveTime().split(":")[1]) <= minute + 30 * -checkTime ||
+                Integer.parseInt(m.getReserveTime().split(":")[0]) * 60 + Integer.parseInt(m.getReserveTime().split(":")[1]) >= minute + 30 * checkTime) &&
                 num <= m.getTable().getMinPeople() || num >= m.getTable().getMaxPeople()
         ).collect(Collectors.toList()); // 예약 불가능한 테이블 정보들
 
-        unavailableTables = unavailableReservations.stream().map(Reservation::getTable).collect(Collectors.toSet()); // 층 정보는 구분하지 않음
+        unavailableTables = unavailableReservations.stream().map(r -> new TableDTO(r.getTable())).collect(Collectors.toSet()); // 층 정보는 구분하지 않음
 
-        List<FloorDTO> floorDTOS = FloorDTO.from(floors);
-        List<TableDTO> tableDTO = new ArrayList<>();
-        floorDTOS.forEach((m ->
+
+        List<ReservFloorDTO> floordto = ReservFloorDTO.from(floors);
+
+        floordto.forEach((m ->
                 m.getTables().forEach(t -> {
                     if (unavailableTables.contains(t)) {
-                        tableDTO.add(new TableDTO(t, false));
-                    } else {
-                        tableDTO.add(new TableDTO(t));
+                        t.setCanReserv(false);
                     }
                 })
-        ));
+        )); // 예약 가능한 테이블과, 불가능한 테이블을 구분
 
-        List<ReservFloorDTO> reservFloorDTOS = ReservFloorDTO.from(floors, tableDTO);
+        ReservStructGetDTO result =  new ReservStructGetDTO();
+        result.setFloors(floordto);
 
-        ReservStructGetDTO reservStructGetDTO = new ReservStructGetDTO();
-        reservStructGetDTO.setFloors(reservFloorDTOS);
-        return reservStructGetDTO;
+        return result;
     }
 
     private static String fromMinutesToHHmm(int minutes) {

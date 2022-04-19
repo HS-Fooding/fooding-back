@@ -85,4 +85,5 @@ class RestaurantServiceTest {
         Page result = restaurantService.searchByKeyword("re", pageRequest);
         assertThat(result.getContent().size()).isEqualTo(1);
     }
+
 }

@@ -10,19 +10,13 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 public class ReservFloorDTO {
-    private static List<TableDTO> tables;
-    private List<Seat> seats;
-    private List<Door> doors;
-    private List<Wall> walls;
-    private List<Window> windows;
+    private List<TableDTO> tables = new ArrayList<>();
+    private List<Seat> seats = new ArrayList<>();
+    private List<Door> doors = new ArrayList<>();
+    private List<Wall> walls = new ArrayList<>();
+    private List<Window> windows = new ArrayList<>();
 
     public ReservFloorDTO(Floor floor){
-        tables = new ArrayList<>();
-        seats = new ArrayList<>();
-        doors = new ArrayList<>();
-        walls = new ArrayList<>();
-        windows = new ArrayList<>();
-
         for (Structure structure : floor.getStructures()){
             if(structure instanceof Table)
                 tables.add(new TableDTO((Table)structure));
@@ -38,13 +32,32 @@ public class ReservFloorDTO {
         }
     }
 
-    public static List<ReservFloorDTO> from(List<Floor> floors, List<TableDTO> dto){
+    public ReservFloorDTO(FloorDTO floordto) {
+        seats = floordto.getSeats();
+        doors = floordto.getDoors();
+        walls = floordto.getWalls();
+        windows = floordto.getWindows();
+    }
+
+
+    /*public static List<ReservFloorDTO> from(List<FloorDTO> floordto, List<TableDTO> tableDTOS) {
+        if(floordto == null) return  null;
+        List<ReservFloorDTO> reservdto = new ArrayList<>();
+        for (FloorDTO t : floordto) {
+            reservdto.add(new ReservFloorDTO(t));
+        }
+        for(TableDTO t : tableDTOS) {
+
+        }
+        return reservdto;
+    }*/
+
+    public static List<ReservFloorDTO> from(List<Floor> floors){
         if (floors == null) return null;
         List<ReservFloorDTO> floorDTOs = new ArrayList<>();
         for(Floor floor : floors){
             floorDTOs.add(new ReservFloorDTO(floor));
         }
-        tables = dto;
         return floorDTOs;
     }
 

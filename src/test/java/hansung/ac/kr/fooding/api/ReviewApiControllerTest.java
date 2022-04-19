@@ -123,7 +123,7 @@ class ReviewApiControllerTest {
     }
 
     // querydsl 동작 확인
-    @Test
+    /*@Test
     public void querydslTest() throws Exception {
         JPAQueryFactory query = new JPAQueryFactory(em);
         List<Member> result = query
@@ -132,5 +132,5 @@ class ReviewApiControllerTest {
 
         assertThat(result.size()).isEqualTo(2);
         assertThat(result.get(0).getName()).isEqualTo("adminName");
-    }
+    }*/
 }
