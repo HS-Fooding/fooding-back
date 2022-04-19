@@ -70,6 +70,7 @@ public class RestaurantApiController {
         return new ResponseEntity<List<MenuGetDTO>>(menuGetDTOList, HttpStatus.OK);
     }
 
+    @ApiOperation("매장 구조 조회")
     @RequestMapping(path = "/{id}/structure", method = RequestMethod.GET)
     public ResponseEntity getStructure(@PathVariable(value = "id") Long id) {
         StructGetDTO structGetDTO;

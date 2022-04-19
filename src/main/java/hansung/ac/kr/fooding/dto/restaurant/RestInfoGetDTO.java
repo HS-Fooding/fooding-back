@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.dto.restaurant;
 
 import hansung.ac.kr.fooding.domain.Location;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
@@ -9,7 +10,9 @@ import hansung.ac.kr.fooding.dto.account.AccountDTO;
 import lombok.Data;
 
 import java.util.ArrayList;
+import java.util.DoubleSummaryStatistics;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class RestInfoGetDTO {
@@ -22,9 +25,12 @@ public class RestInfoGetDTO {
     private String parkingInfo;
     private float maximumUsageTime;
     private String intro;
-    private List<String> images = new ArrayList<String>();
+    private List<String> images = new ArrayList<>();
     private Location location;
     private List<Favor> category;
+    private int viewCount;
+    private int reviewCount;
+    private float avgScore;
 
     private RestInfoGetDTO(Restaurant restaurant){
         id = restaurant.getId();
@@ -43,6 +49,11 @@ public class RestInfoGetDTO {
         if(!restaurant.getImages().isEmpty())
             for(Image image : restaurant.getImages())
                 images.add(image.getPath());
+        viewCount = restaurant.getViewCount();
+        DoubleSummaryStatistics statistics = restaurant.getReviews().stream()
+                .collect(Collectors.summarizingDouble(Review::getStar));
+        reviewCount = (int) statistics.getCount();
+        avgScore = (float) statistics.getAverage();
     }
 
     public static RestInfoGetDTO from(Restaurant restaurant){
