@@ -28,8 +28,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.ResultSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -114,29 +113,21 @@ public class RestaurantService {
     }
 
     // 키워드로 검색
-    public Page searchByKeyword(String keyword, Pageable pageable) {
-        // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음
+    public Slice<Object> searchByKeyword(String keyword, Pageable pageable) {
+        // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음 && 여러 단어일 수도..
         String target = keyword.trim();
+        String[] tokens = target.split(" ");
+        Set<Long> result = new HashSet<>();
 
-        // 지역
-        if (target.endsWith("시") || target.endsWith("구")) {
-            return restaurantRepository.findAllByRegion2Depth(target, pageable)
-                    .map(m -> RestSimpleGetDTO.from(m));
-        } else if (target.endsWith("동")) {
-            return restaurantRepository.findAllByRegion3Depth(target, pageable)
-                    .map(m -> RestSimpleGetDTO.from(m));
+        for (String token : tokens) {
+            // 지역
+            result.addAll(restaurantRepository.findAllByRegion2Depth(target));
+            result.addAll(restaurantRepository.findAllByRegion3Depth(target));
+            // 매장 이름, 혹은 메뉴 이름
+            result.addAll(restaurantRepository.findAllByName(target));
+            result.addAll(restaurantRepository.findAllByMenu(target));
         }
-
-        // 매장 이름, 혹은 메뉴 이름
-        Page<Restaurant> result;
-        result = restaurantRepository.findAllByName(target, pageable);
-        if(!result.isEmpty())
-            return result.map(m -> RestSimpleGetDTO.from(m));
-
-        result = restaurantRepository.findAllByMenu(target, pageable);
-        if(!result.isEmpty())
-            return result.map(m -> RestSimpleGetDTO.from(m));
-
-        return null;
+        Slice<Restaurant> restaurants = restaurantRepository.findAllByIds(result, pageable);
+        return restaurants.map(RestSimpleGetDTO::from);
     }
 }

@@ -13,21 +13,22 @@ import org.springframework.data.repository.query.Param;
 import javax.persistence.Entity;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Optional<Restaurant> findByName(String name);
 
-    @Query("select r from Restaurant r where r.location.region2Depth = :region2Depth")
-    Page<Restaurant> findAllByRegion2Depth(@Param("region2Depth") String region2Depth, Pageable pageable);
+    @Query("select r.id from Restaurant r where r.location.region2Depth like %:region2Depth%")
+    List<Long> findAllByRegion2Depth(@Param("region2Depth") String region2Depth);
 
-    @Query("select r from Restaurant r where r.location.region3Depth = :region3Depth")
-    Page<Restaurant> findAllByRegion3Depth(@Param("region3Depth") String region3Depth, Pageable pageable);
+    @Query("select r.id from Restaurant r where r.location.region3Depth like %:region3Depth%")
+    List<Long> findAllByRegion3Depth(@Param("region3Depth") String region3Depth);
 
-    @Query("select r from Restaurant r where r.name like %:name%")
-    Page<Restaurant> findAllByName(@Param("name") String name, Pageable pageable);
+    @Query("select r.id from Restaurant r where r.name like %:name%")
+    List<Long> findAllByName(@Param("name") String name);
 
-    @Query("select r from Restaurant r join r.menus m where m.name like %:menu%")
-    Page<Restaurant> findAllByMenu(@Param("menu") String menu, Pageable pageable);
+    @Query("select r.id from Restaurant r join r.menus m where m.name like %:menu%")
+    List<Long> findAllByMenu(@Param("menu") String menu);
 
 
     @EntityGraph(attributePaths = {"reservations", "reservations.table"})
@@ -39,6 +40,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @EntityGraph(attributePaths = {"reviews"})
     Optional<Restaurant> findRestById(Long restId);
 
+    @Query("select r from Restaurant r where id in :ids")
+    Slice<Restaurant> findAllByIds(@Param("ids") Set<Long> result, Pageable pageable);
 
 //    @Query("select r from Restaurant r where r.id = :restId")
 //    Optional<Restaurant> getReviewsOnly(Long restId);
