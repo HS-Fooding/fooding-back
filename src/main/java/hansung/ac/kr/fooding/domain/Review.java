@@ -44,6 +44,10 @@ public class Review extends BaseEntity{
         images.addAll(imageList);
     }
 
+    public void plusViewCount() {
+        this.setViewCount(this.getViewCount() + 1);
+    }
+
     public Review(ReviewPostDTO dto){
         this.title = dto.getTitle();
         this.content = dto.getContent();

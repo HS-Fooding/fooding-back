@@ -1,22 +1,22 @@
 package hansung.ac.kr.fooding.api;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
+import hansung.ac.kr.fooding.dto.review.ReviewSimpleResDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
-import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.ReviewService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -64,12 +64,13 @@ class ReviewApiControllerTest {
         Account admin = accountRepository.findByIdentifier("adminID");
         Restaurant restaurant = restaurantRepository.findByName("restName").orElse(null);
 
+        PageRequest pageRequest = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "name"));
         // when
-        List<Review> reviews = reviewService.getReviewsOnly(restaurant.getId());
+        Slice<ReviewSimpleResDTO> result = reviewService.getReviews(restaurant.getId(), pageRequest);
 
         // then
-        assertThat(reviews.size()).isEqualTo(2);
-        assertThat(reviews.get(0).getAuthor()).isEqualTo(user1);
+        assertThat(result.getContent().size()).isEqualTo(2);
+        assertThat(result.getContent().get(0).getNickName()).isEqualTo(user1);
         assertThat(restaurant.getAdmin()).isEqualTo(admin);
     }
 
@@ -88,9 +89,11 @@ class ReviewApiControllerTest {
         assertThat(review.getComments().size()).isEqualTo(2);
 
         //then
-        ReviewDetailResDTO result = reviewService.findReviewWithComments(review.getId());
-        assertThat(result.getComments().size()).isEqualTo(2);
-        assertThat(result.getComments().get(0).getContent()).isEqualTo("comment1");
+        PageRequest pageRequest = PageRequest.of(0, 3);
+
+        ReviewDetailResDTO result = reviewService.findReviewWithComments(review.getId(), pageRequest);
+        assertThat(result.getComments().getContent().size()).isEqualTo(2);
+        assertThat(result.getComments().getContent().get(0).getContent()).isEqualTo("comment1");
     }
 
     // 리뷰 지우기 (댓글도 함께)

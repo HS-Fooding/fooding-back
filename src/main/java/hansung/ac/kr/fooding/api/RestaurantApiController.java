@@ -15,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class RestaurantApiController {
 
     @ApiOperation("전체 매장 리스트 검색")
     @RequestMapping(method = RequestMethod.GET)
-    public Page getRestaurants(
+    public Slice<Object> getRestaurants(
             @RequestParam(value = "coord", defaultValue = "false") String isCoord, Pageable pageable) {
 
         return restaurantService.getRestaurantList(isCoord, pageable);

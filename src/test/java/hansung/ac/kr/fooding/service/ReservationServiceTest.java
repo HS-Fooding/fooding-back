@@ -1,8 +1,5 @@
 package hansung.ac.kr.fooding.service;
 
-import hansung.ac.kr.fooding.InitData;
-import hansung.ac.kr.fooding.domain.Reservation;
-import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
 import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.ReservFloorDTO;
@@ -10,7 +7,6 @@ import hansung.ac.kr.fooding.dto.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.TableDTO;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,14 +14,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.PersistenceUtil;
-import javax.persistence.Table;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Rollback(value = false)

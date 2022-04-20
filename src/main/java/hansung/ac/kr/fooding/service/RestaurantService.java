@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -70,11 +71,12 @@ public class RestaurantService {
         return restaurant.getId();
     }
 
+    @Transactional
     public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
         Restaurant restaurant = optional.get();
-        restaurant.setViewCount(restaurant.getViewCount() + 1);
+        restaurant.plusViewCount();
 
         return RestInfoGetDTO.from(restaurant);
     }
@@ -100,13 +102,13 @@ public class RestaurantService {
         return structGetDTO;
     }
 
-    public Page getRestaurantList(String isCoord, Pageable pageable) {
-        Page<Restaurant> page = restaurantRepository.findAll(pageable);
-        Page result;
+    public Slice<Object> getRestaurantList(String isCoord, Pageable pageable) {
+        Slice<Restaurant> page = restaurantRepository.findAllRest(pageable);
+        Slice<Object> result;
         if (isCoord.equals("true")) {
-            result = page.map(m -> RestSimpleGetWithLocDTO.from(m));
+            result = page.map(RestSimpleGetWithLocDTO::from);
         } else {
-            result = page.map(m -> RestSimpleGetDTO.from(m));
+            result = page.map(RestSimpleGetDTO::from);
         }
         return result;
     }

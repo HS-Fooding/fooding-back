@@ -8,10 +8,7 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.web.WebAppConfiguration;
 
@@ -73,7 +70,7 @@ class RestaurantServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 3,
                 Sort.by(Sort.Direction.DESC, "name"));
 
-        Page result = restaurantService.getRestaurantList("", pageRequest);
+        Slice<Object> result = restaurantService.getRestaurantList("", pageRequest);
         assertThat(result.getContent().size()).isEqualTo(2);
     }
 

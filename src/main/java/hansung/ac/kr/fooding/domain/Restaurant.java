@@ -126,4 +126,8 @@ public class Restaurant extends BaseEntity{
         this.maximumUsageTime = dto.getMaximumUsageTime();
         this.parkingInfo = dto.getParkingInfo();
     }
+
+    public void plusViewCount() {
+        this.setViewCount(this.getViewCount() + 1);
+    }
 }

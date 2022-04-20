@@ -35,4 +35,8 @@ public class ReviewSimpleResDTO {
         this.registerDate = review.getCreatedDate().toString();
         this.commentCount = review.getComments().size();
     }
+
+    public static ReviewSimpleResDTO from(Review review) {
+        return new ReviewSimpleResDTO(review);
+    }
 }
