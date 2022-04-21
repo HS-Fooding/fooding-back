@@ -34,7 +34,7 @@ public class RestaurantApiController {
 
     @ApiOperation("지역, 매장과 메뉴에 포함된 이름, 카테고리 검색 가능")
     @RequestMapping(path = "/search", method = RequestMethod.GET)
-    public Slice searchRestaurant(@RequestParam String keyword, Pageable pageable) {
+    public Slice<RestSimpleGetDTO> searchRestaurant(@RequestParam String keyword, Pageable pageable) {
 
         return restaurantService.searchByKeyword(keyword, pageable);
     }
