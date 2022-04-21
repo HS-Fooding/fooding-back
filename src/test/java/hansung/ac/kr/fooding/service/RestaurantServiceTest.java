@@ -84,4 +84,12 @@ class RestaurantServiceTest {
         assertThat(result.getContent().size()).isEqualTo(2);
     }
 
+    @Test
+    public void searchByCoord() {
+        PageRequest pageRequest = PageRequest.of(0, 3,
+                Sort.by(Sort.Direction.DESC, "name"));
+
+        Slice<RestSimpleGetDTO> result = restaurantService.getRestaurantByCoord(127.095f, 37.5035f, pageRequest);
+        assertThat(result.getContent().size()).isEqualTo(2);
+    }
 }
