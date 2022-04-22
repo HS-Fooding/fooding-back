@@ -73,8 +73,7 @@ public class RestaurantService {
     @Transactional
     public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
-        Restaurant restaurant = optional.get();
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         restaurant.plusViewCount();
 
         return RestInfoGetDTO.from(restaurant);
@@ -82,17 +81,15 @@ public class RestaurantService {
 
     public RestInfoGetDTO getRestaurantInfoByName(String restName) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findByName(restName);
-        if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
-        Restaurant restaurant = optional.get();
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         restaurant.setViewCount(restaurant.getViewCount() + 1);
 
         return RestInfoGetDTO.from(restaurant);
     }
 
     public StructGetDTO getRestaurantStructure(Long id) {
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(id);
-        if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
-        Restaurant restaurant = optionalRestaurant.get();
+        Optional<Restaurant> optional = restaurantRepository.findById(id);
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         List<Floor> floors = restaurant.getFloors();
         if (floors == null) return null;
         List<FloorDTO> floorDTOS = FloorDTO.from(floors);

@@ -37,7 +37,7 @@ public class ReviewService {
     public Long postReview(Account account, ReviewPostDTO reviewPostDto, List<MultipartFile> multipartImages, Long restId) {
 
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
-        if (optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
 
         Review review = new Review(reviewPostDto);
         List<Image> images = ImageHandler.upload(multipartImages);
@@ -49,7 +49,6 @@ public class ReviewService {
             review.addImages(images);
         }
 
-        Restaurant restaurant = optional.get();
         restaurant.addReview(review);
 
         Review saved = reviewRepository.save(review);
@@ -60,8 +59,7 @@ public class ReviewService {
     @Transactional
     public ReviewDetailResDTO findReviewWithComments(Long reviewId, Pageable pageable) {
         Optional<Review> optional = reviewRepository.findById(reviewId);
-        if (optional.isEmpty()) throw new IllegalStateException("Review Not Found");
-        Review review = optional.get();
+        Review review = optional.orElseThrow(() -> new IllegalStateException("Review Not Found"));
         review.plusViewCount();
         List<Long> commentIds = review.getComments().stream().map(Comment::getId).collect(Collectors.toList());
         Slice<Comment> comments = commentRepository.findCommentsByIds(commentIds, pageable);
@@ -71,8 +69,7 @@ public class ReviewService {
 
     public Slice<ReviewSimpleResDTO> getReviews(Long restId, Pageable pageable) {
         Optional<Restaurant> optional = restaurantRepository.findRestById(restId);
-        if (optional.isEmpty()) throw new IllegalStateException("Review Not Found");
-        Restaurant restaurant = optional.get();
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         List<Long> reviewIds = restaurant.getReviews().stream().map(Review::getId).collect(Collectors.toList());
         Slice<Review> reviews = reviewRepository.findReviewsByIds(reviewIds, pageable);
         return reviews.map(ReviewSimpleResDTO::new);
@@ -80,8 +77,7 @@ public class ReviewService {
 
     public void deleteReview(Long reviewId) {
         Optional<Review> optional = reviewRepository.findById(reviewId);
-        if (optional.isEmpty()) throw new IllegalStateException("Review Not Found");
-        Review review = optional.get();
+        Review review = optional.orElseThrow(() -> new IllegalStateException("Review Not Found"));
 
         reviewRepository.delete(review);
     }

@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @EntityListeners(AuditingEntityListener.class)
 @Getter
@@ -23,4 +24,12 @@ public abstract class BaseTimeEntity {
     @LastModifiedDate
     @JsonIgnore
     private LocalDateTime lastModifiedDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+    }
+
+    public LocalDateTime getLastModifiedDate() {
+        return lastModifiedDate.atZone(ZoneId.of("Asia/Seoul")).toLocalDateTime();
+    }
 }
