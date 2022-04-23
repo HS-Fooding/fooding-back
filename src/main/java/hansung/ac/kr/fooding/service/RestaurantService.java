@@ -118,11 +118,11 @@ public class RestaurantService {
 
         for (String token : tokens) {
             // 지역
-            result.addAll(restaurantRepository.findAllByRegion2Depth(target));
-            result.addAll(restaurantRepository.findAllByRegion3Depth(target));
+            result.addAll(restaurantRepository.findAllByRegion2Depth(token));
+            result.addAll(restaurantRepository.findAllByRegion3Depth(token));
             // 매장 이름, 혹은 메뉴 이름
-            result.addAll(restaurantRepository.findAllByName(target));
-            result.addAll(restaurantRepository.findAllByMenu(target));
+            result.addAll(restaurantRepository.findAllByName(token));
+            result.addAll(restaurantRepository.findAllByMenu(token));
         }
         Slice<Restaurant> restaurants = restaurantRepository.findAllByIds(result, pageable);
         return restaurants.map(RestSimpleGetDTO::from);
