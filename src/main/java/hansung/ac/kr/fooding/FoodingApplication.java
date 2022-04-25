@@ -18,7 +18,7 @@ public class FoodingApplication {
         SpringApplication.run(FoodingApplication.class, args);
     }
 
-   /* @Bean
+    /*@Bean
     public AuditorAware<String> auditorProvider() {
         if (SecurityContextHolder.getContext() == null) {
             return () -> null;
@@ -27,7 +27,8 @@ public class FoodingApplication {
     }*/
 }
 
-/*@EnableJpaAuditing
+/*
+@EnableJpaAuditing
 @SpringBootApplication
 public class FoodingApplication extends SpringBootServletInitializer {
 
@@ -47,4 +48,5 @@ public class FoodingApplication extends SpringBootServletInitializer {
 		}
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
-}*/
+}
+*/

@@ -44,9 +44,15 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Slice<Restaurant> findAllByIds(@Param("ids") Set<Long> result, Pageable pageable);
 
 
-    @Query("select r from Restaurant r where " +
-            "pow(r.location.coordinate.x - :x, 2) + pow(r.location.coordinate.y - :y, 2) < pow(:r, 2)")
-    Slice<Restaurant> findRestByCoord(@Param("x") Float x, @Param("y") Float y, @Param("r") Float r, Pageable pageable);
+    /*@Query("select r from Restaurant r where " +
+            "pow(r.location.coordinate.x - :x, 2) + pow(r.location.coordinate.y - :y, 2) < pow(:r, 2)")*/
+    @Query("select r from Restaurant r " +
+            "where (6371 * acos(" +
+                "cos(radians(:x)) * cos(radians(r.location.coordinate.x)) * " +
+                "cos(radians(r.location.coordinate.y) - radians(:y)) + " +
+                "sin(radians(:x)) * sin(radians(r.location.coordinate.x))" +
+            ")) <= :r")
+    Slice<Restaurant> findRestByCoord(@Param("x") Double x, @Param("y") Double y, @Param("r") Double r, Pageable pageable);
 
 //    @Query("select r from Restaurant r where r.id = :restId")
 //    Optional<Restaurant> getReviewsOnly(Long restId);

@@ -130,9 +130,11 @@ public class RestaurantService {
 
     public Slice<RestSimpleGetDTO> getRestaurantByCoord(Float x, Float y, Pageable pageable) {
         // x, y 좌표를 중점으로하고, 특정 반경 내에 위치하는 매장들의 리스트들을 반환
-        Float r = 0.0037f; // "한성대"와 "한성대역 입구" 사이의 직선거리의 절반 거리
+//        Float r = 0.0037f; // "한성대"와 "한성대역 입구" 사이의 직선거리의 절반 거리
 
-        Slice<Restaurant> restaurants = restaurantRepository.findRestByCoord(x, y, r, pageable);
+        Float r = 0.3f; // 300m 정도인가..? 확인 필요
+
+        Slice<Restaurant> restaurants = restaurantRepository.findRestByCoord((double)x, (double)y, (double)r, pageable);
         return restaurants.map(RestSimpleGetDTO::from);
     }
 }
