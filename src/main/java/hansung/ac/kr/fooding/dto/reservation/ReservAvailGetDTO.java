@@ -1,4 +1,4 @@
-package hansung.ac.kr.fooding.dto;
+package hansung.ac.kr.fooding.dto.reservation;
 
 import hansung.ac.kr.fooding.domain.structure.Table;
 import lombok.Data;

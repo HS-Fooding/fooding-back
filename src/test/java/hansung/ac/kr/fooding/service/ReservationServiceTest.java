@@ -1,9 +1,10 @@
 package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
-import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
-import hansung.ac.kr.fooding.dto.ReservFloorDTO;
-import hansung.ac.kr.fooding.dto.ReservPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservFloorDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.TableDTO;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -92,6 +93,15 @@ class ReservationServiceTest {
         assertThat(table1.getCanReserv()).isFalse();
         assertThat(table2.getCanReserv()).isTrue();
         assertThat(table3.getCanReserv()).isFalse();
+    }
+
+    @Test
+    public void getTodayRestReservations() throws Exception {
+        //given
+        //when
+        AdminReservGetDTO todayRestReservations = reservationService.getTodayRestReservations(2L);
+        //then
+        System.out.println(todayRestReservations.toString());
     }
 }
 

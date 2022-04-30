@@ -2,9 +2,8 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
-import hansung.ac.kr.fooding.dtd.StructGetDTO;
-import hansung.ac.kr.fooding.dto.ReservAvailGetDTO;
-import hansung.ac.kr.fooding.dto.ReservPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.service.ReservationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,7 +68,6 @@ public class ReservationApiController {
                                               @RequestParam(value = "time") String time,
                                               @RequestParam(value = "num") int num){
         ReservStructGetDTO structGetDTO;
-
         try{
             structGetDTO = reservationService.getAvailableReservation2(restId, date, time, num);
         } catch (IllegalStateException e){

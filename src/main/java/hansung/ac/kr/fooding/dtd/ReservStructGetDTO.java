@@ -1,7 +1,6 @@
 package hansung.ac.kr.fooding.dtd;
 
-import hansung.ac.kr.fooding.dto.ReservFloorDTO;
-import hansung.ac.kr.fooding.dto.TableDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservFloorDTO;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

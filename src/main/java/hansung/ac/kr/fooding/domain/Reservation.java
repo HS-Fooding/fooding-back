@@ -1,7 +1,7 @@
 package hansung.ac.kr.fooding.domain;
 
 import hansung.ac.kr.fooding.domain.structure.Table;
-import hansung.ac.kr.fooding.dto.ReservPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

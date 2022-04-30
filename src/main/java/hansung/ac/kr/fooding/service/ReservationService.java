@@ -6,8 +6,8 @@ import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
-import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.*;
+import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.TableRepository;
@@ -137,5 +137,18 @@ public class ReservationService {
         long hours = TimeUnit.MINUTES.toHours(Long.valueOf(minutes));
         long remainMinutes = minutes - TimeUnit.HOURS.toMinutes(hours);
         return String.format("%02d:%02d", hours, remainMinutes);
+    }
+
+    @Transactional
+    public AdminReservGetDTO getTodayRestReservations(Long restId) throws IllegalStateException{
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findWithFloorsById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
+        Restaurant restaurant = optionalRestaurant.get();
+        AdminTableInfoDTO adminTableInfoDTO = AdminTableInfoDTO.from(restaurant);
+        List<AdminReservDTO> adminReservDTOs = new ArrayList<>();
+        List<Reservation> reservations = reservationRepository.findByReserveDate(adminTableInfoDTO.getDate());
+        reservations.forEach(m -> adminReservDTOs.add(AdminReservDTO.from(m)));
+        AdminReservGetDTO adminReservGetDTO = new AdminReservGetDTO(adminTableInfoDTO, adminReservDTOs);
+        return adminReservGetDTO;
     }
 }
