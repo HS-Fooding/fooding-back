@@ -4,10 +4,7 @@ import hansung.ac.kr.fooding.var.Variable;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -16,7 +13,7 @@ import java.io.InputStream;
 @RestController
 public class ImageController {
 
-    @RequestMapping("/image/{imageName:.+}")
+    @RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity getImage(@PathVariable("imageName") String imageName){
         String path = Variable.SERVER_FILE_PATH;

@@ -70,7 +70,7 @@ public class LogInApiController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        LoginResDTO loginResDTO = new LoginResDTO(new TokenResDTO(jwt), (Admin)securityService.getAccount());
+        LoginResDTO loginResDTO = new LoginResDTO(new TokenResDTO(jwt),securityService.getAccount());
 
         return new ResponseEntity<LoginResDTO>(loginResDTO, httpHeaders, HttpStatus.OK);
     }

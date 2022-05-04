@@ -98,8 +98,9 @@ class ReservationServiceTest {
     @Test
     public void getTodayRestReservations() throws Exception {
         //given
+        String date = "2022-05-01";
         //when
-        AdminReservGetDTO todayRestReservations = reservationService.getTodayRestReservations(2L);
+        AdminReservGetDTO todayRestReservations = reservationService.getRestReservations(2L,date);
         //then
         System.out.println(todayRestReservations.toString());
     }

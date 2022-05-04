@@ -3,6 +3,8 @@ package hansung.ac.kr.fooding.api;
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.ReservationService;
@@ -40,6 +42,18 @@ public class AdminRestaurantApiController {
         }
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
+
+//    @ApiOperation(value = "매장 사진 추가")
+//    @RequestMapping(method = RequestMethod.POST, path = "/{restId}/image")
+//    public ResponseEntity postImage(@PathVariable(value = "restId") Long restId,
+//                                    @RequestPart(value ="image") MultipartFile image){
+//        try{
+//            restaurantService
+//        }catch (Exception e){
+//
+//        }
+//        return ResponseEntity.ok().build();
+//    }
 
     @ApiOperation(value = "메뉴 등록")
     @RequestMapping(path = "/{id}/menu", method = RequestMethod.POST)
@@ -80,9 +94,28 @@ public class AdminRestaurantApiController {
         return ResponseEntity.ok().build();
     }
 
-    @RequestMapping(path="/{restId}/reservation")
-    public ResponseEntity getReservations(@PathVariable(value = "restId") Long restId){
-        reservationService.getTodayRestReservations(restId);
-        return null;
+    @ApiOperation(value = "매장 예약 확인")
+    @RequestMapping(path="/{restId}/reservation", method = RequestMethod.GET)
+    public ResponseEntity getReservations(@PathVariable(value = "restId") Long restId,
+                                          @RequestParam String date){
+        AdminReservGetDTO adminReservGetDTO;
+        try {
+            adminReservGetDTO = reservationService.getRestReservations(restId, date);
+        } catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<AdminReservGetDTO>(adminReservGetDTO, HttpStatus.OK);
     }
+
+//    @RequestMapping(path = "/{restId}/reservation/{reservId}")
+//    public ResponseEntity editReservation(@PathVariable(value = "restId") Long restId,
+//                                          @PathVariable(value = "reservId") Long reservId,
+//                                          @RequestBody ReservPostDTO reservPostDTO){
+//        try {
+//            reservationService.editReservation(restId, reservId, reservPostDTO);
+//        } catch (Exception e){
+//
+//        }
+//        return null;
+//    }
 }

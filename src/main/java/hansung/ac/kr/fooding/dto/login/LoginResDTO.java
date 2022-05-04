@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.dto.login;
 
+import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import lombok.Data;
@@ -12,10 +13,10 @@ public class LoginResDTO {
     private TokenResDTO token;
     private List<Long> restaurants = new ArrayList<>();
 
-    public LoginResDTO(TokenResDTO tokenResDTO, Admin admin){
+    public LoginResDTO(TokenResDTO tokenResDTO, Account account){
         token = tokenResDTO;
-        if(!admin.getRestaurants().isEmpty())
-            for(Restaurant restaurant : admin.getRestaurants()){
+        if(account instanceof Admin)
+            for(Restaurant restaurant : ((Admin)account).getRestaurants()){
                 restaurants.add(restaurant.getId());
             }
     }

@@ -11,23 +11,23 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-@EnableJpaAuditing
-@SpringBootApplication
-public class FoodingApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(FoodingApplication.class, args);
-    }
+//@EnableJpaAuditing
+//@SpringBootApplication
+//public class FoodingApplication {
+//    public static void main(String[] args) {
+//        SpringApplication.run(FoodingApplication.class, args);
+//    }
+//
+//    /*@Bean
+//    public AuditorAware<String> auditorProvider() {
+//        if (SecurityContextHolder.getContext() == null) {
+//            return () -> null;
+//        }
+//        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
+//    }*/
+//}
 
-    /*@Bean
-    public AuditorAware<String> auditorProvider() {
-        if (SecurityContextHolder.getContext() == null) {
-            return () -> null;
-        }
-        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
-    }*/
-}
 
-/*
 @EnableJpaAuditing
 @SpringBootApplication
 public class FoodingApplication extends SpringBootServletInitializer {
@@ -49,4 +49,3 @@ public class FoodingApplication extends SpringBootServletInitializer {
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }
-*/
