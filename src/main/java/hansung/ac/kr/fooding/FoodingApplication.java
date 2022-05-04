@@ -27,7 +27,6 @@ import java.util.Optional;
 //    }*/
 //}
 
-
 @EnableJpaAuditing
 @SpringBootApplication
 public class FoodingApplication extends SpringBootServletInitializer {

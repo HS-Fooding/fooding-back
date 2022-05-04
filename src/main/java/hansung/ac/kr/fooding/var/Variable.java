@@ -6,4 +6,6 @@ public class Variable {
         public final static String LOCAL_FILE_PATH = "D://dev/images/";
         public final static String LOCAL_FILE_PATH_JHS = "C://Users/bs860/IdeaProjects/images/";
         public final static String SERVER_FILE_PATH = "/capstone/sample_project_jhs/";
+
+        public final static String ERR_REST_NOT_FOUND = "Fooding-Restaurant Not Found";
 }
