@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.service;
 
+import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
@@ -11,6 +12,7 @@ import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.TableRepository;
+import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,15 +142,23 @@ public class ReservationService {
     }
 
     @Transactional
-    public AdminReservGetDTO getTodayRestReservations(Long restId) throws IllegalStateException{
+    public AdminReservGetDTO getRestReservations(Long restId, String date) throws IllegalStateException{
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findWithFloorsById(restId);
-        if(optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getErrorMessage());
         Restaurant restaurant = optionalRestaurant.get();
-        AdminTableInfoDTO adminTableInfoDTO = AdminTableInfoDTO.from(restaurant);
+        AdminTableInfoDTO adminTableInfoDTO = AdminTableInfoDTO.from(restaurant, date);
+
         List<AdminReservDTO> adminReservDTOs = new ArrayList<>();
         List<Reservation> reservations = reservationRepository.findByReserveDate(adminTableInfoDTO.getDate());
         reservations.forEach(m -> adminReservDTOs.add(AdminReservDTO.from(m)));
         AdminReservGetDTO adminReservGetDTO = new AdminReservGetDTO(adminTableInfoDTO, adminReservDTOs);
         return adminReservGetDTO;
+    }
+
+
+    public void editReservation(Long restId, Long reservId, ReservPostDTO reservPostDTO) {
+        if(!securityService.isLogined()) throw new SecurityException(CError.USER_NOT_LOGIN.getErrorMessage());
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getErrorMessage());
     }
 }

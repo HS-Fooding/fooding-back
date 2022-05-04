@@ -76,13 +76,15 @@ public class InitData {
 
             adminRoles.add(role1);
             adminRoles.add(role2);
-
+            JoinReqDTO adminJoinReqDTO0 = new JoinReqDTO("testAdminID", "testAdminPW", "testAdminName",
+                    "testAdminNickName", false, 10, List.of(Favor.KOREAN, Favor.NOODLE), adminRoles, Job.FREELANCER);
             JoinReqDTO adminJoinReqDTO1 = new JoinReqDTO("adminID1", "adminPW1", "adminName1",
                     "adminNickName1", false, 10, List.of(Favor.KOREAN, Favor.NOODLE), adminRoles, Job.FREELANCER);
             JoinReqDTO adminJoinReqDTO2 = new JoinReqDTO("adminID2", "adminPW2", "adminName2",
                     "adminNickName2", true, 20, List.of(Favor.CAFE, Favor.CHINESE), adminRoles, Job.HOUSEWIVES);
             JoinReqDTO adminJoinReqDTO3 = new JoinReqDTO("adminID3", "adminPW3", "adminName3",
                     "adminNickName3", false, 30, List.of(Favor.KOREAN, Favor.JAPAN), adminRoles, Job.NONE);
+            accountService.join(adminJoinReqDTO0);
             accountService.join(adminJoinReqDTO1);
             accountService.join(adminJoinReqDTO2);
             accountService.join(adminJoinReqDTO3);
@@ -122,19 +124,101 @@ public class InitData {
                     .buildingNo("16")
                     .coordinate(new Coordinate(127.095f, 37.5035f)).build();
 
+            Location address3 = Location.builder()
+                    .addressName("서울 성북구 삼선교로10길 10")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교로 10길")
+                    .buildingNo("10")
+                    .coordinate(new Coordinate(127.008912f, 37.5874333f)).build();
+
+            Location address4 = Location.builder()
+                    .addressName("서울 성북구 삼선교로10길 25 치킨마루")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교로 10길")
+                    .buildingNo("25")
+                    .coordinate(new Coordinate(127.009568f, 37.5869377f)).build();
+
+            Location address5 = Location.builder()
+                    .addressName("서울 성북구 삼선교로14길 25")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교 14길")
+                    .buildingNo("25")
+                    .coordinate(new Coordinate(127.010304f, 37.5869647f)).build();
+
             RestaurantPostDTO restaurantPostDTO1 = new RestaurantPostDTO("restName1", List.of("010-1111-1111", "010-2222-2222"), new WorkHour("1", "2"), new WorkHour("3", "4")
                     , "주차 공간 없음", "우리 가게는 영국에서 시작되어..", address1, List.of(Favor.KOREAN, Favor.SNACK), 150f);
 
             RestaurantPostDTO restaurantPostDTO2 = new RestaurantPostDTO("restName2", List.of("010-3333-3333", "010-4444-4444"), new WorkHour("1", "2"), new WorkHour("3", "4")
                     , "주차 10대 가능", "50년 전통의 우리 가게..", address2, List.of(Favor.LAMB, Favor.BAR), 120f);
+            RestaurantPostDTO restaurantPostDTO3 = new RestaurantPostDTO("한성회세꼬시", null, new WorkHour("12", "24"), new WorkHour("12","24"),
+                    "주차 불가능", "한성대 대표 횟집", address3, List.of(Favor.JAPAN), 120f);
+            RestaurantPostDTO restaurantPostDTO4 = new RestaurantPostDTO("치킨마루 한성대점", List.of("02-741-9544"), new WorkHour("12", "24"), new WorkHour("12","24"),
+                    "주차 1대 가능", "치킨마루 한성대점!", address4, List.of(Favor.CHICKEN, Favor.PUB), 120f);
+            RestaurantPostDTO restaurantPostDTO5 = new RestaurantPostDTO("김치나베돈까스돈카츠전문점", List.of("070-4696-0758"), new WorkHour("06:00", "19:00"), new WorkHour("06:00", "19:00"),
+                    "주차 불가능", "깨끗하고 맛있는 김치나베돈카츠 전문점입니다.", address5, List.of(Favor.KOREAN,Favor.JAPAN,Favor.WESTERN), 120f);
 
+
+            Location address6 = Location.builder()
+                    .addressName("서울 성북구 삼선교로16길 40")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교로 16길")
+                    .buildingNo("40")
+                    .coordinate(new Coordinate(127.010655f, 37.5864962f)).build();
+            RestaurantPostDTO restaurantPostDTO6 = new RestaurantPostDTO("스타동 한성대점", List.of("02-743-7707"), new WorkHour("11:30", "20:30"), new WorkHour("11:30", "20:30"),
+                    "주차 불가능", "사람들이 많이 찾는 스타동", address6, List.of(Favor.JAPAN,Favor.WESTERN), 120f);
+
+            Location address7 = Location.builder()
+                    .addressName("서울 성북구 삼선교로16길 35 삼선 SK VIEW 아파트")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교로 16길 35")
+                    .buildingNo("삼선 SK VIEW 아파트")
+                    .coordinate(new Coordinate(127.010722f, 37.587394f)).build();
+            RestaurantPostDTO restaurantPostDTO7 = new RestaurantPostDTO("운봉손칼국수", List.of("02-953-5155"), new WorkHour("11:00", "22:00"), new WorkHour("11:30", "20:30"),
+                    "주차 불가능", "보쌈 맛집 운봉 칼국수", address7, List.of(Favor.KOREAN), 120f);
+
+
+            Location address8 = Location.builder()
+                    .addressName("서울 성북구 삼선교로 34")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("삼선동")
+                    .roadName("삼선교로")
+                    .buildingNo("34")
+                    .coordinate(new Coordinate(127.009353f, 37.5879559f)).build();
+            RestaurantPostDTO restaurantPostDTO8 = new RestaurantPostDTO("역전할머니맥주 서울한성대점", List.of("010-3348-0327"), new WorkHour("14:00", "24:00"), new WorkHour("14:00", "24:00"),
+                    "주차 불가능", "역전할맥", address8, List.of(Favor.KOREAN, Favor.BBQ, Favor.WESTERN, Favor.CHICKEN, Favor.PUB), 120f);
+
+            Account testAdminAccount = accountRepository.findByIdentifier("testAdminID");
             Account adminAccount1 = accountRepository.findByIdentifier("adminID1");
             Account adminAccount2 = accountRepository.findByIdentifier("adminID2");
 
             Restaurant restaurant1 = new Restaurant(restaurantPostDTO1, (Admin) adminAccount1);
             Restaurant restaurant2 = new Restaurant(restaurantPostDTO2, (Admin) adminAccount2);
+            Restaurant restaurant3 = new Restaurant(restaurantPostDTO3, (Admin) testAdminAccount);
+            Restaurant restaurant4 = new Restaurant(restaurantPostDTO4, (Admin) testAdminAccount);
+            Restaurant restaurant5 = new Restaurant(restaurantPostDTO5, (Admin) testAdminAccount);
+            Restaurant restaurant6 = new Restaurant(restaurantPostDTO6, (Admin) testAdminAccount);
+            Restaurant restaurant7 = new Restaurant(restaurantPostDTO7, (Admin) testAdminAccount);
+            Restaurant restaurant8 = new Restaurant(restaurantPostDTO8, (Admin) testAdminAccount);
             restaurantRepository.save(restaurant1);
             restaurantRepository.save(restaurant2);
+            restaurantRepository.save(restaurant3);
+            restaurantRepository.save(restaurant4);
+            restaurantRepository.save(restaurant5);
+            restaurantRepository.save(restaurant6);
+            restaurantRepository.save(restaurant7);
+            restaurantRepository.save(restaurant8);
+
 
             // 4. 사용자의 리뷰 작성 (일반 사용자1)
             Account userAccount1 = accountRepository.findByIdentifier("userId1");

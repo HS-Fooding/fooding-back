@@ -15,6 +15,7 @@ import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.handler.ImageHandler;
 import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -49,6 +50,13 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
         return restaurant.getId();
     }
+
+//    public void addImage(Long restId, MultipartFile image){
+//        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+//        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getErrorMessage());
+//        Restaurant restaurant = optionalRestaurant.get();
+//        if (!securityService.isRestaurantAdmin(restaurant)) throw new SecurityException(CError.NOT_ADMIN_OF_REST.getErrorMessage())
+//    }
 
     @Transactional
     public Long saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> multipartImages) throws SecurityException {
