@@ -1,9 +1,10 @@
 package hansung.ac.kr.fooding.service;
 
-import hansung.ac.kr.fooding.domain.Account;
+import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.domain.enumeration.AdminReservStatus;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
@@ -42,6 +43,32 @@ public class ReservationService {
         return reservation.getId();
     }
 
+    public void adminPostReservation(Long restId, AdminReservPostDTO adminReservPostDTO){
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
+        Restaurant restaurant = optionalRestaurant.get();
+        if(!securityService.isRestaurantAdmin(restaurant)) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
+
+        Table table = tableRepository.findTableByTableNum(adminReservPostDTO.getTableNum(), restaurant.getId()).get(0);
+        Reservation reservation = new Reservation(table, adminReservPostDTO);
+        restaurant.addReservation(reservation);
+        reservationRepository.save(reservation);
+    }
+
+    public void adminDeleteReservation(Long restId, AdminReservPostDTO adminReservPostDTO){
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
+        Restaurant restaurant = optionalRestaurant.get();
+        if(!securityService.isRestaurantAdmin(restaurant)) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
+
+        Optional<Reservation> optionalReservation = reservationRepository.findById(adminReservPostDTO.getReserv_id());
+        if(optionalReservation.isEmpty()) throw new IllegalStateException(CError.RESERV_NOT_FOUND.getMessage());
+        Reservation reservation = optionalReservation.get();
+
+        restaurant.getReservations().remove(reservation);
+        reservationRepository.delete(reservation);
+    }
+
     @Transactional
     public void deleteReservation(Long restId, Long reservId) throws IllegalStateException, SecurityException {
         Member member = (Member) securityService.getAccount();
@@ -54,7 +81,7 @@ public class ReservationService {
         if (optionalReservation.isEmpty()) throw new IllegalStateException("Fooding-Reservation Not Found");
         Reservation reservation = optionalReservation.get();
 
-        if (reservation.getMember() != member) throw new SecurityException("Fooding-Not Reservation Owner");
+        if (reservation.getBooker().getMember_id() != member.getId()) throw new SecurityException("Fooding-Not Reservation Owner");
 
         restaurant.getReservations().remove(reservation);
         reservationRepository.delete(reservation);
@@ -144,7 +171,7 @@ public class ReservationService {
     @Transactional
     public AdminReservGetDTO getRestReservations(Long restId, String date) throws IllegalStateException{
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findWithFloorsById(restId);
-        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getErrorMessage());
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         Restaurant restaurant = optionalRestaurant.get();
         AdminTableInfoDTO adminTableInfoDTO = AdminTableInfoDTO.from(restaurant, date);
 
@@ -157,8 +184,52 @@ public class ReservationService {
 
 
     public void editReservation(Long restId, Long reservId, ReservPostDTO reservPostDTO) {
-        if(!securityService.isLogined()) throw new SecurityException(CError.USER_NOT_LOGIN.getErrorMessage());
+        if(!securityService.isLogined()) throw new SecurityException(CError.USER_NOT_LOGIN.getMessage());
+        Member member = (Member)securityService.getAccount();
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
-        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getErrorMessage());
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservId);
+        if(optionalReservation.isEmpty()) throw new IllegalStateException(CError.RESERV_NOT_FOUND.getMessage());
+        Reservation reservation = optionalReservation.get();
+
+        if(reservation.getBooker().getMember_id() != member.getId()) throw new IllegalStateException(CError.USER_NOT_OWNER_OF_RESERV.getMessage());
+        List<Table> findTables = tableRepository.findTableByTableNum(reservPostDTO.getTableNum(), restId);
+        if(findTables.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
+        Table findTable = findTables.get(0);
+        reservation.edit(findTable, reservPostDTO);
+    }
+
+    public void adminEditReservation(Long restId, Long reservId, AdminReservPostDTO adminReservPostDTO) throws SecurityException{
+        if(!securityService.isLogined()) throw new SecurityException(CError.USER_NOT_LOGIN.getMessage());
+        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+        if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
+        Restaurant restaurant = optionalRestaurant.get();
+        if(!securityService.isRestaurantAdmin(restaurant)) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reservId);
+        if(optionalReservation.isEmpty()) throw new IllegalStateException(CError.RESERV_NOT_FOUND.getMessage());
+        Reservation reservation = optionalReservation.get();
+
+        List<Table> findTables = tableRepository.findTableByTableNum(adminReservPostDTO.getTableNum(), restId);
+        if(findTables.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
+        Table findTable = findTables.get(0);
+        reservation.edit(findTable, adminReservPostDTO);
+    }
+
+    public void adminEditReservations(Long restId, List<AdminReservUpdateDTO> reservUpdateDTOs)
+            throws IllegalStateException, SecurityException{
+        for(AdminReservUpdateDTO dto : reservUpdateDTOs){
+            AdminReservStatus flag = dto.getFlag();
+            AdminReservPostDTO adminReservPostDTO = dto.getAdminReservPostDTO();
+            switch(flag){
+                case EDIT:
+                    adminEditReservation(restId, dto.getAdminReservPostDTO().getReserv_id(), adminReservPostDTO);
+                    break;
+                case NEW:
+                    adminPostReservation(restId, adminReservPostDTO);
+                    break;
+                case DELETE:
+                    adminDeleteReservation(restId, adminReservPostDTO);
+            }
+        }
     }
 }

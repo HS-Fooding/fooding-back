@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.AdminReservUpdateDTO;
 import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.service.MenuService;
@@ -105,6 +106,18 @@ public class AdminRestaurantApiController {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<AdminReservGetDTO>(adminReservGetDTO, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "매장 엑셀 관리")
+    @RequestMapping(path="/{restId}/reservation", method = RequestMethod.POST)
+    public ResponseEntity postReservations(@PathVariable(value = "restId") Long restId,
+                                           @RequestBody List<AdminReservUpdateDTO> adminReservUpdateDTOs){
+        try {
+            reservationService.adminEditReservations(restId, adminReservUpdateDTOs);
+        } catch (Exception e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
     }
 
 //    @RequestMapping(path = "/{restId}/reservation/{reservId}")

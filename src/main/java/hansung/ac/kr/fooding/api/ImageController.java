@@ -13,7 +13,7 @@ import java.io.InputStream;
 @RestController
 public class ImageController {
 
-    @RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.POST)
+    @RequestMapping(value = "/image/{imageName:.+}", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity getImage(@PathVariable("imageName") String imageName){
         String path = Variable.SERVER_FILE_PATH;

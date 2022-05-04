@@ -14,7 +14,7 @@ public class AdminReservDTO {
     private AdminReservDTO(Reservation reservation){
         reservAt = reservation.getReserveTime();
         tableNum = reservation.getTable().getTableNum();
-        nickname = reservation.getMember().getName();
+        nickname = reservation.getBooker().getNickName();
         reservCount = reservation.getReserveNum();
         isCar = reservation.isCar();
     }

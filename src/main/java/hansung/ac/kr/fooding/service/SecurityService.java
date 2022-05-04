@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.repository.AccountRepository;
+import hansung.ac.kr.fooding.var.CError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,8 @@ public class SecurityService {
     @Transactional
     public boolean isRestaurantAdmin(Restaurant restaurant){
         Account account = getAccount();
-        if(!(account instanceof Admin)) throw new SecurityException("Fooding-Account is Not Admin Account");
+        if(account == null) throw new SecurityException(CError.USER_NOT_LOGIN.getMessage());
+        else if(!(account instanceof Admin)) throw new SecurityException(CError.USER_NOT_ADMIN_ACOUNT.getMessage());
         if(restaurant.getAdmin() == (Admin)account)
             return true;
         else

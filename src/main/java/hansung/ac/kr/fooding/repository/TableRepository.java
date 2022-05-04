@@ -23,7 +23,7 @@ public interface TableRepository extends JpaRepository<Table, Long> {
 
 
 //    @Query(value = "SELECT * FROM _table as t "+
-//            "INNER JOIN reservation as reserv ON reserv.tableasd = t.id " +
+//            "INNER JOIN reservation as reserv ON reserv.table_id = t.id " +
 //            "WHERE reserv.restaurant_id = :restId AND t.min_people >= :num OR :num >= t.max_people AND "+
 //            "reserv.reserve_date = :date AND reserv.reserve_time = :time", nativeQuery = true)
 
@@ -31,7 +31,7 @@ public interface TableRepository extends JpaRepository<Table, Long> {
             "INNER JOIN structure as s ON t.id = s.id " +
             "INNER JOIN floor as f ON f.id = s.floor_id " +
             "INNER JOIN restaurant as rest ON f.restaurant_id = rest.id " +
-            "LEFT JOIN reservation as reserv ON reserv.tableasd = t.id " +
+            "LEFT JOIN reservation as reserv ON reserv.table_id = t.id " +
             "WHERE ((t.min_people > :num OR :num > t.max_people) " +
             "OR (reserv.reserve_date = :date AND reserv.reserve_time = :time)) "+
             "IN (rest.id = :restId)", nativeQuery = true)

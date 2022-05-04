@@ -110,6 +110,10 @@ public class Restaurant extends BaseEntity{
         }
     }
 
+    public void addImage(Image image){
+        this.images.add(image);
+    }
+
     public void addFloor(Floor floor){
         floors.add(floor);
     }

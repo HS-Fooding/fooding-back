@@ -3,6 +3,7 @@ package hansung.ac.kr.fooding;
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.enumeration.Job;
+import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
@@ -19,12 +20,12 @@ import hansung.ac.kr.fooding.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,6 +64,8 @@ public class InitData {
         FloorRepository floorRepository;
         @Autowired
         ReservationRepository reservationRepository;
+        @Autowired
+        ImageRepository imageRepository;
 
         @Transactional
         public void init()
@@ -83,7 +86,7 @@ public class InitData {
             JoinReqDTO adminJoinReqDTO2 = new JoinReqDTO("adminID2", "adminPW2", "adminName2",
                     "adminNickName2", true, 20, List.of(Favor.CAFE, Favor.CHINESE), adminRoles, Job.HOUSEWIVES);
             JoinReqDTO adminJoinReqDTO3 = new JoinReqDTO("adminID3", "adminPW3", "adminName3",
-                    "adminNickName3", false, 30, List.of(Favor.KOREAN, Favor.JAPAN), adminRoles, Job.NONE);
+                    "adminNickName3", false, 30, List.of(Favor.KOREAN, Favor.JAPANESE), adminRoles, Job.NONE);
             accountService.join(adminJoinReqDTO0);
             accountService.join(adminJoinReqDTO1);
             accountService.join(adminJoinReqDTO2);
@@ -96,7 +99,7 @@ public class InitData {
             JoinReqDTO joinReqDTO1 = new JoinReqDTO("userID1", "userPW1", "userName1",
                     "userNickName1", false, 11, List.of(Favor.CAFE, Favor.NOODLE, Favor.CHINESE), userRoles, Job.STUDENT);
             JoinReqDTO joinReqDTO2 = new JoinReqDTO("userID2", "userPW2", "userName2",
-                    "userNickName2", true, 12, List.of(Favor.JAPAN, Favor.BAR, Favor.BBQ), userRoles, Job.OFFICER);
+                    "userNickName2", true, 12, List.of(Favor.JAPANESE, Favor.BAR, Favor.BBQ), userRoles, Job.OFFICER);
             JoinReqDTO joinReqDTO3 = new JoinReqDTO("userID3", "userPW3", "userName3",
                     "userNickName3", true, 22, List.of(Favor.KOREAN, Favor.BAR, Favor.DESSERT), userRoles, Job.FREELANCER);
 
@@ -151,17 +154,17 @@ public class InitData {
                     .buildingNo("25")
                     .coordinate(new Coordinate(127.010304f, 37.5869647f)).build();
 
-            RestaurantPostDTO restaurantPostDTO1 = new RestaurantPostDTO("restName1", List.of("010-1111-1111", "010-2222-2222"), new WorkHour("1", "2"), new WorkHour("3", "4")
+            RestaurantPostDTO restaurantPostDTO1 = new RestaurantPostDTO("restName1", List.of("010-1111-1111", "010-2222-2222"), new WorkHour("11:00", "20:00"), new WorkHour("11:00", "20:00")
                     , "주차 공간 없음", "우리 가게는 영국에서 시작되어..", address1, List.of(Favor.KOREAN, Favor.SNACK), 150f);
 
-            RestaurantPostDTO restaurantPostDTO2 = new RestaurantPostDTO("restName2", List.of("010-3333-3333", "010-4444-4444"), new WorkHour("1", "2"), new WorkHour("3", "4")
+            RestaurantPostDTO restaurantPostDTO2 = new RestaurantPostDTO("restName2", List.of("010-3333-3333", "010-4444-4444"), new WorkHour("11:00", "20:00"), new WorkHour("11:00", "20:00")
                     , "주차 10대 가능", "50년 전통의 우리 가게..", address2, List.of(Favor.LAMB, Favor.BAR), 120f);
-            RestaurantPostDTO restaurantPostDTO3 = new RestaurantPostDTO("한성회세꼬시", null, new WorkHour("12", "24"), new WorkHour("12","24"),
-                    "주차 불가능", "한성대 대표 횟집", address3, List.of(Favor.JAPAN), 120f);
-            RestaurantPostDTO restaurantPostDTO4 = new RestaurantPostDTO("치킨마루 한성대점", List.of("02-741-9544"), new WorkHour("12", "24"), new WorkHour("12","24"),
+            RestaurantPostDTO restaurantPostDTO3 = new RestaurantPostDTO("한성회세꼬시", null, new WorkHour("12:00", "24:00"), new WorkHour("12:00", "24:00"),
+                    "주차 불가능", "한성대 대표 횟집", address3, List.of(Favor.JAPANESE), 120f);
+            RestaurantPostDTO restaurantPostDTO4 = new RestaurantPostDTO("치킨마루 한성대점", List.of("02-741-9544"), new WorkHour("12:00", "24:00"), new WorkHour("12:00", "24:00"),
                     "주차 1대 가능", "치킨마루 한성대점!", address4, List.of(Favor.CHICKEN, Favor.PUB), 120f);
             RestaurantPostDTO restaurantPostDTO5 = new RestaurantPostDTO("김치나베돈까스돈카츠전문점", List.of("070-4696-0758"), new WorkHour("06:00", "19:00"), new WorkHour("06:00", "19:00"),
-                    "주차 불가능", "깨끗하고 맛있는 김치나베돈카츠 전문점입니다.", address5, List.of(Favor.KOREAN,Favor.JAPAN,Favor.WESTERN), 120f);
+                    "주차 불가능", "깨끗하고 맛있는 김치나베돈카츠 전문점입니다.", address5, List.of(Favor.KOREAN,Favor.JAPANESE,Favor.WESTERN), 120f);
 
 
             Location address6 = Location.builder()
@@ -173,7 +176,7 @@ public class InitData {
                     .buildingNo("40")
                     .coordinate(new Coordinate(127.010655f, 37.5864962f)).build();
             RestaurantPostDTO restaurantPostDTO6 = new RestaurantPostDTO("스타동 한성대점", List.of("02-743-7707"), new WorkHour("11:30", "20:30"), new WorkHour("11:30", "20:30"),
-                    "주차 불가능", "사람들이 많이 찾는 스타동", address6, List.of(Favor.JAPAN,Favor.WESTERN), 120f);
+                    "주차 불가능", "사람들이 많이 찾는 스타동", address6, List.of(Favor.JAPANESE,Favor.WESTERN), 120f);
 
             Location address7 = Location.builder()
                     .addressName("서울 성북구 삼선교로16길 35 삼선 SK VIEW 아파트")
@@ -198,6 +201,70 @@ public class InitData {
             RestaurantPostDTO restaurantPostDTO8 = new RestaurantPostDTO("역전할머니맥주 서울한성대점", List.of("010-3348-0327"), new WorkHour("14:00", "24:00"), new WorkHour("14:00", "24:00"),
                     "주차 불가능", "역전할맥", address8, List.of(Favor.KOREAN, Favor.BBQ, Favor.WESTERN, Favor.CHICKEN, Favor.PUB), 120f);
 
+            Location address9 = Location.builder()
+                    .addressName("서울 성북구 성북로 24-1")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("성북동")
+                    .roadName("성북로")
+                    .buildingNo("24-1")
+                    .coordinate(new Coordinate(127.004474f, 37.5902446f)).build();
+            RestaurantPostDTO restaurantPostDTO9 = new RestaurantPostDTO("피자스쿨 성북점", List.of("02-747-7778"), new WorkHour("11:30", "23:00"), new WorkHour("11:30", "23:00"),
+                    "주차 불가능", "17년 4월 14일 새로 오픈한 피자스쿨 성북점입니다. 저렴한 가격으로 맛있는 양질의 피자를 드실 수 있습니다.^^",
+                    address9, List.of(Favor.BBQ, Favor.WESTERN), 90f);
+
+            Location address10 = Location.builder()
+                    .addressName("서울 종로구 동숭길 86 2, 3층")
+                    .region1Depth("서울")
+                    .region2Depth("종로구")
+                    .region3Depth("동숭동")
+                    .roadName("동숭길 86")
+                    .buildingNo("2")
+                    .coordinate(new Coordinate(127.004292f, 37.5820907f)).build();
+            RestaurantPostDTO restaurantPostDTO10 = new RestaurantPostDTO("핏제리아오", List.of("0507-1429-5005"),
+                    new WorkHour("11:30", "22:00"), new WorkHour("11:30", "22:00"),
+                    "주차 불가능", "맛있는 정통 피자",
+                    address10, List.of(Favor.BBQ, Favor.WESTERN, Favor.PUB), 90f);
+
+            Location address11 = Location.builder()
+                    .addressName("서울 종로구 대명1길 10 1층")
+                    .region1Depth("서울")
+                    .region2Depth("종로구")
+                    .region3Depth("명륜동")
+                    .roadName("대명1길")
+                    .buildingNo("10")
+                    .coordinate(new Coordinate(127.000771f, 37.5830998f)).build();
+            RestaurantPostDTO restaurantPostDTO11 = new RestaurantPostDTO("역전할머니맥주 대학로점", List.of("0507-1327-3582"),
+                    new WorkHour("14:00", "04:00"), new WorkHour("14:00", "04:00"),
+                    "주차 불가능", "역전할맥 대학로점",
+                    address11, List.of(Favor.BBQ, Favor.WESTERN, Favor.PUB, Favor.KOREAN, Favor.JAPANESE), 90f);
+
+            Location address12 = Location.builder()
+                    .addressName("서울 종로구 대학로8가길 133")
+                    .region1Depth("서울")
+                    .region2Depth("종로구")
+                    .region3Depth("동숭동")
+                    .roadName("대학로8가길")
+                    .buildingNo("133")
+                    .coordinate(new Coordinate(127.003488f, 37.5801085f)).build();
+            RestaurantPostDTO restaurantPostDTO12 = new RestaurantPostDTO("토끼정 대학로점", List.of("0507-1386-1030"),
+                    new WorkHour("11:00", "22:00"), new WorkHour("11:00", "22:00"),
+                    "주차 불가능", "토끼정 대학로점입니다.",
+                    address12, List.of(Favor.BBQ, Favor.WESTERN, Favor.PUB, Favor.KOREAN, Favor.JAPANESE), 90f);
+
+            Location address13 = Location.builder()
+                    .addressName("서울 성북구 보문로21길 19-1")
+                    .region1Depth("서울")
+                    .region2Depth("성북구")
+                    .region3Depth("보문동")
+                    .roadName("보문로21길")
+                    .buildingNo("19-1")
+                    .coordinate(new Coordinate(127.019395f, 37.5829182f)).build();
+            RestaurantPostDTO restaurantPostDTO13 = new RestaurantPostDTO("야미가 성북점", List.of("0507-1337-3507"),
+                    new WorkHour("10:30","20:30"), new WorkHour("x","x"),
+                    "주차 불가능", "야미가 성북점입니다.",
+                    address13, List.of(Favor.BBQ, Favor.WESTERN, Favor.PUB, Favor.KOREAN, Favor.JAPANESE), 90f);
+
             Account testAdminAccount = accountRepository.findByIdentifier("testAdminID");
             Account adminAccount1 = accountRepository.findByIdentifier("adminID1");
             Account adminAccount2 = accountRepository.findByIdentifier("adminID2");
@@ -210,6 +277,79 @@ public class InitData {
             Restaurant restaurant6 = new Restaurant(restaurantPostDTO6, (Admin) testAdminAccount);
             Restaurant restaurant7 = new Restaurant(restaurantPostDTO7, (Admin) testAdminAccount);
             Restaurant restaurant8 = new Restaurant(restaurantPostDTO8, (Admin) testAdminAccount);
+            Restaurant restaurant9 = new Restaurant(restaurantPostDTO9, (Admin) testAdminAccount);
+            Restaurant restaurant10 = new Restaurant(restaurantPostDTO10, (Admin) testAdminAccount);
+            Restaurant restaurant11= new Restaurant(restaurantPostDTO11, (Admin) testAdminAccount);
+            Restaurant restaurant12= new Restaurant(restaurantPostDTO12, (Admin) testAdminAccount);
+            Restaurant restaurant13= new Restaurant(restaurantPostDTO13, (Admin) testAdminAccount);
+
+            Image image1 = new Image();
+            image1.setPath("http://13.124.207.219:8080/fooding/image/image1.jpg");
+            restaurant1.addImage(image1);
+
+            Image image2 = new Image();
+            image2.setPath("http://13.124.207.219:8080/fooding/image/image2.jpg");
+            restaurant2.addImage(image2);
+
+            Image image3 = new Image();
+            image3.setPath("http://13.124.207.219:8080/fooding/image/image3.jpg");
+            restaurant3.addImage(image3);
+
+            Image image4 = new Image();
+            image4.setPath("http://13.124.207.219:8080/fooding/image/image4.jpg");
+            restaurant4.addImage(image4);
+
+            Image image5 = new Image();
+            image5.setPath("http://13.124.207.219:8080/fooding/image/image5.jpg");
+            restaurant5.addImage(image5);
+
+            Image image6 = new Image();
+            image6.setPath("http://13.124.207.219:8080/fooding/image/image6.jpg");
+            restaurant6.addImage(image6);
+
+            Image image7 = new Image();
+            image7.setPath("http://13.124.207.219:8080/fooding/image/image7.jpg");
+            restaurant7.addImage(image7);
+
+            Image image8 = new Image();
+            image8.setPath("http://13.124.207.219:8080/fooding/image/image8.jpg");
+            restaurant8.addImage(image8);
+
+            Image image9 = new Image();
+            image9.setPath("http://13.124.207.219:8080/fooding/image/image9.jpg");
+            restaurant9.addImage(image9);
+
+            Image image10 = new Image();
+            image10.setPath("http://13.124.207.219:8080/fooding/image/image10.jpg");
+            restaurant10.addImage(image10);
+
+            Image image11 = new Image();
+            image11.setPath("http://13.124.207.219:8080/fooding/image/image11.jpg");
+            restaurant11.addImage(image11);
+
+            Image image12 = new Image();
+            image12.setPath("http://13.124.207.219:8080/fooding/image/image12.jpg");
+            restaurant13.addImage(image12);
+
+            Image image13 = new Image();
+            image13.setPath("http://13.124.207.219:8080/fooding/image/image13.jpg");
+            restaurant13.addImage(image13);
+
+            List<Image> images = new ArrayList<>();
+            images.add(image1);
+            images.add(image2);
+            images.add(image3);
+            images.add(image4);
+            images.add(image5);
+            images.add(image6);
+            images.add(image7);
+            images.add(image8);
+            images.add(image9);
+            images.add(image10);
+            images.add(image11);
+            images.add(image12);
+            images.add(image13);
+
             restaurantRepository.save(restaurant1);
             restaurantRepository.save(restaurant2);
             restaurantRepository.save(restaurant3);
@@ -218,6 +358,15 @@ public class InitData {
             restaurantRepository.save(restaurant6);
             restaurantRepository.save(restaurant7);
             restaurantRepository.save(restaurant8);
+            restaurantRepository.save(restaurant9);
+            restaurantRepository.save(restaurant10);
+            restaurantRepository.save(restaurant11);
+            restaurantRepository.save(restaurant12);
+            restaurantRepository.save(restaurant13);
+
+            imageRepository.saveImages(images);
+
+
 
 
             // 4. 사용자의 리뷰 작성 (일반 사용자1)
