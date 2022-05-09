@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetWithLocDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -80,7 +81,7 @@ class RestaurantServiceTest {
         PageRequest pageRequest = PageRequest.of(0, 3,
                 Sort.by(Sort.Direction.DESC, "name"));
 
-        Slice<RestSimpleGetDTO> result = restaurantService.searchByKeyword("re", pageRequest);
+        Slice<RestSimpleGetWithLocDTO> result = restaurantService.searchByKeyword("re", pageRequest);
         assertThat(result.getContent().size()).isEqualTo(2);
     }
 

@@ -17,7 +17,7 @@ class TableRepositoryTest {
     InitData initData;
     @Test
     void findTableByTableNum() {
-        List<Table> table = tableRepository.findTableByTableNum("2", 2L);
+        List<Table> table = tableRepository.findTableByRestIdAndTableNum(2L,"2");
         Assertions.assertThat(table.get(0).getTableNum()).isEqualTo("2");
         System.out.println(table.get(0).toString());
         System.out.println(table.get(1).toString());

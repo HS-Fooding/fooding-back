@@ -21,7 +21,7 @@ public class CommentResDTO {
     public CommentResDTO(Comment comment) {
         this.id = comment.getId();
         this.content = comment.getContent();
-        this.nickName = comment.getUser().getNickName();
+        this.nickName = comment.getAuthor().getNickName();
         Comment parentComment = Optional.ofNullable(comment.getParent()).orElse(null);
         if(parentComment != null)
             this.parent = Optional.ofNullable(parentComment.getId()).orElse(null);

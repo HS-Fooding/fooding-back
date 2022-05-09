@@ -39,6 +39,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
 
     @Query("select r from Restaurant r")
+    @EntityGraph(attributePaths = {"menus"})
     Slice<Restaurant> findAllRest(Pageable pageable);
 
     @EntityGraph(attributePaths = {"reviews"})

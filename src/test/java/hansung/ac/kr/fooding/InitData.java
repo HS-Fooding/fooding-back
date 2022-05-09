@@ -441,7 +441,7 @@ public class InitData {
             reservation1.setCar(true);
             reservation1.setTable(table);
             reservation1.setReserveNum(2);
-            reservation1.setMember((Member) userAccount1);
+            reservation1.setBooker(Booker.from((Member)userAccount1));
             restaurant1.addReservation(reservation1);
             reservationRepository.save(reservation1);
 
@@ -451,7 +451,7 @@ public class InitData {
             reservation2.setCar(true);
             reservation2.setTable(table);
             reservation2.setReserveNum(2);
-            reservation2.setMember((Member) userAccount1);
+            reservation2.setBooker(Booker.from((Member) userAccount1));
             restaurant1.addReservation(reservation2);
             reservationRepository.save(reservation2);
         }

@@ -6,12 +6,14 @@ import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @Getter @Setter
+@ToString
 public class Reservation extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

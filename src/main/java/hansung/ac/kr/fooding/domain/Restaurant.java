@@ -104,6 +104,8 @@ public class Restaurant extends BaseEntity{
         this.floors = null;
     }
 
+    public void deleteReservation(Reservation reservation) { reservations.remove(reservation); }
+
     public void addImages(List<Image> images) {
         for(Image image : images){
             this.images.add(image);

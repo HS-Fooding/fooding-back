@@ -5,6 +5,7 @@ import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Structure;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class AdminTableInfoDTO {
     private String open;
     private String close;

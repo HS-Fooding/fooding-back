@@ -83,7 +83,6 @@ public class RestaurantService {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         restaurant.plusViewCount();
-
         return RestInfoGetDTO.from(restaurant);
     }
 
@@ -118,7 +117,7 @@ public class RestaurantService {
     }
 
     // 키워드로 검색
-    public Slice<RestSimpleGetDTO> searchByKeyword(String keyword, Pageable pageable) {
+    public Slice<RestSimpleGetWithLocDTO> searchByKeyword(String keyword, Pageable pageable) {
         // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음 && 여러 단어일 수도..
         String target = keyword.trim();
         String[] tokens = target.split(" ");
@@ -133,7 +132,7 @@ public class RestaurantService {
             result.addAll(restaurantRepository.findAllByMenu(token));
         }
         Slice<Restaurant> restaurants = restaurantRepository.findAllByIds(result, pageable);
-        return restaurants.map(RestSimpleGetDTO::from);
+        return restaurants.map(RestSimpleGetWithLocDTO::from);
     }
 
     public Slice<RestSimpleGetDTO> getRestaurantByCoord(Float x, Float y, Pageable pageable) {

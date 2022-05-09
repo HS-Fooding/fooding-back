@@ -7,12 +7,15 @@ public enum CError {
     REST_NOT_FOUND("Fooding-Restaurant Not Found"),
     RESERV_NOT_FOUND("Fooding-Reservation Not Found"),
     TABLE_NOT_FOUND("Fooding-Table Not Found"),
+    COMMENT_NOT_FOUND("Fooding-Comment Not Found"),
 
     USER_NOT_LOGIN("Fooding-User Not Login"),
-    USER_NOT_ADMIN_ACOUNT("Fooding-User account type isn't Admin account"),
+    USER_NOT_ADMIN_ACOUNT("Fooding-User account type is not Admin account"),
     USER_NOT_MEMBER_ACCOUNT("Fooding-User account type is not Member account"),
-    USER_NOT_ADMIN_OF_REST("Fooding-Account Not Admin of Restaurant"),
-    USER_NOT_OWNER_OF_RESERV("Fooding-Member is not Owner of Reservation");
+    USER_NOT_ADMIN_OF_REST("Fooding-User is not Admin of Restaurant"),
+    USER_NOT_BOOKER_OF_RESERV("Fooding-Member is not Owner of Reservation"),
+    USER_NOT_AUTHOR_OF_COMMENT("Fooding-User is not Author of Comment"),
+    USER_NOT_AUTHOR_OF_REVIEW("Fooding-User is not Author of Review");
 
     private String message;
 

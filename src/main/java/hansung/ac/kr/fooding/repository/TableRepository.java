@@ -12,7 +12,7 @@ public interface TableRepository extends JpaRepository<Table, Long> {
             "INNER JOIN floor as f ON f.id = s.floor_id " +
             "INNER JOIN restaurant as r ON f.restaurant_id = r.id " +
             "where r.id = :restId and t.table_num = :tableNum", nativeQuery = true)
-    List<Table> findTableByTableNum(String tableNum, Long restId);
+    List<Table> findTableByRestIdAndTableNum(Long restId, String tableNum);
 
     @Query(value = "SELECT * FROM _table as t " +
             "INNER JOIN structure as s ON t.id = s.id " +

@@ -1,11 +1,13 @@
 package hansung.ac.kr.fooding.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 public class Booker {
     private Long member_id;
     private String name;
