@@ -21,6 +21,8 @@ public class RestSimpleGetDTO {
     private int viewCount;
     private int reviewCount;
     private float avgScore;
+    private Float x;
+    private Float y;
 
     private RestSimpleGetDTO(Restaurant restaurant) {
         id = restaurant.getId();
@@ -40,6 +42,8 @@ public class RestSimpleGetDTO {
                 .collect(Collectors.summarizingDouble(Review::getStar));
         reviewCount = (int) statistics.getCount();
         avgScore = (float) statistics.getAverage();
+        x = restaurant.getLocation().getCoordinate().getX();
+        y = restaurant.getLocation().getCoordinate().getY();
     }
 
     public static RestSimpleGetDTO from(Restaurant restaurant) {

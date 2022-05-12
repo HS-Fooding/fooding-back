@@ -31,11 +31,14 @@ class ReservationRepositoryImplTest {
         SearchCond cond = new SearchCond();
         cond.setStartDate("1997-06-05");
         cond.setEndDate("1997-06-07");
-        cond.setReserveNum(2);
+//        cond.setReserveNum(2);
+        cond.setStartTime("05:00");
+        cond.setEndTime("22:00");
+
 
         List<Tuple> search = reservationRepository.search(restId, cond);
         System.out.println("search = " + search);
-        assertThat(search.size()).isEqualTo(2);
+        assertThat(search.size()).isEqualTo(7);
     }
 
     @Test

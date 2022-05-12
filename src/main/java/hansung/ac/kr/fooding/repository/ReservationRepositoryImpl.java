@@ -59,26 +59,12 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
         String[] endSplit = end.split(":");
 
         int startHour = Integer.parseInt(startSplit[0]);
-        int startMinute = Integer.parseInt(startSplit[1]);
         int endHour = Integer.parseInt(endSplit[0]);
-        int endMinute = Integer.parseInt(endSplit[1]);
-
-        LocalTime startTime = LocalTime.of(startHour, startMinute);
-        LocalTime endTime = LocalTime.of(endHour, endMinute);
 
         List<String> times = new ArrayList<>();
         for (int i = startHour; i <= endHour; i++) {
-            if (i < 10) {
-                for (int j = 0; j < 60; j += 30) {
-                    if (j == 0) times.add("0" + i + ":00");
-                    else times.add("0" + i + ":30");
-                }
-            } else {
-                for (int j = 0; j < 60; j += 30) {
-                    if (j == 0) times.add("0" + i + ":00");
-                    else times.add("0" + i + ":30");
-                }
-            }
+            times.add(String.format("%02d:00", i));
+            times.add(String.format("%02d:30", i));
         }
         return reservation.reserveTime.in(times);
     }
