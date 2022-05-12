@@ -26,7 +26,7 @@ class ReservationRepositoryImplTest {
 
 
     @Test
-    public void searchTest() {
+    public void searchTest1() {
         Long restId = 1L;
         SearchCond cond = new SearchCond();
         cond.setStartDate("1997-06-05");
@@ -39,6 +39,21 @@ class ReservationRepositoryImplTest {
         List<Tuple> search = reservationRepository.search(restId, cond);
         System.out.println("search = " + search);
         assertThat(search.size()).isEqualTo(7);
+    }
+
+    @Test
+    public void searchTest2() {
+        Long restId = 1L;
+        SearchCond cond = new SearchCond();
+        cond.setStartDate("1997-06-05");
+        cond.setEndDate("1997-06-06");
+        cond.setAge(10);
+        cond.setSex(false);
+
+
+        List<Tuple> search = reservationRepository.search(restId, cond);
+        System.out.println("search = " + search);
+        assertThat(search.size()).isEqualTo(6);
     }
 
     @Test

@@ -1,14 +1,16 @@
 package hansung.ac.kr.fooding.repository;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,23 +32,36 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
     // member는 ..?
     public List<Tuple> search(Long restId, SearchCond condition) {
         return queryFactory
-                .select(restaurant, reservation)
-                .from(restaurant) // theta join - 연관관계가 없는 두 테이블을 조인
+                .select(restaurant, reservation, member)
+                .from(restaurant)
                 .join(restaurant.reservations, reservation)
+                .leftJoin(member).on(reservation.booker.member_id.eq(member.id))
                 .where(
                         restaurant.id.eq(restId),
                         reservation.reserveDate.in(getDuration(condition.getStartDate(), condition.getEndDate())),
-                        // favor ??
                         getReserveNum(condition.getReserveNum()),
                         getReserveTime(condition.getStartTime(), condition.getEndTime()),
-                        getCar(condition.getIsCar())
+                        getCar(condition.getIsCar()),
+                        //  사용자 정보
+                        getAge(condition.getAge()),
+                        getSex(condition.getSex())
                 )
                 .fetch();
     }
 
-//    member.job.in(condition.getJob()),
-//    getAge(condition.getAge()),
-//    getSex(condition.getSex()),
+    public BooleanExpression getSex(Boolean sex) {
+        if (sex == null) return null;
+        return sex ? member.sex.eq(true) : member.sex.eq(false);
+    }
+
+    public BooleanExpression getAge(Integer age) {
+        if (age == null) return null;
+        else if (age < 20) return member.age.between(0, 20);
+        else if (age < 30) return member.age.between(20, 30);
+        else if (age < 40) return member.age.between(30, 40);
+        else if (age < 50) return member.age.between(40, 50);
+        else return member.age.gt(50);
+    }
 
     public BooleanExpression getCar(Boolean car) {
         if (car == null) return null;
@@ -71,21 +86,6 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
 
     public BooleanExpression getReserveNum(Integer num) {
         return num != null ? reservation.reserveNum.eq(num) : null;
-    }
-
-    public BooleanExpression getSex(Boolean sex) {
-        if (sex == null) return null;
-        return sex ? member.sex.eq(true) : member.sex.eq(false);
-    }
-
-    public BooleanExpression getAge(Integer age) {
-        // reservation에서 사용자의 정보를 어떻게 참조?
-        if (age == null) return null;
-        else if (age < 20) return member.age.between(0, 20);
-        else if (age < 30) return member.age.between(20, 30);
-        else if (age < 40) return member.age.between(30, 40);
-        else if (age < 50) return member.age.between(40, 50);
-        else return member.age.gt(50);
     }
 
     private List<String> getDuration(String start, String end) {
