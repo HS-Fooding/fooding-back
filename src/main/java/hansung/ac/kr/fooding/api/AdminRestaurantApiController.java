@@ -1,12 +1,17 @@
 package hansung.ac.kr.fooding.api;
 
+import com.querydsl.core.Tuple;
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservUpdateDTO;
 import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
+import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
+import hansung.ac.kr.fooding.repository.ReservationRepository;
+import hansung.ac.kr.fooding.repository.ReservationRepositoryImpl;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.ReservationService;
 import hansung.ac.kr.fooding.service.RestaurantService;
@@ -30,6 +35,7 @@ public class AdminRestaurantApiController {
     private final MenuService menuService;
     private final StructService structService;
     private final ReservationService reservationService;
+    private final ReservationRepository reservationRepository;
 
     @ApiOperation(value = "매장 등록")
     @RequestMapping(method = RequestMethod.POST)
@@ -119,6 +125,16 @@ public class AdminRestaurantApiController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @ApiOperation(value = "통계")
+    @RequestMapping(path = "/{restId}/statistic", method = RequestMethod.GET)
+    public ResponseEntity showStatistics(@PathVariable(value = "restId") Long restId,
+                                         SearchCond condition) {
+        List<Tuple> result = reservationRepository.search(restId, condition);
+
+        return new ResponseEntity(result, HttpStatus.OK);
+    }
+
 
 //    @RequestMapping(path = "/{restId}/reservation/{reservId}")
 //    public ResponseEntity editReservation(@PathVariable(value = "restId") Long restId,
