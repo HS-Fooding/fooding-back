@@ -83,9 +83,9 @@ public class RestaurantApiController {
         return new ResponseEntity<StructGetDTO>(structGetDTO, HttpStatus.OK);
     }
 
-    @ApiOperation("좌표에대한 특정 반경 내에 있는 매장 리스트 반환")
+    @ApiOperation("좌표에 대한 특정 반경 내에 있는 매장 리스트 반환")
     @RequestMapping(path = "/coord", method = RequestMethod.GET)
-    public Slice<RestSimpleGetDTO> getRestaurantsByCoord(@RequestParam Float x, @RequestParam Float y, Pageable pageable) {
+    public Slice<RestSimpleGetWithLocDTO> getRestaurantsByCoord(@RequestParam Float x, @RequestParam Float y, Pageable pageable) {
         return restaurantService.getRestaurantByCoord(x, y, pageable);
     }
 }
