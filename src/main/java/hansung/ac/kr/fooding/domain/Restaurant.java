@@ -101,7 +101,7 @@ public class Restaurant extends BaseEntity{
     }
 
     public void deleteFloors(){
-        this.floors = null;
+        floors.clear();
     }
 
     public void deleteReservation(Reservation reservation) { reservations.remove(reservation); }

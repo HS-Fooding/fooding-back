@@ -1,10 +1,7 @@
 package hansung.ac.kr.fooding.domain.image;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import hansung.ac.kr.fooding.domain.BaseEntity;
-import hansung.ac.kr.fooding.domain.Menu;
-import hansung.ac.kr.fooding.domain.Restaurant;
-import hansung.ac.kr.fooding.domain.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +10,7 @@ import javax.persistence.*;
 
 //@MappedSuperclass
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 @Getter @Setter
 @NoArgsConstructor
 public class Image extends BaseEntity {
