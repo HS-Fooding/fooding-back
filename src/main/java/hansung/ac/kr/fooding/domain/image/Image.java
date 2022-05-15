@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 //@MappedSuperclass
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Getter @Setter
 @NoArgsConstructor
 public class Image extends BaseEntity {

@@ -2,16 +2,14 @@ package hansung.ac.kr.fooding.api;
 
 import com.querydsl.core.Tuple;
 import hansung.ac.kr.fooding.config.SwaggerConfig;
-import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
+import hansung.ac.kr.fooding.dto.chart.ChartDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservUpdateDTO;
-import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
-import hansung.ac.kr.fooding.repository.ReservationRepositoryImpl;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.ReservationService;
 import hansung.ac.kr.fooding.service.RestaurantService;
@@ -77,62 +75,62 @@ public class AdminRestaurantApiController {
         return ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value="메뉴 삭제")
+    @ApiOperation(value = "메뉴 삭제")
     @RequestMapping(path = "/{restId}/menu/{menuId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteMenu(@PathVariable(value = "restId") Long restId,
-                                     @PathVariable(value = "menuId") Long menuId){
+                                     @PathVariable(value = "menuId") Long menuId) {
         try {
             menuService.deleteMenu(restId, menuId);
-        } catch(IllegalStateException e){
-            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "매장 구조 생성")
-    @RequestMapping(path="/{restId}/structure", method = RequestMethod.POST)
+    @RequestMapping(path = "/{restId}/structure", method = RequestMethod.POST)
     public ResponseEntity postStructure(@PathVariable(value = "restId") Long restId,
-                                        @RequestBody StructPostDTO structPostDTO){
-        try{
+                                        @RequestBody StructPostDTO structPostDTO) {
+        try {
             structService.postStruct(structPostDTO, restId);
-        } catch (Exception e){
-            return new ResponseEntity<String>("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "매장 예약 확인")
-    @RequestMapping(path="/{restId}/reservation", method = RequestMethod.GET)
+    @RequestMapping(path = "/{restId}/reservation", method = RequestMethod.GET)
     public ResponseEntity getReservations(@PathVariable(value = "restId") Long restId,
-                                          @RequestParam String date){
+                                          @RequestParam String date) {
         AdminReservGetDTO adminReservGetDTO;
         try {
             adminReservGetDTO = reservationService.getRestReservations(restId, date);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<AdminReservGetDTO>(adminReservGetDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "매장 엑셀 관리")
-    @RequestMapping(path="/{restId}/reservation", method = RequestMethod.POST)
+    @RequestMapping(path = "/{restId}/reservation", method = RequestMethod.POST)
     public ResponseEntity postReservations(@PathVariable(value = "restId") Long restId,
-                                           @RequestBody List<AdminReservUpdateDTO> adminReservUpdateDTOs){
+                                           @RequestBody List<AdminReservUpdateDTO> adminReservUpdateDTOs) {
         try {
             reservationService.adminEditReservations(restId, adminReservUpdateDTOs);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value = "통계")
-    @RequestMapping(path = "/{restId}/statistic", method = RequestMethod.GET)
+    @RequestMapping(path = "/{restId}/chart", method = RequestMethod.GET)
     public ResponseEntity showStatistics(@PathVariable(value = "restId") Long restId,
-                                         SearchCond condition) {
-        List<Tuple> result = reservationRepository.search(restId, condition);
+                                         @RequestParam String start, @RequestParam String end) {
+        List<ChartDTO> result = reservationRepository.search(restId, start, end);
 
-        return new ResponseEntity(result, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

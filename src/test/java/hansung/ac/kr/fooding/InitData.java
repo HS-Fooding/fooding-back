@@ -496,14 +496,24 @@ public class InitData {
             reservationRepository.save(reservation6);
 
             Reservation reservation7 = new Reservation();
-            reservation7.setReserveDate("1997-06-07");
-            reservation7.setReserveTime("15:00");
+            reservation7.setReserveDate("1997-06-06");
+            reservation7.setReserveTime("22:00");
             reservation7.setCar(true);
-            reservation7.setTable(table1);
-            reservation7.setReserveNum(3);
+            reservation7.setTable(table);
+            reservation7.setReserveNum(10);
             reservation7.setBooker(Booker.from((Member) userAccount1));
             restaurant1.addReservation(reservation7);
             reservationRepository.save(reservation7);
+
+            Reservation reservation8 = new Reservation();
+            reservation8.setReserveDate("1997-06-07");
+            reservation8.setReserveTime("15:00");
+            reservation8.setCar(true);
+            reservation8.setTable(table1);
+            reservation8.setReserveNum(3);
+            reservation8.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation8);
+            reservationRepository.save(reservation8);
         }
     }
 

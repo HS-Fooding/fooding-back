@@ -2,11 +2,13 @@ package hansung.ac.kr.fooding.repository;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hansung.ac.kr.fooding.dto.chart.ChartDTO;
 import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -24,36 +26,17 @@ class ReservationRepositoryImplTest {
 
     JPAQueryFactory queryFactory;
 
-
     @Test
-    public void searchTest1() {
+    public void chartTest() {
         Long restId = 1L;
-        SearchCond cond = new SearchCond();
-        cond.setStartDate("1997-06-05");
-        cond.setEndDate("1997-06-07");
-//        cond.setReserveNum(2);
-        cond.setStartTime("05:00");
-        cond.setEndTime("22:00");
+        String start = "1997-06-05";
+        String end = "1997-06-06";
 
+        List<ChartDTO> search = reservationRepository.search(restId, start, end);
+        for (ChartDTO chartDTO : search) {
+            System.out.println("chartDTO = " + chartDTO);
+        }
 
-        List<Tuple> search = reservationRepository.search(restId, cond);
-        System.out.println("search = " + search);
-        assertThat(search.size()).isEqualTo(7);
-    }
-
-    @Test
-    public void searchTest2() {
-        Long restId = 1L;
-        SearchCond cond = new SearchCond();
-        cond.setStartDate("1997-06-05");
-        cond.setEndDate("1997-06-06");
-        cond.setAge(10);
-        cond.setSex(false);
-
-
-        List<Tuple> search = reservationRepository.search(restId, cond);
-        System.out.println("search = " + search);
-        assertThat(search.size()).isEqualTo(6);
     }
 
     @Test

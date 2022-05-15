@@ -1,12 +1,10 @@
 package hansung.ac.kr.fooding.repository;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import hansung.ac.kr.fooding.domain.Member;
+import hansung.ac.kr.fooding.dto.chart.ChartDTO;
 import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
 
 import javax.persistence.EntityManager;
@@ -30,62 +28,20 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
 
     @Override
     // member는 ..?
-    public List<Tuple> search(Long restId, SearchCond condition) {
+    public List<ChartDTO> search(Long restId, String start, String end) {
         return queryFactory
-                .select(restaurant, reservation, member)
+//                .select(restaurant, reservation, member)
+                .select(Projections.constructor(ChartDTO.class,
+                        reservation.id, member.age, member.sex, member.job, reservation.reserveTime, reservation.reserveNum
+                ))
                 .from(restaurant)
                 .join(restaurant.reservations, reservation)
                 .leftJoin(member).on(reservation.booker.member_id.eq(member.id))
                 .where(
                         restaurant.id.eq(restId),
-                        reservation.reserveDate.in(getDuration(condition.getStartDate(), condition.getEndDate())),
-                        getReserveNum(condition.getReserveNum()),
-                        getReserveTime(condition.getStartTime(), condition.getEndTime()),
-                        getCar(condition.getIsCar()),
-                        //  사용자 정보
-                        getAge(condition.getAge()),
-                        getSex(condition.getSex())
+                        reservation.reserveDate.in(getDuration(start, end))
                 )
                 .fetch();
-    }
-
-    public BooleanExpression getSex(Boolean sex) {
-        if (sex == null) return null;
-        return sex ? member.sex.eq(true) : member.sex.eq(false);
-    }
-
-    public BooleanExpression getAge(Integer age) {
-        if (age == null) return null;
-        else if (age < 20) return member.age.between(0, 20);
-        else if (age < 30) return member.age.between(20, 30);
-        else if (age < 40) return member.age.between(30, 40);
-        else if (age < 50) return member.age.between(40, 50);
-        else return member.age.gt(50);
-    }
-
-    public BooleanExpression getCar(Boolean car) {
-        if (car == null) return null;
-        return car ? reservation.isCar.isTrue() : reservation.isCar.isFalse();
-    }
-
-    public BooleanExpression getReserveTime(String start, String end) {
-        if (start == null || end == null) return null;
-        String[] startSplit = start.split(":");
-        String[] endSplit = end.split(":");
-
-        int startHour = Integer.parseInt(startSplit[0]);
-        int endHour = Integer.parseInt(endSplit[0]);
-
-        List<String> times = new ArrayList<>();
-        for (int i = startHour; i <= endHour; i++) {
-            times.add(String.format("%02d:00", i));
-            times.add(String.format("%02d:30", i));
-        }
-        return reservation.reserveTime.in(times);
-    }
-
-    public BooleanExpression getReserveNum(Integer num) {
-        return num != null ? reservation.reserveNum.eq(num) : null;
     }
 
     private List<String> getDuration(String start, String end) {
