@@ -14,6 +14,7 @@ public class ChartResultDTO {
     Integer reserveNum;
     Long memberId;
     Boolean sex;
+    Integer age;
     Job job;
     List<Favor> favor = new ArrayList<>();
 
@@ -24,6 +25,7 @@ public class ChartResultDTO {
         if (dto.getMember() != null) {
             memberId = dto.getMember().getId();
             sex = dto.getMember().isSex();
+            age = dto.getMember().getAge();
             job = dto.getMember().getJob();
             favor = dto.getMember().getFavor();
         }
