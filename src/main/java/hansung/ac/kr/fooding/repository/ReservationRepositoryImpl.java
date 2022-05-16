@@ -29,6 +29,7 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
 //                .select(restaurant, reservation, member)
                 .select(Projections.constructor(ChartProjectionDTO.class,
                         reservation.id, reservation.reserveTime, reservation.reserveNum,
+                        restaurant.weekdaysWorkHour, restaurant.weekendsWorkHour,
                         member
                 ))
                 .from(restaurant)
