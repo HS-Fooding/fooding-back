@@ -1,23 +1,15 @@
 package hansung.ac.kr.fooding.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import hansung.ac.kr.fooding.dto.chart.ChartDTO;
-import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
-import org.junit.jupiter.api.Assertions;
+import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class ReservationRepositoryImplTest {
@@ -32,9 +24,9 @@ class ReservationRepositoryImplTest {
         String start = "1997-06-05";
         String end = "1997-06-06";
 
-        List<ChartDTO> search = reservationRepository.search(restId, start, end);
-        for (ChartDTO chartDTO : search) {
-            System.out.println("chartDTO = " + chartDTO);
+        List<ChartProjectionDTO> search = reservationRepository.search(restId, start, end);
+        for (ChartProjectionDTO chartProjectionDTO : search) {
+            System.out.println("chartDTO = " + chartProjectionDTO);
         }
 
     }

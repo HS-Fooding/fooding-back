@@ -8,6 +8,8 @@ import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
 import hansung.ac.kr.fooding.dto.*;
+import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
+import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
 import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -19,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -237,6 +238,11 @@ public class ReservationService {
                     adminDeleteReservation(restId, adminReservPostDTO);
             }
         }
+    }
+
+    public List<ChartResultDTO> getChart(Long restId, String start, String end) {
+        List<ChartProjectionDTO> search = reservationRepository.search(restId, start, end);
+        return search.stream().map(m -> new ChartResultDTO(m)).collect(Collectors.toList());
     }
 
 }

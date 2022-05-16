@@ -1,14 +1,14 @@
 package hansung.ac.kr.fooding.api;
 
-import com.querydsl.core.Tuple;
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
-import hansung.ac.kr.fooding.dto.chart.ChartDTO;
+import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
+import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservUpdateDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
-import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
+import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.ReservationService;
@@ -29,6 +29,7 @@ import java.util.List;
 @RequestMapping(path = "/admin/restaurant")
 @RequiredArgsConstructor
 public class AdminRestaurantApiController {
+    private final MemberRepository memberRepository;
     private final RestaurantService restaurantService;
     private final MenuService menuService;
     private final StructService structService;
@@ -126,9 +127,9 @@ public class AdminRestaurantApiController {
 
     @ApiOperation(value = "통계")
     @RequestMapping(path = "/{restId}/chart", method = RequestMethod.GET)
-    public ResponseEntity showStatistics(@PathVariable(value = "restId") Long restId,
+    public ResponseEntity chart(@PathVariable(value = "restId") Long restId,
                                          @RequestParam String start, @RequestParam String end) {
-        List<ChartDTO> result = reservationRepository.search(restId, start, end);
+        List<ChartResultDTO> result = reservationService.getChart(restId, start, end);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

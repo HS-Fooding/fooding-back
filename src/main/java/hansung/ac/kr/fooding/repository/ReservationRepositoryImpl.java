@@ -1,15 +1,11 @@
 package hansung.ac.kr.fooding.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import hansung.ac.kr.fooding.dto.chart.ChartDTO;
-import hansung.ac.kr.fooding.dto.searchCondition.SearchCond;
+import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,11 +24,12 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
 
     @Override
     // member는 ..?
-    public List<ChartDTO> search(Long restId, String start, String end) {
+    public List<ChartProjectionDTO> search(Long restId, String start, String end) {
         return queryFactory
 //                .select(restaurant, reservation, member)
-                .select(Projections.constructor(ChartDTO.class,
-                        reservation.id, member.age, member.sex, member.job, reservation.reserveTime, reservation.reserveNum
+                .select(Projections.constructor(ChartProjectionDTO.class,
+                        reservation.id, reservation.reserveTime, reservation.reserveNum,
+                        member
                 ))
                 .from(restaurant)
                 .join(restaurant.reservations, reservation)

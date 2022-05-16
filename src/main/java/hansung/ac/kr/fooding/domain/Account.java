@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.repository.cdi.Eager;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -32,8 +33,8 @@ public class Account extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     protected Job job;
 
-    @Enumerated(value = EnumType.STRING)
     @ElementCollection
+    @Enumerated(value = EnumType.STRING)
     @CollectionTable(name = "favor", joinColumns = @JoinColumn(name = "member_id"))
     protected List<Favor> favor;
 
