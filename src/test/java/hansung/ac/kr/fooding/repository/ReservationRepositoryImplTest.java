@@ -24,7 +24,7 @@ class ReservationRepositoryImplTest {
         String start = "1997-06-05";
         String end = "1997-06-06";
 
-        List<ChartProjectionDTO> search = reservationRepository.search(restId, start, end);
+        List<ChartProjectionDTO> search = reservationRepository.getChart(restId, start, end);
         for (ChartProjectionDTO chartProjectionDTO : search) {
             System.out.println("chartDTO = " + chartProjectionDTO);
         }

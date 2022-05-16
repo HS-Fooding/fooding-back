@@ -3,6 +3,7 @@ package hansung.ac.kr.fooding.service;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.AdminReservStatus;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
@@ -10,6 +11,7 @@ import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
 import hansung.ac.kr.fooding.dto.*;
 import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
 import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
+import hansung.ac.kr.fooding.dto.chart.ResultDTO;
 import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -240,9 +242,12 @@ public class ReservationService {
         }
     }
 
-    public List<ChartResultDTO> getChart(Long restId, String start, String end) {
-        List<ChartProjectionDTO> search = reservationRepository.search(restId, start, end);
-        return search.stream().map(m -> new ChartResultDTO(m)).collect(Collectors.toList());
+    public ResultDTO getChart(Long restId, String start, String end) {
+        List<ChartProjectionDTO> data = reservationRepository.getChart(restId, start, end);
+        List<ChartResultDTO> collect = data.stream().map(ChartResultDTO::new).collect(Collectors.toList());
+        WorkHour workingTime = restaurantRepository.findWorkingHourById(restId);
+
+        return new ResultDTO<>(collect, workingTime);
     }
 
 }

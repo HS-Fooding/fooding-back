@@ -24,12 +24,11 @@ public class ReservationRepositoryImpl implements ReservationRepositoryCustom {
 
     @Override
     // member는 ..?
-    public List<ChartProjectionDTO> search(Long restId, String start, String end) {
+    public List<ChartProjectionDTO> getChart(Long restId, String start, String end) {
         return queryFactory
 //                .select(restaurant, reservation, member)
                 .select(Projections.constructor(ChartProjectionDTO.class,
                         reservation.id, reservation.reserveTime, reservation.reserveNum,
-                        restaurant.weekdaysWorkHour, restaurant.weekendsWorkHour,
                         member
                 ))
                 .from(restaurant)

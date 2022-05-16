@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.repository;
 
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.Review;
+import hansung.ac.kr.fooding.domain.WorkHour;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -58,6 +59,9 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
                 "sin(radians(:x)) * sin(radians(r.location.coordinate.x))" +
             ")) <= :r")
     Slice<Restaurant> findRestByCoord(@Param("x") Double x, @Param("y") Double y, @Param("r") Double r, Pageable pageable);
+
+    @Query("select r.weekdaysWorkHour from Restaurant r where r.id = :restId")
+    WorkHour findWorkingHourById(@Param("restId") Long restId);
 
 //    @Query("select r from Restaurant r where r.id = :restId")
 //    Optional<Restaurant> getReviewsOnly(Long restId);
