@@ -78,14 +78,14 @@ public class ReservationService {
     }
 
     @Transactional
-    public void deleteReservation(Long restId, Long reservId) throws IllegalStateException, SecurityException {
+    public void deleteReservation(Long restId, Long reserveId) throws IllegalStateException, SecurityException {
         Member member = (Member) securityService.getAccount();
 
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
         if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
         Restaurant restaurant = optionalRestaurant.get();
 
-        Optional<Reservation> optionalReservation = reservationRepository.findById(reservId);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reserveId);
         if (optionalReservation.isEmpty()) throw new IllegalStateException("Fooding-Reservation Not Found");
         Reservation reservation = optionalReservation.get();
 

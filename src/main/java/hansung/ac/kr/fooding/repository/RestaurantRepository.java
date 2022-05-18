@@ -1,5 +1,6 @@
 package hansung.ac.kr.fooding.repository;
 
+import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.domain.WorkHour;
@@ -62,6 +63,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Query("select r.weekdaysWorkHour from Restaurant r where r.id = :restId")
     WorkHour findWorkingHourById(@Param("restId") Long restId);
+
 
 //    @Query("select r from Restaurant r where r.id = :restId")
 //    Optional<Restaurant> getReviewsOnly(Long restId);

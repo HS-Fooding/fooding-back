@@ -27,6 +27,9 @@ public class Reservation extends BaseEntity{
     @Embedded
     private Booker booker;
     private boolean isCar;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
 
     public Reservation(ReservPostDTO dto,Table table,  Member member){
         this.table = table;

@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class MyPageAPIController {
     private final SecurityService securityService;
 
     @ApiOperation(value = "예약 리스트")
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path="/reservation", method = RequestMethod.GET)
     public ResponseEntity reservationList() {
         List<ReservationsDTO> result;
         try {
@@ -37,5 +38,19 @@ public class MyPageAPIController {
             return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "예약 취소")
+    @RequestMapping(path = "/reservation/{reserveId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteReservation(@PathVariable(value="restId") Long restId,
+                                            @PathVariable(value = "reserveId") Long reserveId){
+        try{
+            reservationService.deleteReservation(restId, reserveId);
+        } catch (IllegalStateException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (SecurityException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok().build();
     }
 }

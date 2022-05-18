@@ -9,6 +9,10 @@ public class ReservationsDTO {
     Long reserveId;
     String reserveDate;
     String reserveTime;
+
+    Long restId;
+    String restName;
+
     int reserveCount;
     Boolean isCar;
     String name;
@@ -18,6 +22,8 @@ public class ReservationsDTO {
         reserveId = reservation.getId();
         reserveDate = reservation.getReserveDate();
         reserveTime = reservation.getReserveTime();
+        restId = reservation.getRestaurant().getId();
+        restName = reservation.getRestaurant().getName();
         reserveCount = reservation.getReserveNum();
         isCar = reservation.isCar();
         name = reservation.getBooker().getName();
