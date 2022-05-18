@@ -12,6 +12,7 @@ import hansung.ac.kr.fooding.dto.*;
 import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
 import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
 import hansung.ac.kr.fooding.dto.chart.ResultDTO;
+import hansung.ac.kr.fooding.dto.mypage.ReservationsDTO;
 import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -250,4 +251,8 @@ public class ReservationService {
         return new ResultDTO<>(collect, workingTime);
     }
 
+    public List<ReservationsDTO> getReservationsById(Long memberId) {
+        List<Reservation> reservations = reservationRepository.findByBookerId(memberId);
+        return reservations.stream().map(ReservationsDTO::new).collect(Collectors.toList());
+    }
 }
