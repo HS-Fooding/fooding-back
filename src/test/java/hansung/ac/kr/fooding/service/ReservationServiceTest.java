@@ -49,7 +49,7 @@ class ReservationServiceTest {
     @Test
     @WithMockUser(username = "userID")
     public void deleteReservationTest() {
-        reservationService.deleteReservation(2L, 1L);
+        reservationService.deleteReservation(1L);
     }
 
     @Test
@@ -100,7 +100,7 @@ class ReservationServiceTest {
         //given
         String date = "2022-05-01";
         //when
-        AdminReservGetDTO todayRestReservations = reservationService.getRestReservations(2L,date);
+        AdminReservGetDTO todayRestReservations = reservationService.getRestReservations(2L, date);
         //then
         System.out.println(todayRestReservations.toString());
     }

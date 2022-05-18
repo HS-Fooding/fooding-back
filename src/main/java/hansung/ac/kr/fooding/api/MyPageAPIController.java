@@ -42,10 +42,9 @@ public class MyPageAPIController {
 
     @ApiOperation(value = "예약 취소")
     @RequestMapping(path = "/reservation/{reserveId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteReservation(@PathVariable(value="restId") Long restId,
-                                            @PathVariable(value = "reserveId") Long reserveId){
+    public ResponseEntity deleteReservation(@PathVariable(value = "reserveId") Long reserveId){
         try{
-            reservationService.deleteReservation(restId, reserveId);
+            reservationService.deleteReservation(reserveId);
         } catch (IllegalStateException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (SecurityException e){
