@@ -39,7 +39,7 @@ class GeocodeServiceTest {
     public void getGecodeTest2() throws Exception {
         // given
         String oldAddress = "서울특별시 성북구 석관동 10 두산아파트";
-        String roadAddress = "서울특별시 성북구 화랑로48길 16, 110동 1201호";
+        String roadAddress = "서울특별시 성북구 동소문로22길 67 2F";
 
         // when
         Location result1 = geocodeService.getGeocode(oldAddress);

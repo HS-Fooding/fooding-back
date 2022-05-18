@@ -21,6 +21,13 @@ public interface TableRepository extends JpaRepository<Table, Long> {
             "WHERE r.id = :restId AND t.min_people <= :num AND :num <= t.max_people", nativeQuery = true)
     List<Table> findByRestIdWithNum(Long restId, int num);
 
+    @Query(value = "SELECT * FROM _table as t " +
+            "INNER JOIN structure as s ON t.id = s.id " +
+            "INNER JOIN floor as f ON f.id = s.floor_id " +
+            "INNER JOIN restaurant as r ON f.restaurant_id = r.id " +
+            "WHERE r.id = :restId", nativeQuery = true)
+    List<Table> findByRestId(Long restId);
+
 
 //    @Query(value = "SELECT * FROM _table as t "+
 //            "INNER JOIN reservation as reserv ON reserv.table_id = t.id " +
@@ -36,4 +43,14 @@ public interface TableRepository extends JpaRepository<Table, Long> {
             "OR (reserv.reserve_date = :date AND reserv.reserve_time = :time)) "+
             "IN (rest.id = :restId)", nativeQuery = true)
     List<Table> findUnavailByRestIdWithDateAndTime(Long restId, int num, String date, String time);
+
+    @Query(value = "SELECT * FROM _table as t " +
+            "INNER JOIN structure as s ON t.id = s.id " +
+            "INNER JOIN floor as f ON f.id = s.floor_id " +
+            "INNER JOIN restaurant as rest ON f.restaurant_id = rest.id " +
+            "LEFT JOIN reservation as reserv ON reserv.table_id = t.id " +
+            "WHERE " +
+            "(reserv.reserve_date = :date AND reserv.reserve_time = :time) "+
+            "IN (rest.id = :restId)", nativeQuery = true)
+    List<Table> findUnavailByRestIdWithDateAndTime(Long restId, String date, String time);
 }
