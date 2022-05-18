@@ -450,10 +450,70 @@ public class InitData {
             reservation2.setReserveTime("14:00");
             reservation2.setCar(true);
             reservation2.setTable(table);
-            reservation2.setReserveNum(2);
+            reservation2.setReserveNum(3);
             reservation2.setBooker(Booker.from((Member) userAccount1));
             restaurant1.addReservation(reservation2);
             reservationRepository.save(reservation2);
+
+            Reservation reservation3 = new Reservation();
+            reservation3.setReserveDate("1997-06-05");
+            reservation3.setReserveTime("20:00");
+            reservation3.setCar(false);
+            reservation3.setTable(table1);
+            reservation3.setReserveNum(4);
+            reservation3.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation3);
+            reservationRepository.save(reservation3);
+
+            Reservation reservation4 = new Reservation();
+            reservation4.setReserveDate("1997-06-06");
+            reservation4.setReserveTime("12:00");
+            reservation4.setCar(false);
+            reservation4.setTable(table2);
+            reservation4.setReserveNum(4);
+            reservation4.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation4);
+            reservationRepository.save(reservation4);
+
+            Reservation reservation5 = new Reservation();
+            reservation5.setReserveDate("1997-06-06");
+            reservation5.setReserveTime("14:00");
+            reservation5.setCar(true);
+            reservation5.setTable(table1);
+            reservation5.setReserveNum(6);
+            reservation5.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation5);
+            reservationRepository.save(reservation5);
+
+            Reservation reservation6 = new Reservation();
+            reservation6.setReserveDate("1997-06-06");
+            reservation6.setReserveTime("18:00");
+            reservation6.setCar(true);
+            reservation6.setTable(table);
+            reservation6.setReserveNum(2);
+            reservation6.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation6);
+            reservationRepository.save(reservation6);
+
+            Reservation reservation7 = new Reservation();
+            reservation7.setReserveDate("1997-06-06");
+            reservation7.setReserveTime("22:00");
+            reservation7.setCar(true);
+            reservation7.setTable(table);
+            reservation7.setReserveNum(10);
+            reservation7.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation7);
+            reservationRepository.save(reservation7);
+
+            Reservation reservation8 = new Reservation();
+            reservation8.setReserveDate("1997-06-07");
+            reservation8.setReserveTime("15:00");
+            reservation8.setCar(true);
+            reservation8.setTable(table1);
+            reservation8.setReserveNum(3);
+            reservation8.setBooker(Booker.from((Member) userAccount1));
+            restaurant1.addReservation(reservation8);
+            reservationRepository.save(reservation8);
         }
     }
 

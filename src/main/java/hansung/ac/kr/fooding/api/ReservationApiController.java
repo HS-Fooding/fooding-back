@@ -31,20 +31,6 @@ public class ReservationApiController {
         }
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
-    
-    @ApiOperation("예약 취소")
-    @RequestMapping(path = "/reservation/{reservId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteReservation(@PathVariable(value="restId") Long restId,
-                                            @PathVariable(value = "reservId") Long reservId){
-        try{
-            reservationService.deleteReservation(restId, reservId);
-        } catch (IllegalStateException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (SecurityException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
-        }
-        return ResponseEntity.ok().build();
-    }
 
     @ApiOperation("예약 가능 테이블 조회")
     @RequestMapping(path = "/reservation", method =RequestMethod.GET)

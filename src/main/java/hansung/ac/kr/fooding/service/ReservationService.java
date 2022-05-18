@@ -3,11 +3,16 @@ package hansung.ac.kr.fooding.service;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
+import hansung.ac.kr.fooding.domain.WorkHour;
 import hansung.ac.kr.fooding.domain.enumeration.AdminReservStatus;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
 import hansung.ac.kr.fooding.dto.*;
+import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
+import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
+import hansung.ac.kr.fooding.dto.chart.ResultDTO;
+import hansung.ac.kr.fooding.dto.mypage.ReservationsDTO;
 import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
@@ -18,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -74,20 +78,20 @@ public class ReservationService {
     }
 
     @Transactional
-    public void deleteReservation(Long restId, Long reservId) throws IllegalStateException, SecurityException {
+    public void deleteReservation(Long reserveId) throws IllegalStateException, SecurityException {
         Member member = (Member) securityService.getAccount();
 
-        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
-        if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
-        Restaurant restaurant = optionalRestaurant.get();
+//        Optional<Restaurant> optionalRestaurant = restaurantRepository.findById(restId);
+//        if (optionalRestaurant.isEmpty()) throw new IllegalStateException("Fooding-Restaurant Not Found");
+//        Restaurant restaurant = optionalRestaurant.get();
 
-        Optional<Reservation> optionalReservation = reservationRepository.findById(reservId);
+        Optional<Reservation> optionalReservation = reservationRepository.findById(reserveId);
         if (optionalReservation.isEmpty()) throw new IllegalStateException("Fooding-Reservation Not Found");
         Reservation reservation = optionalReservation.get();
 
         if (reservation.getBooker().getMember_id() != member.getId()) throw new SecurityException("Fooding-Not Reservation Owner");
 
-        restaurant.getReservations().remove(reservation);
+        reservation.getRestaurant().getReservations().remove(reservation);
         reservationRepository.delete(reservation);
     }
 
@@ -237,5 +241,18 @@ public class ReservationService {
                     adminDeleteReservation(restId, adminReservPostDTO);
             }
         }
+    }
+
+    public ResultDTO getChart(Long restId, String start, String end) {
+        List<ChartProjectionDTO> data = reservationRepository.getChart(restId, start, end);
+        List<ChartResultDTO> collect = data.stream().map(ChartResultDTO::new).collect(Collectors.toList());
+        WorkHour workingTime = restaurantRepository.findWorkingHourById(restId);
+
+        return new ResultDTO<>(collect, workingTime);
+    }
+
+    public List<ReservationsDTO> getReservationsById(Long memberId) {
+        List<Reservation> reservations = reservationRepository.findByBookerId(memberId);
+        return reservations.stream().map(ReservationsDTO::new).collect(Collectors.toList());
     }
 }

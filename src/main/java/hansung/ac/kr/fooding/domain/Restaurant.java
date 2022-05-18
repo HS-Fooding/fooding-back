@@ -65,8 +65,7 @@ public class Restaurant extends BaseEntity{
     @JoinColumn(name = "restaurant_id")
     private List<Menu> menus = new ArrayList<>();
 
-    @OneToMany
-    @JoinColumn(name = "restaurant_id")
+    @OneToMany(mappedBy = "restaurant")
     private List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany
@@ -101,7 +100,7 @@ public class Restaurant extends BaseEntity{
     }
 
     public void deleteFloors(){
-        this.floors = null;
+        floors.clear();
     }
 
     public void deleteReservation(Reservation reservation) { reservations.remove(reservation); }
