@@ -52,4 +52,10 @@ public class MyPageAPIController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @ApiOperation(value = "즐겨찾기 추가")
+    @RequestMapping(path = "/bookmark/{restId}", method = RequestMethod.POST)
+    public ResponseEntity addBookmark(@PathVariable(value = "restId") Long restId) {
+       return null;
+    }
 }

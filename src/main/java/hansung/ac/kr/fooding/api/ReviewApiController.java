@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
+import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.dto.review.ReviewDetailResDTO;
 import hansung.ac.kr.fooding.dto.review.ReviewPostDTO;
 import hansung.ac.kr.fooding.dto.review.ReviewSimpleResDTO;
@@ -40,10 +41,14 @@ public class ReviewApiController {
             @RequestPart(value = "review") ReviewPostDTO reviewPostDTO,
             @RequestPart(value = "image", required = false) List<MultipartFile> images) {
 
-        Account account = securityService.getAccount();
-
-        Long result = reviewService.postReview(account, reviewPostDTO, images, restId);
-
+        Long result;
+        try {
+            Member account = (Member) securityService.getAccount();
+            if (account == null) throw new SecurityException("Not Logged in");
+            result = reviewService.postReview(account, reviewPostDTO, images, restId);
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
