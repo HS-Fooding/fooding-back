@@ -4,12 +4,15 @@ import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.dto.mypage.ReservationsDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
 import hansung.ac.kr.fooding.service.AccountService;
 import hansung.ac.kr.fooding.service.ReservationService;
 import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -66,5 +69,19 @@ public class MyPageAPIController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation(value = "즐겨찾기 리스트 가져오기")
+    @RequestMapping(path = "/bookmark", method = RequestMethod.GET)
+    public ResponseEntity getBookmarkedList(Pageable pageable) {
+        Slice<RestSimpleGetDTO> result;
+        try {
+            Member member = (Member) securityService.getAccount();
+            if (member == null) throw new SecurityException("Not Logged in");
+            result = accountService.getBookmarkedList(member, pageable);
+        }  catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 }

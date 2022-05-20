@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NotRegisteredRole;
@@ -9,6 +10,8 @@ import hansung.ac.kr.fooding.repository.AccountRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -81,5 +86,11 @@ public class AccountService {
         optionalRest.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         Restaurant restaurant = optionalRest.get();
         member.getBookmark().add(restaurant);
+    }
+
+    public Slice<RestSimpleGetDTO> getBookmarkedList(Member member, Pageable pageable) {
+        Set<Long> restaurants = member.getBookmark().stream().map(Restaurant::getId).collect(Collectors.toSet());
+        Slice<Restaurant> result = restaurantRepository.findAllByIds(restaurants, pageable);
+        return result.map(RestSimpleGetDTO::from);
     }
 }
