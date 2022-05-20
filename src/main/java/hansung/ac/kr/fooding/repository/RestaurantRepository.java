@@ -19,6 +19,9 @@ import java.util.Set;
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Optional<Restaurant> findByName(String name);
 
+    @Query("select r.id from Restaurant r")
+    List<Long> findAllRestId();
+
     @Query("select r.id from Restaurant r where r.location.region2Depth like %:region2Depth%")
     List<Long> findAllByRegion2Depth(@Param("region2Depth") String region2Depth);
 
