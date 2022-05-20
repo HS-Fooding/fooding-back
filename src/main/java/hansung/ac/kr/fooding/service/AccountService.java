@@ -88,9 +88,17 @@ public class AccountService {
         member.getBookmark().add(restaurant);
     }
 
+    @Transactional
+    public void deleteBookmark(Member member, Long restId) {
+        Optional<Restaurant> optionalRest = restaurantRepository.findRestById(restId);
+        optionalRest.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
+        Restaurant restaurant = optionalRest.get();
+        member.getBookmark().remove(restaurant);
+    }
     public Slice<RestSimpleGetDTO> getBookmarkedList(Member member, Pageable pageable) {
         Set<Long> restaurants = member.getBookmark().stream().map(Restaurant::getId).collect(Collectors.toSet());
         Slice<Restaurant> result = restaurantRepository.findAllByIds(restaurants, pageable);
         return result.map(RestSimpleGetDTO::from);
     }
+
 }

@@ -71,6 +71,19 @@ public class MyPageAPIController {
         return ResponseEntity.ok().build();
     }
 
+    @ApiOperation(value = "즐겨찾기 추가")
+    @RequestMapping(path = "/bookmark/{restId}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteBookmark(@PathVariable(value = "restId") Long restId) {
+        try {
+            Member member = (Member) securityService.getAccount();
+            if (member == null) throw new SecurityException("Not Logged in");
+            accountService.deleteBookmark(member, restId);
+        }  catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @ApiOperation(value = "즐겨찾기 리스트 가져오기")
     @RequestMapping(path = "/bookmark", method = RequestMethod.GET)
     public ResponseEntity getBookmarkedList(Pageable pageable) {
