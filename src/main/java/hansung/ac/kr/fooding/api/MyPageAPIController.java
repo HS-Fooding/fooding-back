@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.dto.mypage.ReservationsDTO;
+import hansung.ac.kr.fooding.service.AccountService;
 import hansung.ac.kr.fooding.service.ReservationService;
 import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping(path = "/mypage")
 public class MyPageAPIController {
     private final ReservationService reservationService;
+    private final AccountService accountService;
     private final SecurityService securityService;
 
     @ApiOperation(value = "예약 리스트")
@@ -56,6 +58,13 @@ public class MyPageAPIController {
     @ApiOperation(value = "즐겨찾기 추가")
     @RequestMapping(path = "/bookmark/{restId}", method = RequestMethod.POST)
     public ResponseEntity addBookmark(@PathVariable(value = "restId") Long restId) {
-       return null;
+        try {
+            Member member = (Member) securityService.getAccount();
+            if (member == null) throw new SecurityException("Not Logged in");
+            accountService.addBookmark(member, restId);
+        }  catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
     }
 }
