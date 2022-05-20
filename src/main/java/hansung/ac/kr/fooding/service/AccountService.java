@@ -82,7 +82,7 @@ public class AccountService {
 
     @Transactional
     public void addBookmark(Member member, Long restId) {
-        Optional<Restaurant> optionalRest = restaurantRepository.findRestById(restId);
+        Optional<Restaurant> optionalRest = restaurantRepository.findById(restId);
         optionalRest.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         Restaurant restaurant = optionalRest.get();
         member.getBookmark().add(restaurant);
