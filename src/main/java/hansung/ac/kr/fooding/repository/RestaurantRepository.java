@@ -46,16 +46,8 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     @EntityGraph(attributePaths = {"menus"})
     Slice<Restaurant> findAllRest(Pageable pageable);
 
-    @Query("select r from Restaurant r where r.id = :id")
-    @EntityGraph(attributePaths = {"menus"})
-    Restaurant findTest1(Long id);
-
-    @Query("select r from Restaurant r where r.id = :id")
-    @EntityGraph(attributePaths = {"menus", "menus.image"})
-    Restaurant findTest2(Long id);
-
-    @EntityGraph(attributePaths = {"reviews"})
-    Optional<Restaurant> findRestById(Long restId);
+    @Query("select r from Restaurant r join fetch r.reviews where r.id = :restId")
+    Optional<Restaurant> findRestById(@Param("restId") Long restId);
 
     @Query("select r from Restaurant r where id in :ids")
     Slice<Restaurant> findAllByIds(@Param("ids") Set<Long> result, Pageable pageable);

@@ -11,6 +11,7 @@ public class AdminReservDTO {
     private String reservAt;
     private String tableNum;
     private String nickname;
+    private String phoneNum;
     private int reservCount;
     private boolean isCar;
 
@@ -19,6 +20,7 @@ public class AdminReservDTO {
         reservAt = reservation.getReserveTime();
         tableNum = reservation.getTable().getTableNum();
         nickname = reservation.getBooker().getNickName();
+        phoneNum = reservation.getBooker().getPhoneNum();
         reservCount = reservation.getReserveNum();
         isCar = reservation.isCar();
     }

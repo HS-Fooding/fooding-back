@@ -8,6 +8,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -17,7 +18,7 @@ public class Member extends Account {
     @ElementCollection
     @CollectionTable(name = "bookmark",
             joinColumns = @JoinColumn(name = "member_id"))
-    private List<Restaurant> bookmark;
+    private Set<Restaurant> bookmark;
 
     public Member(JoinReqDTO req) {
         this.identifier = req.getId();

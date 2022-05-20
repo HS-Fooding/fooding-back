@@ -2,8 +2,6 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
-import hansung.ac.kr.fooding.dto.chart.ChartProjectionDTO;
-import hansung.ac.kr.fooding.dto.chart.ChartResultDTO;
 import hansung.ac.kr.fooding.dto.chart.ResultDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
