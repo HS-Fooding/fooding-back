@@ -51,9 +51,9 @@ public class MyPageAPIController {
         try{
             reservationService.deleteReservation(reserveId);
         } catch (IllegalStateException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (SecurityException e){
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok().build();
     }
@@ -71,7 +71,7 @@ public class MyPageAPIController {
         return ResponseEntity.ok().build();
     }
 
-    @ApiOperation(value = "즐겨찾기 추가")
+    @ApiOperation(value = "즐겨찾기 삭제")
     @RequestMapping(path = "/bookmark/{restId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteBookmark(@PathVariable(value = "restId") Long restId) {
         try {
