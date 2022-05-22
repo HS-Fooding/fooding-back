@@ -4,12 +4,14 @@ import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuGetDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestInfoGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetWithLocDTO;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
+import hansung.ac.kr.fooding.service.StructService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ import java.util.Optional;
 public class RestaurantApiController {
     private final RestaurantService restaurantService;
     private final RestaurantRepository restaurantRepository;
+    private final StructService structService;
     private final MenuService menuService;
 
     @ApiOperation("지역, 매장과 메뉴에 포함된 이름, 카테고리 검색 가능")
@@ -81,6 +84,18 @@ public class RestaurantApiController {
             return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<StructGetDTO>(structGetDTO, HttpStatus.OK);
+    }
+
+    @ApiOperation("매장 현재 이용 가능 테이블 조회")
+    @RequestMapping(path = "/{restId}/table", method = RequestMethod.GET)
+    public ResponseEntity getAvailTable(@PathVariable(value = "restId") Long restId){
+        ReservAvailGetDTO reservAvailGetDTO;
+        try {
+            reservAvailGetDTO = structService.getAvailTable(restId);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<ReservAvailGetDTO>(reservAvailGetDTO, HttpStatus.OK);
     }
 
     @ApiOperation("좌표에 대한 특정 반경 내에 있는 매장 리스트 반환")

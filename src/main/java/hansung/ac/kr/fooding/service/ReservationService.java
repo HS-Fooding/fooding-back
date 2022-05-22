@@ -120,6 +120,10 @@ public class ReservationService {
 
         tables = tableRepository.findByRestIdWithNum(restId, num);
         tables.removeAll(unavailableTables);
+        for (Table table : tables){
+            if(!table.isAvailable())
+                tables.remove(table);
+        }
         reservAvailGetDTO.setTables(tables);
         return reservAvailGetDTO;
     }

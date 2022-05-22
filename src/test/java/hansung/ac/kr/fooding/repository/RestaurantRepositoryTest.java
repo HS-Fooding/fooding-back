@@ -21,25 +21,4 @@ class RestaurantRepositoryTest {
     @PersistenceContext
     EntityManager em;
 
-    @Test
-    public void find(){
-        //given
-        PersistenceUtil persistenceUtil = em.getEntityManagerFactory().getPersistenceUnitUtil();
-        Restaurant restaurant1 = restaurantRepository.findTest1(17L);
-        Restaurant restaurant2 = restaurantRepository.findTest2(17L);
-        Restaurant restaurant3 = restaurantRepository.findById(17L).get();
-        Menu menu = menuRepository.findById(restaurant1.getMenus().get(0).getId()).get();
-        Image fromRestwithoutEntityGraph = restaurant1.getMenus().get(0).getImage();
-        Image fromRestwithEntityGraph = restaurant2.getMenus().get(0).getImage();
-        Image fromMenu = menu.getImage();
-
-        boolean result1 = persistenceUtil.isLoaded(fromRestwithoutEntityGraph);
-        boolean result2 = persistenceUtil.isLoaded(fromRestwithEntityGraph);
-        boolean result3 = persistenceUtil.isLoaded(fromMenu);
-
-        //then
-        assertThat(result1).isFalse();
-        assertThat(result2).isTrue();
-        assertThat(result3).isTrue();
-    }
 }

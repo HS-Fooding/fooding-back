@@ -1,18 +1,18 @@
 package hansung.ac.kr.fooding.service;
 
+import hansung.ac.kr.fooding.domain.Booker;
 import hansung.ac.kr.fooding.dtd.ReservStructGetDTO;
-import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
-import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
-import hansung.ac.kr.fooding.dto.reservation.ReservFloorDTO;
-import hansung.ac.kr.fooding.dto.reservation.ReservPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.dto.TableDTO;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -103,6 +103,22 @@ class ReservationServiceTest {
         AdminReservGetDTO todayRestReservations = reservationService.getRestReservations(2L, date);
         //then
         System.out.println(todayRestReservations.toString());
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser(username = "manager2026")
+    public void adminPostReservation(){
+        System.out.println("##################"+SecurityContextHolder.getContext().getAuthentication().getName());
+        Long restId = 35L;
+        AdminReservPostDTO adminReservPostDTO = new AdminReservPostDTO();
+        adminReservPostDTO.setTableNum("1");
+        adminReservPostDTO.setReserveDate("2022-05-24");
+        adminReservPostDTO.setReserveTime("15:30");
+        adminReservPostDTO.setReserveNum(2);
+        adminReservPostDTO.setBooker(null);
+        adminReservPostDTO.setCar(true);
+        reservationService.adminPostReservation(restId, adminReservPostDTO);
     }
 }
 

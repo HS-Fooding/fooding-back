@@ -5,7 +5,9 @@ import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.domain.structure.Table;
 import hansung.ac.kr.fooding.dto.FloorDTO;
 import hansung.ac.kr.fooding.dto.StructPostDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.repository.*;
+import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,7 @@ public class StructService {
     private final FloorRepository floorRepository;
     private final StructureRepository structureRepository;
     private final ReservationRepository reservationRepository;
+    private final TableRepository tableRepository;
 
     @Transactional
     public void postStruct(StructPostDTO structPostDTO, Long restId) throws SecurityException, IllegalStateException {
@@ -51,5 +54,17 @@ public class StructService {
             floorRepository.save(floor);
             restaurant.addFloor(floor);
         }
+    }
+
+    public ReservAvailGetDTO getAvailTable(Long restId){
+        Restaurant restaurant;
+        List<Table> tables;
+        ReservAvailGetDTO reservAvailGetDTO = new ReservAvailGetDTO();
+
+        Optional<Restaurant> optional = restaurantRepository.findById(restId);
+        if (optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.toString());
+        tables = tableRepository.findByRestId(restId);
+        reservAvailGetDTO.setTables(tables);
+        return reservAvailGetDTO;
     }
 }
