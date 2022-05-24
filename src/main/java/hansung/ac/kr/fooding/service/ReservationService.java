@@ -97,6 +97,7 @@ public class ReservationService {
 
     @Transactional
     public ReservAvailGetDTO getAvailableReservation(Long restId, String date, String time, int num) {
+        if (time.equals("undefined")) return null;
         Restaurant restaurant;
         float maximumUsageTime;
         List<Table> tables;

@@ -6,6 +6,7 @@ import hansung.ac.kr.fooding.dto.chart.ResultDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuPostDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservGetDTO;
 import hansung.ac.kr.fooding.dto.reservation.AdminReservUpdateDTO;
+import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestaurantPostDTO;
 import hansung.ac.kr.fooding.repository.MemberRepository;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
@@ -131,6 +132,21 @@ public class AdminRestaurantApiController {
         ResultDTO result = reservationService.getChart(restId, start, end);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "테이블 토글")
+    @RequestMapping(path = "/{restId}/toggle/{tableId}", method = RequestMethod.PUT)
+    public ResponseEntity toggle(@PathVariable(value = "restId") Long restId,
+                                 @PathVariable(value = "tableId") Long tableId){
+        ReservAvailGetDTO reservAvailGetDTO;
+        try {
+            reservAvailGetDTO = structService.toggleTableAvailable(restId, tableId);
+        } catch (IllegalStateException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (SecurityException e){
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+        return new ResponseEntity<ReservAvailGetDTO>(reservAvailGetDTO, HttpStatus.OK);
     }
 
 
