@@ -68,14 +68,14 @@ public class StructService {
         return reservAvailGetDTO;
     }
 
-    public ReservAvailGetDTO toggleTableAvailable(Long restId, Long tableId){
+    public ReservAvailGetDTO toggleTableAvailable(Long restId, String tableNum){
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
         if (optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         if (!securityService.isRestaurantAdmin(optional.get())) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
 
-        Optional<Table> optionalTable = tableRepository.findById(tableId);
-        if (optionalTable.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
-        Table table = optionalTable.get();
+        List<Table> findTables = tableRepository.findTableByRestIdAndTableNum(restId, tableNum);
+        if (findTables.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
+        Table table = findTables.get(0);
         table.setAvailable(!table.isAvailable());
 
         ReservAvailGetDTO reservAvailGetDTO = new ReservAvailGetDTO();

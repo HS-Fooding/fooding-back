@@ -137,10 +137,10 @@ public class AdminRestaurantApiController {
     @ApiOperation(value = "테이블 토글")
     @RequestMapping(path = "/{restId}/toggle/{tableId}", method = RequestMethod.PUT)
     public ResponseEntity toggle(@PathVariable(value = "restId") Long restId,
-                                 @PathVariable(value = "tableId") Long tableId){
+                                 @PathVariable(value = "tableId") String tableNum){
         ReservAvailGetDTO reservAvailGetDTO;
         try {
-            reservAvailGetDTO = structService.toggleTableAvailable(restId, tableId);
+            reservAvailGetDTO = structService.toggleTableAvailable(restId, tableNum);
         } catch (IllegalStateException e){
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (SecurityException e){
