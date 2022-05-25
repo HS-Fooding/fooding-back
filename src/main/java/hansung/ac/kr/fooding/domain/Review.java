@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.eclipse.jdt.internal.compiler.ast.MemberValuePair;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ import java.util.List;
 import static javax.persistence.FetchType.*;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseEntity{
     @Id
@@ -45,13 +46,14 @@ public class Review extends BaseEntity{
     }
 
     public void plusViewCount() {
-        this.setViewCount(this.getViewCount() + 1);
+        viewCount = getViewCount() + 1;
     }
 
-    public Review(ReviewPostDTO dto){
-        this.title = dto.getTitle();
-        this.content = dto.getContent();
-        this.star = dto.getStar();
-        this.viewCount = 0;
+    public Review(ReviewPostDTO dto, Account account){
+        title = dto.getTitle();
+        content = dto.getContent();
+        star = dto.getStar();
+        viewCount = 0;
+        author = account;
     }
 }

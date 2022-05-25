@@ -39,10 +39,8 @@ public class ReviewService {
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
 
-        Review review = new Review(reviewPostDto);
+        Review review = new Review(reviewPostDto, account);
         List<Image> images = ImageHandler.upload(multipartImages);
-
-        review.setAuthor(account);
 
         if (images != null) {
             imageRepository.saveImages(images);
@@ -50,9 +48,7 @@ public class ReviewService {
         }
 
         restaurant.addReview(review);
-
         Review saved = reviewRepository.save(review);
-
         return saved.getId();
     }
 
@@ -62,11 +58,6 @@ public class ReviewService {
         Review review = optional.orElseThrow(() -> new IllegalStateException("Review Not Found"));
         List<Long> commentIds = review.getComments().stream().map(Comment::getId).collect(Collectors.toList());
         Slice<Comment> comments = commentRepository.findCommentsByIds(commentIds, pageable);
-
-        for (Comment comment : comments) {
-            System.out.println("comment!! = " + comment);
-        }
-//        System.out.println("NickName!!! = " + comments.getContent().get(0).getAuthor().getNickName());
 
         review.plusViewCount();
         return new ReviewDetailResDTO(review, comments);

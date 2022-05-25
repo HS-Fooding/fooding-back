@@ -54,12 +54,16 @@ public class ReviewApiController {
 
     @ApiOperation(value = "특정 리뷰 가져오기 (댓글도 함께 가져옴)")
     @GetMapping("/restaurant/{id}/review/{reviewId}")
-    public ResponseEntity<ReviewDetailResDTO> getReview(
+    public ResponseEntity getReview(
             @PathVariable("id") Long restId,
             @PathVariable("reviewId") Long reviewId,
             Pageable pageable) {
-
-        ReviewDetailResDTO result = reviewService.findReviewWithComments(reviewId, pageable);
+        ReviewDetailResDTO result;
+        try {
+            result = reviewService.findReviewWithComments(reviewId, pageable);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -72,7 +76,7 @@ public class ReviewApiController {
         try {
             reviewService.deleteReview(reviewId);
         } catch (IllegalStateException e) {
-            return new ResponseEntity("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }

@@ -33,7 +33,7 @@ public class ReviewDetailResDTO {
         content = review.getContent();
         if(review.getImages() != null) {
             this.images = review.getImages().stream()
-                    .map(m -> new ImageResDTO(m))
+                    .map(ImageResDTO::new)
                     .collect(Collectors.toList());
         }
        /* if(review.getComments() != null) {
