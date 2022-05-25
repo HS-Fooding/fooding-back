@@ -73,6 +73,11 @@ public class StructService {
         if (optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         if (!securityService.isRestaurantAdmin(optional.get())) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
 
+        Optional<Table> optionalTable = tableRepository.findById(tableId);
+        if (optionalTable.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
+        Table table = optionalTable.get();
+        table.setAvailable(!table.isAvailable());
+
         ReservAvailGetDTO reservAvailGetDTO = new ReservAvailGetDTO();
         List<Table> tables = tableRepository.findByRestId(restId);
         reservAvailGetDTO.setTables(tables);
