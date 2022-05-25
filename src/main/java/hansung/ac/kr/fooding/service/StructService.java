@@ -68,6 +68,7 @@ public class StructService {
         return reservAvailGetDTO;
     }
 
+    @Transactional
     public ReservAvailGetDTO toggleTableAvailable(Long restId, String tableNum){
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
         if (optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
