@@ -24,7 +24,7 @@ public class Comment extends BaseEntity{
     private String content;
 
     ///////////////////////
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     private Account author;
 
     @JsonIgnore
@@ -41,20 +41,20 @@ public class Comment extends BaseEntity{
     private List<Comment> child = new ArrayList<>();
 
     public Comment(Review review, Account account, CommentPostDTO commentPostDTO) {
-        this.content = commentPostDTO.getContent();
-        this.author = account;
-        this.parent = this;
+        content = commentPostDTO.getContent();
+        author = account;
+        parent = this;
         addReview(review);
     }
 
     public Comment(Account account, CommentPostDTO commentPostDTO){
-        this.content = commentPostDTO.getContent();
-        this.author = account;
-        this.parent = this;
+        content = commentPostDTO.getContent();
+        author = account;
+        parent = this;
     }
 
     public void setParent(Comment comment) {
-        this.parent = comment;
+        parent = comment;
     }
 
     // ## 양방향 연관관계에 대한 편의 메서드 ## //

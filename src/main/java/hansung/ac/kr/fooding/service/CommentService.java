@@ -25,11 +25,12 @@ public class CommentService {
     public void postComment(Long reviewId, Account account, CommentPostDTO dto) {
 
         // 누가, 어느 review id에, 어떤 comment를?
-        Review review = reviewRepository.findById(reviewId).orElse(null);
+        Review review = reviewRepository.findById(reviewId).orElseThrow(IllegalStateException::new);
         Comment comment = new Comment(review, account, dto);
 
-        if(dto.getParent() != null) {
-            comment.setParent(commentRepository.findById(dto.getParent()).orElse(null));
+        if(dto.getParent() != 0) {
+            Comment parent = commentRepository.findById(dto.getParent()).orElseThrow(IllegalStateException::new);
+            comment.setParent(parent);
         }
         commentRepository.save(comment);
     }

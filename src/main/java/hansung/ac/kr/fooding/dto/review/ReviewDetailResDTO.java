@@ -27,10 +27,10 @@ public class ReviewDetailResDTO {
     private int viewCount;
 
     public ReviewDetailResDTO(Review review, Slice<Comment> comments) {
-        this.id = review.getId();
-        this.title = review.getTitle();
-        this.nickName = review.getAuthor().getNickName();
-        this.content = review.getContent();
+        id = review.getId();
+        title = review.getTitle();
+        nickName = review.getAuthor().getNickName();
+        content = review.getContent();
         if(review.getImages() != null) {
             this.images = review.getImages().stream()
                     .map(m -> new ImageResDTO(m))
@@ -42,8 +42,8 @@ public class ReviewDetailResDTO {
                     .collect(Collectors.toList());
         }*/
         this.comments = comments.map(CommentResDTO::new);
-        this.star = review.getStar();
-        this.viewCount = review.getViewCount();
-        this.createdDate = review.getCreatedDate().toString();
+        star = review.getStar();
+        viewCount = review.getViewCount();
+        createdDate = review.getCreatedDate().toString();
     }
 }

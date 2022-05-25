@@ -60,10 +60,15 @@ public class ReviewService {
     public ReviewDetailResDTO findReviewWithComments(Long reviewId, Pageable pageable) {
         Optional<Review> optional = reviewRepository.findById(reviewId);
         Review review = optional.orElseThrow(() -> new IllegalStateException("Review Not Found"));
-        review.plusViewCount();
         List<Long> commentIds = review.getComments().stream().map(Comment::getId).collect(Collectors.toList());
         Slice<Comment> comments = commentRepository.findCommentsByIds(commentIds, pageable);
 
+        for (Comment comment : comments) {
+            System.out.println("comment!! = " + comment);
+        }
+//        System.out.println("NickName!!! = " + comments.getContent().get(0).getAuthor().getNickName());
+
+        review.plusViewCount();
         return new ReviewDetailResDTO(review, comments);
     }
 

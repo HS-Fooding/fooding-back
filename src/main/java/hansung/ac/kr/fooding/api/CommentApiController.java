@@ -27,9 +27,12 @@ public class CommentApiController {
             @PathVariable Long reviewId,
             @RequestBody CommentPostDTO dto) {
 
-        Account account = securityService.getAccount();
-
-        commentService.postComment(reviewId, account, dto);
+        try {
+            Account account = securityService.getAccount();
+            commentService.postComment(reviewId, account, dto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -44,7 +47,7 @@ public class CommentApiController {
         try {
             commentService.updateComment(reviewId, commentId, dto);
         } catch (IllegalStateException e) {
-            return new ResponseEntity("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
@@ -58,7 +61,7 @@ public class CommentApiController {
         try {
             commentService.deleteComment(reviewId, commentId);
         } catch (IllegalStateException e) {
-            return new ResponseEntity("Fooding-"+e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
