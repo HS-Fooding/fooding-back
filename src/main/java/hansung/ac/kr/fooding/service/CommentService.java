@@ -28,7 +28,7 @@ public class CommentService {
         Review review = reviewRepository.findById(reviewId).orElseThrow(IllegalStateException::new);
         Comment comment = new Comment(review, account, dto);
 
-        if(dto.getParent() != 0) {
+        if(dto.getParent() != null && dto.getParent() != 0) {
             Comment parent = commentRepository.findById(dto.getParent()).orElseThrow(IllegalStateException::new);
             comment.setParent(parent);
         }

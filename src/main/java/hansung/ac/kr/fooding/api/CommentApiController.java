@@ -29,9 +29,10 @@ public class CommentApiController {
 
         try {
             Account account = securityService.getAccount();
+            if (account == null) throw new SecurityException("Not Logged in");
             commentService.postComment(reviewId, account, dto);
         } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
