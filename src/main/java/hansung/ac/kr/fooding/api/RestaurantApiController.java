@@ -51,7 +51,7 @@ public class RestaurantApiController {
     public ResponseEntity getRestaurant(@PathVariable(value = "id") Long id) {
         RestInfoGetDTO restInfoGetDTO;
         try {
-            Member account = (Member) securityService.getAccount();
+            Account account = securityService.getAccount();
             if (account == null) throw new SecurityException("Not Logged in");
             restInfoGetDTO = restaurantService.getRestaurantInfo(id, account);
         } catch (IllegalStateException e) {

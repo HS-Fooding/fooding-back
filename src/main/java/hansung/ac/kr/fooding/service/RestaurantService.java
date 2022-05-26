@@ -77,14 +77,18 @@ public class RestaurantService {
         return restaurant.getId();
     }
 
-    public RestInfoGetDTO getRestaurantInfo(Long id, Member account) throws IllegalStateException {
+    public RestInfoGetDTO getRestaurantInfo(Long id, Account account) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         restaurant.plusViewCount();
-        if (account.getBookmark().contains(restaurant))
-            return RestInfoGetDTO.from(restaurant, true);
-        else
+        if(account instanceof Member) {
+            if (((Member)account).getBookmark().contains(restaurant))
+                return RestInfoGetDTO.from(restaurant, true);
+            else
+                return RestInfoGetDTO.from(restaurant, false);
+        } else {
             return RestInfoGetDTO.from(restaurant, false);
+        }
     }
 
     public RestInfoGetDTO getRestaurantInfoByName(String restName) throws IllegalStateException {

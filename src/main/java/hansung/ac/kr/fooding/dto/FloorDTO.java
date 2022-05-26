@@ -25,8 +25,10 @@ public class FloorDTO {
         windows = new ArrayList<>();
 
         for (Structure structure : floor.getStructures()){
-            if(structure instanceof Table)
-                tables.add((Table)structure);
+            if(structure instanceof Table) {
+                tables.add((Table) structure);
+                ((Table)structure).setAvailable(true);
+            }
             else if (structure instanceof Seat)
                 seats.add((Seat)structure);
             else if (structure instanceof Door)
