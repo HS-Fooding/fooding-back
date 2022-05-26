@@ -17,6 +17,7 @@ import hansung.ac.kr.fooding.dto.reservation.*;
 import hansung.ac.kr.fooding.repository.ReservationRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.repository.TableRepository;
+import hansung.ac.kr.fooding.schedular.TableStatusScheduler;
 import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final TableRepository tableRepository;
     private final SecurityService securityService;
-    @PersistenceContext
-    private EntityManager em;
+    private final TableStatusScheduler tableStatusScheduler;
 
     @Transactional
     public Long postReservation(ReservPostDTO dto, Long restId) throws IllegalStateException {
@@ -61,6 +61,7 @@ public class ReservationService {
         Reservation reservation = new Reservation(table, adminReservPostDTO);
         restaurant.addReservation(reservation);
         reservationRepository.save(reservation);
+        tableStatusScheduler.adminAddReservation(reservation);
     }
 
     public void adminDeleteReservation(Long restId, AdminReservPostDTO adminReservPostDTO){
@@ -73,6 +74,7 @@ public class ReservationService {
         if(optionalReservation.isEmpty()) throw new IllegalStateException(CError.RESERV_NOT_FOUND.getMessage());
         Reservation reservation = optionalReservation.get();
 
+        tableStatusScheduler.adminDeleteReservation(reservation);
         restaurant.getReservations().remove(reservation);
         reservationRepository.delete(reservation);
     }
@@ -224,7 +226,10 @@ public class ReservationService {
         List<Table> findTables = tableRepository.findTableByRestIdAndTableNum(restId, adminReservPostDTO.getTableNum());
         if(findTables.isEmpty()) throw new IllegalStateException(CError.TABLE_NOT_FOUND.getMessage());
         Table findTable = findTables.get(0);
+
+        tableStatusScheduler.adminDeleteReservation(reservation);
         reservation.edit(findTable, adminReservPostDTO);
+        tableStatusScheduler.adminAddReservation(reservation);
     }
 
     @Transactional
