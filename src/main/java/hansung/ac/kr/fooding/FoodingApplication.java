@@ -29,8 +29,7 @@ public class FoodingApplication {
 //    }
 }
 
-/*
-@EnableJpaAuditing
+/*@EnableJpaAuditing
 @EnableScheduling
 @SpringBootApplication
 public class FoodingApplication extends SpringBootServletInitializer {
@@ -51,5 +50,4 @@ public class FoodingApplication extends SpringBootServletInitializer {
 		}
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
-}
-*/
+}*/

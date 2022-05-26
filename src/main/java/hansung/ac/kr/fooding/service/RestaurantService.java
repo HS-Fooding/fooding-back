@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
+import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
@@ -68,9 +69,7 @@ public class RestaurantService {
 
         List<Image> images = ImageHandler.upload(multipartImages);
 
-        System.out.println("111111111111111111111111111111");
         if (images != null) {
-            System.out.println("22222222222222222222222222");
             imageRepository.saveImages(images);
             restaurant.addImages(images);
         }
@@ -78,12 +77,14 @@ public class RestaurantService {
         return restaurant.getId();
     }
 
-    @Transactional
-    public RestInfoGetDTO getRestaurantInfo(Long id) throws IllegalStateException {
+    public RestInfoGetDTO getRestaurantInfo(Long id, Member account) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
         restaurant.plusViewCount();
-        return RestInfoGetDTO.from(restaurant);
+        if (account.getBookmark().contains(restaurant))
+            return RestInfoGetDTO.from(restaurant, true);
+        else
+            return RestInfoGetDTO.from(restaurant, false);
     }
 
     public RestInfoGetDTO getRestaurantInfoByName(String restName) throws IllegalStateException {
@@ -141,7 +142,7 @@ public class RestaurantService {
 
         Float r = 0.9f; // 0.3(약 300m)에서 0.9로 수정함, 확인 필요
 
-        Slice<Restaurant> restaurants = restaurantRepository.findRestByCoord((double)x, (double)y, (double)r, pageable);
+        Slice<Restaurant> restaurants = restaurantRepository.findRestByCoord((double) x, (double) y, (double) r, pageable);
         return restaurants.map(RestSimpleGetWithLocDTO::from);
     }
 }

@@ -31,8 +31,10 @@ public class RestInfoGetDTO {
     private int viewCount;
     private int reviewCount;
     private float avgScore;
+    private boolean isBookmarked = false;
 
-    private RestInfoGetDTO(Restaurant restaurant){
+
+    private RestInfoGetDTO(Restaurant restaurant) {
         id = restaurant.getId();
         name = restaurant.getName();
         admin = AccountDTO.from(restaurant.getAdmin());
@@ -42,12 +44,12 @@ public class RestInfoGetDTO {
         parkingInfo = restaurant.getParkingInfo();
         maximumUsageTime = restaurant.getMaximumUsageTime();
         intro = restaurant.getIntro();
-        if(restaurant.getLocation() != null)
-        location = restaurant.getLocation();
-        if(restaurant.getCategory() != null)
-        category = restaurant.getCategory();
-        if(!restaurant.getImages().isEmpty())
-            for(Image image : restaurant.getImages())
+        if (restaurant.getLocation() != null)
+            location = restaurant.getLocation();
+        if (restaurant.getCategory() != null)
+            category = restaurant.getCategory();
+        if (!restaurant.getImages().isEmpty())
+            for (Image image : restaurant.getImages())
                 images.add(image.getPath());
         viewCount = restaurant.getViewCount();
         DoubleSummaryStatistics statistics = restaurant.getReviews().stream()
@@ -56,7 +58,36 @@ public class RestInfoGetDTO {
         avgScore = (float) statistics.getAverage();
     }
 
-    public static RestInfoGetDTO from(Restaurant restaurant){
+    private RestInfoGetDTO(Restaurant restaurant, boolean bool) {
+        id = restaurant.getId();
+        name = restaurant.getName();
+        admin = AccountDTO.from(restaurant.getAdmin());
+        tel = restaurant.getTel();
+        weekdaysWorkHour = restaurant.getWeekdaysWorkHour();
+        weekendsWorkHour = restaurant.getWeekendsWorkHour();
+        parkingInfo = restaurant.getParkingInfo();
+        maximumUsageTime = restaurant.getMaximumUsageTime();
+        intro = restaurant.getIntro();
+        if (restaurant.getLocation() != null)
+            location = restaurant.getLocation();
+        if (restaurant.getCategory() != null)
+            category = restaurant.getCategory();
+        if (!restaurant.getImages().isEmpty())
+            for (Image image : restaurant.getImages())
+                images.add(image.getPath());
+        viewCount = restaurant.getViewCount();
+        DoubleSummaryStatistics statistics = restaurant.getReviews().stream()
+                .collect(Collectors.summarizingDouble(Review::getStar));
+        reviewCount = (int) statistics.getCount();
+        avgScore = (float) statistics.getAverage();
+        isBookmarked = bool;
+    }
+
+    public static RestInfoGetDTO from(Restaurant restaurant, Boolean bool) {
+        return new RestInfoGetDTO(restaurant, bool);
+    }
+
+    public static RestInfoGetDTO from(Restaurant restaurant) {
         return new RestInfoGetDTO(restaurant);
     }
 

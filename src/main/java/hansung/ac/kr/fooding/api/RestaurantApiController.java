@@ -1,6 +1,8 @@
 package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
+import hansung.ac.kr.fooding.domain.Account;
+import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuGetDTO;
@@ -11,6 +13,7 @@ import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetWithLocDTO;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
+import hansung.ac.kr.fooding.service.SecurityService;
 import hansung.ac.kr.fooding.service.StructService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +37,7 @@ public class RestaurantApiController {
     private final RestaurantRepository restaurantRepository;
     private final StructService structService;
     private final MenuService menuService;
+    private final SecurityService securityService;
 
     @ApiOperation("지역, 매장과 메뉴에 포함된 이름, 카테고리 검색 가능")
     @RequestMapping(path = "/search", method = RequestMethod.GET)
@@ -47,7 +51,9 @@ public class RestaurantApiController {
     public ResponseEntity getRestaurant(@PathVariable(value = "id") Long id) {
         RestInfoGetDTO restInfoGetDTO;
         try {
-            restInfoGetDTO = restaurantService.getRestaurantInfo(id);
+            Member account = (Member) securityService.getAccount();
+            if (account == null) throw new SecurityException("Not Logged in");
+            restInfoGetDTO = restaurantService.getRestaurantInfo(id, account);
         } catch (IllegalStateException e) {
             return new ResponseEntity<String>("Fooding-Restaurant Not Found", HttpStatus.BAD_REQUEST);
         }
@@ -93,7 +99,7 @@ public class RestaurantApiController {
         try {
             reservAvailGetDTO = structService.getAvailTable(restId);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<ReservAvailGetDTO>(reservAvailGetDTO, HttpStatus.OK);
     }
