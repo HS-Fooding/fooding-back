@@ -3,6 +3,7 @@ package hansung.ac.kr.fooding.api;
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentResDTO;
 import hansung.ac.kr.fooding.service.CommentService;
 import hansung.ac.kr.fooding.service.SecurityService;
 import io.swagger.annotations.Api;
@@ -27,15 +28,16 @@ public class CommentApiController {
             @PathVariable Long reviewId,
             @RequestBody CommentPostDTO dto) {
 
+        CommentResDTO commentResDTO;
         try {
             Account account = securityService.getAccount();
             if (account == null) throw new SecurityException("Not Logged in");
-            commentService.postComment(reviewId, account, dto);
+            commentResDTO = commentService.postComment(reviewId, account, dto);
         } catch (Exception e) {
             return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(commentResDTO, HttpStatus.OK);
     }
 
     @ApiOperation(value = "댓글 수정")
