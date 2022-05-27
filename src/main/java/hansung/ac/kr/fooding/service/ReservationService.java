@@ -123,10 +123,7 @@ public class ReservationService {
 
         tables = tableRepository.findByRestIdWithNum(restId, num);
         tables.removeAll(unavailableTables);
-        for (Table table : tables){
-            if(!table.isAvailable())
-                tables.remove(table);
-        }
+        tables.removeIf(table -> !table.isAvailable());
         reservAvailGetDTO.setTables(tables);
         return reservAvailGetDTO;
     }
@@ -188,9 +185,13 @@ public class ReservationService {
         Optional<Restaurant> optionalRestaurant = restaurantRepository.findWithFloorsById(restId);
         if(optionalRestaurant.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         Restaurant restaurant = optionalRestaurant.get();
+
         AdminTableInfoDTO adminTableInfoDTO = AdminTableInfoDTO.from(restaurant, date);
+
         List<AdminReservDTO> adminReservDTOs = new ArrayList<>();
-        List<Reservation> reservations = reservationRepository.findByReserveDate(adminTableInfoDTO.getDate());
+
+        List<Reservation> reservations = reservationRepository.findByReserveDate(restId, adminTableInfoDTO.getDate());
+
         reservations.forEach(m -> adminReservDTOs.add(AdminReservDTO.from(m)));
         AdminReservGetDTO adminReservGetDTO = new AdminReservGetDTO(adminTableInfoDTO, adminReservDTOs);
         return adminReservGetDTO;
@@ -238,10 +239,8 @@ public class ReservationService {
         for(AdminReservUpdateDTO dto : reservUpdateDTOs){
             AdminReservStatus flag = dto.getFlag();
             AdminReservPostDTO adminReservPostDTO = dto.getAdminReservPostDTO();
-            System.out.println("##################"+flag);
             switch(flag){
                 case EDIT:
-                    System.out.println("##################"+"switch edit");
                     adminEditReservation(restId, dto.getAdminReservPostDTO().getReservId(), adminReservPostDTO);
                     break;
                 case NEW:

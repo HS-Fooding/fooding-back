@@ -33,7 +33,6 @@ public class MenuService {
         Restaurant restaurant = optional.get();
         if(restaurant.getAdmin() != loginAccount) throw new SecurityException("No Authorization");
 
-        System.out.println("##########"+menuPostDTO.toString());
         Menu menu = new Menu(menuPostDTO, null);
         Image image = ImageHandler.upload(multipartImage);
         if (image != null) {

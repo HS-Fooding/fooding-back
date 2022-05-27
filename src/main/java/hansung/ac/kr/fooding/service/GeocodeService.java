@@ -40,7 +40,6 @@ public class GeocodeService {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-            System.out.println("###########"+response.toString());
             JSONObject jObject = new JSONObject(response.toString());
             JSONObject jMetaObject = (JSONObject)jObject.get("meta");
             if(jMetaObject.getInt("total_count") == 0)

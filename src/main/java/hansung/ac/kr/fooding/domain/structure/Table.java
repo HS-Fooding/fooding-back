@@ -21,7 +21,7 @@ public class Table extends Structure{
     private String tableNum;
     private int minPeople;
     private int maxPeople;
-    private boolean available;
+    private boolean available = true;
 
     @JsonIgnore
     @OneToMany(mappedBy = "table")

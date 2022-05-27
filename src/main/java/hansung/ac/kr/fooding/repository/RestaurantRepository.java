@@ -39,6 +39,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Restaurant findResById(Long id);
 
     @EntityGraph(attributePaths = {"floors"})
+    @Query("select r from Restaurant r where r.id = :id")
     Optional<Restaurant> findWithFloorsById(Long id);
 
 
