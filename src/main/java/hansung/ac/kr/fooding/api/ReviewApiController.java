@@ -62,7 +62,7 @@ public class ReviewApiController {
         try {
             result = reviewService.findReviewWithComments(reviewId, pageable);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -4,6 +4,7 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Comment;
 import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.dto.comment.CommentPostDTO;
+import hansung.ac.kr.fooding.dto.comment.CommentResDTO;
 import hansung.ac.kr.fooding.repository.CommentRepository;
 import hansung.ac.kr.fooding.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class CommentService {
 
     // 댓글 등록
     @Transactional
-    public void postComment(Long reviewId, Account account, CommentPostDTO dto) {
+    public CommentResDTO postComment(Long reviewId, Account account, CommentPostDTO dto) {
 
         // 누가, 어느 review id에, 어떤 comment를?
         Review review = reviewRepository.findById(reviewId).orElseThrow(IllegalStateException::new);
@@ -33,6 +34,7 @@ public class CommentService {
             comment.setParent(parent);
         }
         commentRepository.save(comment);
+        return new CommentResDTO(comment);
     }
 
     public void deleteComment(Long reviewId, Long commentId) {

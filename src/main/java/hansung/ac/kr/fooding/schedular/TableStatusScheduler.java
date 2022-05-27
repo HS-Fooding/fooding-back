@@ -50,8 +50,8 @@ public class TableStatusScheduler {
         Table table = reservation.getTable();
         if(insertedTables.contains(table)) {
             insertedTables.remove(table);
+            table.setAvailable(true);
         }
-        table.setAvailable(true);
     }
 
 
