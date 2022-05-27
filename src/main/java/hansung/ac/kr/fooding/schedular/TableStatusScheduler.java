@@ -48,10 +48,11 @@ public class TableStatusScheduler {
 
         List<Table> insertedTables = handleTables.get(parsedAfterDateTime);
         Table table = reservation.getTable();
-        if(insertedTables.contains(table)) {
-            insertedTables.remove(table);
-            table.setAvailable(true);
-        }
+
+        if (insertedTables == null)
+            return;
+        insertedTables.remove(table);
+        table.setAvailable(true);
     }
 
 
