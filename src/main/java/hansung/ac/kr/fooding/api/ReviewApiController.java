@@ -61,7 +61,7 @@ public class ReviewApiController {
         ReviewDetailResDTO result;
         try {
             result = reviewService.findReviewWithComments(reviewId, pageable);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -75,7 +75,7 @@ public class ReviewApiController {
             @PathVariable Long reviewId) {
         try {
             reviewService.deleteReview(reviewId);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();

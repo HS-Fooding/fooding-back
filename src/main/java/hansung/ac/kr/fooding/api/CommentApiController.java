@@ -49,7 +49,7 @@ public class CommentApiController {
             @RequestBody CommentPostDTO dto) {
         try {
             commentService.updateComment(reviewId, commentId, dto);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
@@ -63,7 +63,7 @@ public class CommentApiController {
             @PathVariable Long commentId) {
         try {
             commentService.deleteComment(reviewId, commentId);
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             return new ResponseEntity("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
