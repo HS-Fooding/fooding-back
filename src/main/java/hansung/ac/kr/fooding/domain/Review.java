@@ -29,6 +29,7 @@ public class Review extends BaseEntity{
     @ManyToOne(fetch = LAZY)
     private Account author;
 
+    @Column(length = 5000)
     private String content;
 
     @OneToMany
