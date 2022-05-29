@@ -64,8 +64,10 @@ public class ReviewService {
     }
 
     public Slice<ReviewSimpleResDTO> getReviews(Long restId, Pageable pageable) {
-        Optional<Restaurant> optional = restaurantRepository.findRestById(restId);
-        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
+        if (!restaurantRepository.existsById(restId)) throw new IllegalStateException("Restaurant Not Founded");
+
+        Optional<Restaurant> optional = restaurantRepository.findRestAndReviewsById(restId);
+        Restaurant restaurant = optional.orElseThrow(() -> new NullPointerException("There are no reviews in this restaurant"));
         List<Long> reviewIds = restaurant.getReviews().stream().map(Review::getId).collect(Collectors.toList());
         Slice<Review> reviews = reviewRepository.findReviewsByIds(reviewIds, pageable);
         return reviews.map(ReviewSimpleResDTO::new);

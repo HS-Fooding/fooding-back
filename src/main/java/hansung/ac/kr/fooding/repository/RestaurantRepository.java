@@ -1,10 +1,7 @@
 package hansung.ac.kr.fooding.repository;
 
-import hansung.ac.kr.fooding.domain.Reservation;
 import hansung.ac.kr.fooding.domain.Restaurant;
-import hansung.ac.kr.fooding.domain.Review;
 import hansung.ac.kr.fooding.domain.WorkHour;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -48,7 +45,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
     Slice<Restaurant> findAllRest(Pageable pageable);
 
     @Query("select r from Restaurant r join fetch r.reviews where r.id = :restId")
-    Optional<Restaurant> findRestById(@Param("restId") Long restId);
+    Optional<Restaurant> findRestAndReviewsById(@Param("restId") Long restId);
 
     @Query("select r from Restaurant r where id in :ids")
     Slice<Restaurant> findAllByIds(@Param("ids") Set<Long> result, Pageable pageable);
