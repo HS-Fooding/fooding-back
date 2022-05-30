@@ -42,6 +42,7 @@ public class RestaurantService {
     private final SecurityService securityService;
     private final RestaurantRepository restaurantRepository;
     private final ImageRepository imageRepository;
+    private final SearchService searchService;
 
     @Transactional
     public Long save(RestaurantPostDTO postDTO) throws SecurityException {
@@ -123,6 +124,7 @@ public class RestaurantService {
 
     // 키워드로 검색
     public Slice<RestSimpleGetWithLocDTO> searchByKeyword(String keyword, Pageable pageable) {
+        searchService.saveSearch(keyword);
         // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음 && 여러 단어일 수도..
         String target = keyword.trim();
         String[] tokens = target.split(" ");

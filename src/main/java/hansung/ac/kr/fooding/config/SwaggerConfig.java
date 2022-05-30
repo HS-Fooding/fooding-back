@@ -32,6 +32,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
     public static final String API_RESTAURANT = "매장";
     public static final String API_RESERVATION = "예약";
     public static final String API_MYPAGE = "마이페이지";
+    public static final String API_SEARCH = "검색";
 
 
     @Override
