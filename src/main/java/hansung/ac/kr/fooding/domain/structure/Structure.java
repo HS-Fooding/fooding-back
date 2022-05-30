@@ -16,7 +16,7 @@ public abstract class Structure extends BaseEntity {
     @Id
     @JsonIgnore
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    protected long id;
     private int x;
     private int y;
     private int rotation;

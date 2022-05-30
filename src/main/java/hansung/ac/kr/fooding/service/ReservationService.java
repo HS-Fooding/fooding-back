@@ -115,7 +115,7 @@ public class ReservationService {
         int checkTime = (int) maximumUsageTime / 30;
         String[] strs = time.split(":");
         int minute = Integer.parseInt(strs[0]) * 60 + Integer.parseInt(strs[1]);
-        for (int i = -checkTime; i < checkTime; i++) {
+        for (int i = -checkTime + 1; i < checkTime; i++) {
             int res = minute + 30 * i;
             String resString = fromMinutesToHHmm(res);
             unavailableTables.addAll(tableRepository.findUnavailByRestIdWithDateAndTime(restId, num, date, resString));

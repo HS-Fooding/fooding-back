@@ -15,10 +15,11 @@ import java.util.*;
 
 @Component
 @RequiredArgsConstructor
+@Transactional
 public class TableStatusScheduler {
     private final ReservationRepository reservationRepository;
 
-    private Map<LocalDateTime, List<Table>> handleTables = new HashMap<>();
+    private Map<LocalDateTime, Set<Table>> handleTables = new HashMap<>();
 
     @Transactional
     public void adminAddReservation(Reservation reservation){
@@ -27,10 +28,12 @@ public class TableStatusScheduler {
         LocalDateTime parsedNowDateTime = getParsedNowDateTime();
 
         if(parsedAfterDateTime.isAfter(parsedNowDateTime)){
-            List<Table> insertedTables;
+            Set<Table> insertedTables;
             Table table = reservation.getTable();
-            if(!handleTables.containsKey(parsedAfterDateTime))
-                insertedTables = new ArrayList<Table>();
+            if(!handleTables.containsKey(parsedAfterDateTime)) {
+                insertedTables = new HashSet<Table>();
+                handleTables.put(parsedAfterDateTime, insertedTables);
+            }
             else
                 insertedTables = handleTables.get(parsedAfterDateTime);
             insertedTables.add(table);
@@ -42,29 +45,34 @@ public class TableStatusScheduler {
     public void adminDeleteReservation(Reservation reservation){
         LocalDateTime localDateTime = LocalDateTime.parse(String.format("%sT%s",reservation.getReserveDate(), reservation.getReserveTime()));
         LocalDateTime parsedNowDateTime = getParsedNowDateTime();
-        if(localDateTime.isAfter(parsedNowDateTime))
+        if(localDateTime.isAfter(parsedNowDateTime)) {
             return;
+        }
+
         LocalDateTime parsedAfterDateTime = localDateTime.plusMinutes((long)reservation.getRestaurant().getMaximumUsageTime());
 
-        List<Table> insertedTables = handleTables.get(parsedAfterDateTime);
+        Set<Table> insertedTables = handleTables.get(parsedAfterDateTime);
         Table table = reservation.getTable();
 
-        if (insertedTables == null)
+        if (insertedTables == null) {
             return;
+        }
         insertedTables.remove(table);
+        if(insertedTables.isEmpty())
+            handleTables.remove(parsedAfterDateTime);
         table.setAvailable(true);
     }
 
 
 
     @Transactional
-    @Scheduled(cron = "0 0/30 * * * *")
+    @Scheduled(cron = "0/30 * * * * *")
     public void updateTableStatus() {
         LocalDateTime parsedNowDateTime = getParsedNowDateTime();
         String nowDate = parsedNowDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         String nowTime = parsedNowDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
 
-        List<Table> findTables = handleTables.get(parsedNowDateTime);
+        Set<Table> findTables = handleTables.get(parsedNowDateTime);
         if(findTables != null){
             for(Table table : findTables){
                 if (!table.isAvailable())
@@ -74,14 +82,17 @@ public class TableStatusScheduler {
         }
 
         List<Reservation> startReservations = reservationRepository.findByDateAndTime(nowDate, nowTime);
+
         for(Reservation reservation : startReservations){
-            List<Table> insertedTables;
+            Set<Table> insertedTables;
             LocalDateTime localDateTime = LocalDateTime.parse(String.format("%sT%s",reservation.getReserveDate(), reservation.getReserveTime()));
             LocalDateTime parsedAfterDateTime = localDateTime.plusMinutes((long)reservation.getRestaurant().getMaximumUsageTime());
             Table table = reservation.getTable();
 
-            if(!handleTables.containsKey(parsedAfterDateTime))
-                insertedTables = new ArrayList<Table>();
+            if(!handleTables.containsKey(parsedAfterDateTime)) {
+                insertedTables = new HashSet<Table>();
+                handleTables.put(parsedAfterDateTime, insertedTables);
+            }
             else
                 insertedTables = handleTables.get(parsedAfterDateTime);
 

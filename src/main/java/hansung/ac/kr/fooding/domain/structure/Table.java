@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "_table")
 @DiscriminatorValue("_table")
@@ -36,5 +37,18 @@ public class Table extends Structure{
                 ", maxPeople=" + maxPeople +
                 ", available=" + available +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Table table = (Table) o;
+        return id==table.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
