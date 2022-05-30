@@ -29,9 +29,16 @@ public class ReviewApiController {
 
     @ApiOperation(value = "리뷰 리스트 불러오기")
     @GetMapping("/restaurant/{id}/review")
-    public Slice<ReviewSimpleResDTO> getReviews(@PathVariable(value = "id") Long restId, Pageable pageable) {
-
-        return reviewService.getReviews(restId, pageable);
+    public ResponseEntity getReviews(@PathVariable(value = "id") Long restId, Pageable pageable) {
+        Slice<ReviewSimpleResDTO> result;
+        try {
+            result = reviewService.getReviews(restId, pageable);
+        } catch (NullPointerException e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(result, HttpStatus.OK);
     }
 
     @ApiOperation(value = "리뷰 작성하기")
@@ -47,7 +54,7 @@ public class ReviewApiController {
             if (account == null) throw new SecurityException("Not Logged in");
             result = reviewService.postReview(account, reviewPostDTO, images, restId);
         } catch (Exception e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

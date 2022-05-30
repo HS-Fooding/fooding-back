@@ -34,7 +34,6 @@ import java.util.Optional;
 @RequestMapping(path = "/restaurant")
 public class RestaurantApiController {
     private final RestaurantService restaurantService;
-    private final RestaurantRepository restaurantRepository;
     private final StructService structService;
     private final MenuService menuService;
     private final SecurityService securityService;
@@ -54,10 +53,10 @@ public class RestaurantApiController {
             Account account = securityService.getAccount();
             if (account == null) throw new SecurityException("Not Logged in");
             restInfoGetDTO = restaurantService.getRestaurantInfo(id, account);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-Restaurant Not Found", HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<RestInfoGetDTO>(restInfoGetDTO, HttpStatus.OK);
+        return new ResponseEntity<>(restInfoGetDTO, HttpStatus.OK);
     }
 
     @ApiOperation("전체 매장 리스트 검색")
@@ -74,10 +73,10 @@ public class RestaurantApiController {
         List<MenuGetDTO> menuGetDTOList;
         try {
             menuGetDTOList = menuService.getMenuFromRestaurant(id);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<List<MenuGetDTO>>(menuGetDTOList, HttpStatus.OK);
+        return new ResponseEntity<>(menuGetDTOList, HttpStatus.OK);
     }
 
     @ApiOperation("매장 구조 조회")
@@ -86,22 +85,22 @@ public class RestaurantApiController {
         StructGetDTO structGetDTO;
         try {
             structGetDTO = restaurantService.getRestaurantStructure(id);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<StructGetDTO>(structGetDTO, HttpStatus.OK);
+        return new ResponseEntity<>(structGetDTO, HttpStatus.OK);
     }
 
     @ApiOperation("매장 현재 이용 가능 테이블 조회")
     @RequestMapping(path = "/{restId}/table", method = RequestMethod.GET)
-    public ResponseEntity getAvailTable(@PathVariable(value = "restId") Long restId){
+    public ResponseEntity getAvailTable(@PathVariable(value = "restId") Long restId) {
         ReservAvailGetDTO reservAvailGetDTO;
         try {
             reservAvailGetDTO = structService.getAvailTable(restId);
-        } catch (IllegalStateException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<ReservAvailGetDTO>(reservAvailGetDTO, HttpStatus.OK);
+        return new ResponseEntity<>(reservAvailGetDTO, HttpStatus.OK);
     }
 
     @ApiOperation("좌표에 대한 특정 반경 내에 있는 매장 리스트 반환")
