@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,5 +50,26 @@ class GeocodeServiceTest {
         // then
         System.out.println(result1);
         System.out.println(result2);
+    }
+    @Test
+    void getRegionTest() {
+        //given
+        List<Double> coord = new ArrayList<Double>();
+        List<Double> coord2 = new ArrayList<Double>();
+        coord.add(126.72949481);
+        coord.add(37.72517723);
+
+        coord2.add(127.007978);
+        coord2.add(37.582613);
+
+        //when
+        String result = geocodeService.getRegion(coord);
+        String result2 = geocodeService.getRegion(coord2);
+
+
+
+        //then
+        assertThat(result).isEqualTo("파주시");
+        assertThat(result2).isEqualTo("성북구");
     }
 }

@@ -10,6 +10,7 @@ import hansung.ac.kr.fooding.handler.ImageHandler;
 import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.MenuRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
+import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,9 +30,9 @@ public class MenuService {
     public void addMenu(MenuPostDTO menuPostDTO, MultipartFile multipartImage, Long id) throws IllegalStateException, SecurityException{
         Account loginAccount = (Account)securityService.getAccount();
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        if(optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         Restaurant restaurant = optional.get();
-        if(restaurant.getAdmin() != loginAccount) throw new SecurityException("No Authorization");
+        if(restaurant.getAdmin() != loginAccount) throw new SecurityException(CError.USER_NOT_ADMIN_OF_REST.getMessage());
 
         Menu menu = new Menu(menuPostDTO, null);
         Image image = ImageHandler.upload(multipartImage);
@@ -45,7 +46,7 @@ public class MenuService {
 
     public List<MenuGetDTO> getMenuFromRestaurant(Long id) {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        if(optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         Restaurant restaurant = optional.get();
         List<MenuGetDTO> result = new ArrayList<MenuGetDTO>();
         restaurant.getMenus().forEach(m-> result.add(MenuGetDTO.from(m)));
@@ -54,10 +55,10 @@ public class MenuService {
     
     public void deleteMenu(Long restId, Long menuId){
         Optional<Restaurant> optional = restaurantRepository.findById(restId);
-        if(optional.isEmpty()) throw new IllegalStateException("Restaurant Not Found");
+        if(optional.isEmpty()) throw new IllegalStateException(CError.REST_NOT_FOUND.getMessage());
         Restaurant restaurant = optional.get();
         Optional<Menu> optionalMenu = restaurant.getMenuById(menuId);
-        if(optionalMenu.isEmpty()) throw new IllegalStateException("Menu Not Found");
+        if(optionalMenu.isEmpty()) throw new IllegalStateException(CError.MENU_NOT_FOUND.getMessage());
         Menu menu = optionalMenu.get();
         if(menu.getImage() != null) {
             Image image = menu.getImage();

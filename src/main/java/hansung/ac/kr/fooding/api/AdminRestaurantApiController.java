@@ -44,7 +44,7 @@ public class AdminRestaurantApiController {
         try {
             id = restaurantService.saveWithImage(dto, images);
         } catch (SecurityException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return new ResponseEntity<Long>(id, HttpStatus.OK);
     }
@@ -69,9 +69,9 @@ public class AdminRestaurantApiController {
         try {
             menuService.addMenu(menuPostDTO, image, id);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (SecurityException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
         return ResponseEntity.ok().build();
     }
@@ -83,7 +83,7 @@ public class AdminRestaurantApiController {
         try {
             menuService.deleteMenu(restId, menuId);
         } catch (IllegalStateException e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }
@@ -95,7 +95,7 @@ public class AdminRestaurantApiController {
         try {
             structService.postStruct(structPostDTO, restId);
         } catch (Exception e) {
-            return new ResponseEntity<String>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return ResponseEntity.ok().build();
     }

@@ -18,8 +18,6 @@ import hansung.ac.kr.fooding.repository.ImageRepository;
 import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -46,7 +44,7 @@ public class RestaurantService {
 
     @Transactional
     public Long save(RestaurantPostDTO postDTO) throws SecurityException {
-        if (!(securityService.getAccount() instanceof Admin)) throw new SecurityException("No Authorization");
+        if (!(securityService.getAccount() instanceof Admin)) throw new SecurityException(CError.USER_NOT_ADMIN_ACOUNT.getMessage());
         Admin admin = (Admin) securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
         Restaurant restaurant = new Restaurant(postDTO, admin);
         restaurantRepository.save(restaurant);
@@ -63,7 +61,7 @@ public class RestaurantService {
     @Transactional
     public Long saveWithImage(RestaurantPostDTO postDTO, List<MultipartFile> multipartImages) throws SecurityException {
         Account account = securityService.getAccount();
-        if (!(account instanceof Admin)) throw new SecurityException("No Authorization");
+        if (!(account instanceof Admin)) throw new SecurityException(CError.USER_NOT_ADMIN_ACOUNT.getMessage());
 
         Restaurant restaurant = new Restaurant(postDTO, (Admin) account);
         restaurantRepository.save(restaurant);
@@ -80,7 +78,7 @@ public class RestaurantService {
 
     public RestInfoGetDTO getRestaurantInfo(Long id, Account account) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException(CError.REST_NOT_FOUND.getMessage()));
         restaurant.plusViewCount();
         if(account instanceof Member) {
             if (((Member)account).getBookmark().contains(restaurant))
@@ -94,7 +92,7 @@ public class RestaurantService {
 
     public RestInfoGetDTO getRestaurantInfoByName(String restName) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findByName(restName);
-        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException(CError.REST_NOT_FOUND.getMessage()));
         restaurant.setViewCount(restaurant.getViewCount() + 1);
 
         return RestInfoGetDTO.from(restaurant);
@@ -102,7 +100,7 @@ public class RestaurantService {
 
     public StructGetDTO getRestaurantStructure(Long id) {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
-        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException("Restaurant Not Found"));
+        Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException(CError.REST_NOT_FOUND.getMessage()));
         List<Floor> floors = restaurant.getFloors();
         if (floors == null) return null;
         List<FloorDTO> floorDTOS = FloorDTO.from(floors);
@@ -123,6 +121,7 @@ public class RestaurantService {
     }
 
     // 키워드로 검색
+    @Transactional
     public Slice<RestSimpleGetWithLocDTO> searchByKeyword(String keyword, Pageable pageable) {
         searchService.saveSearch(keyword);
         // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음 && 여러 단어일 수도..

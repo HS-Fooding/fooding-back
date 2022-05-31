@@ -54,7 +54,7 @@ public class RestaurantApiController {
             if (account == null) throw new SecurityException("Not Logged in");
             restInfoGetDTO = restaurantService.getRestaurantInfo(id, account);
         } catch (Exception e) {
-            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(restInfoGetDTO, HttpStatus.OK);
     }
@@ -74,7 +74,7 @@ public class RestaurantApiController {
         try {
             menuGetDTOList = menuService.getMenuFromRestaurant(id);
         } catch (Exception e) {
-            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(menuGetDTOList, HttpStatus.OK);
     }
@@ -86,7 +86,7 @@ public class RestaurantApiController {
         try {
             structGetDTO = restaurantService.getRestaurantStructure(id);
         } catch (Exception e) {
-            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(structGetDTO, HttpStatus.OK);
     }
@@ -98,7 +98,7 @@ public class RestaurantApiController {
         try {
             reservAvailGetDTO = structService.getAvailTable(restId);
         } catch (Exception e) {
-            return new ResponseEntity<>("Fooding-" + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(reservAvailGetDTO, HttpStatus.OK);
     }

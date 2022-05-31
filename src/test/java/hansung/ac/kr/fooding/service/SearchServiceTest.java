@@ -9,7 +9,6 @@ import org.springframework.test.annotation.Rollback;
 
 
 @SpringBootTest
-@Rollback(value = true)
 class SearchServiceTest {
     @Autowired
     SearchService searchService;
@@ -31,6 +30,21 @@ class SearchServiceTest {
         //then
         Assertions.assertThat(tokenRepository.findAll().size() == 6).isTrue();
         Assertions.assertThat(tokenRepository.findByString(string2).getCount()).isEqualTo(3);
+    }
+
+    @Test
+    void saveSearchCountTest() {
+        //given
+        String string = "임금님  ";
+        int num = 8;
+
+        //when
+        for(int i = 0 ; i < num; i++){
+            searchService.saveSearch(string);
+        }
+
+        //then
+        Assertions.assertThat(tokenRepository.findByString(string).getCount()).isEqualTo(num+1);
     }
 
     @Test

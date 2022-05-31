@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
@@ -45,9 +46,9 @@ public class FoodingApplication extends SpringBootServletInitializer {
 
 	@Bean
 	public AuditorAware<String> auditorProvider() {
-		if (SecurityContextHolder.getContext() == null) {
+		SecurityContext context = SecurityContextHolder.getContext();
+		if (context == null || context.getAuthentication() == null )
 			return () -> null;
-		}
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }

@@ -8,6 +8,9 @@ public enum CError {
     RESERV_NOT_FOUND("Fooding-Reservation Not Found"),
     TABLE_NOT_FOUND("Fooding-Table Not Found"),
     COMMENT_NOT_FOUND("Fooding-Comment Not Found"),
+    MENU_NOT_FOUND("Fooding-Menu Not Found"),
+    REGION_NOT_FOUND("Fooding-Region Not Found"),
+    GEOCODE_NOT_FOUND("Fooding-Geocode Not Found"),
 
     USER_NOT_LOGIN("Fooding-User Not Login"),
     USER_NOT_ADMIN_ACOUNT("Fooding-User account type is not Admin account"),
@@ -16,7 +19,6 @@ public enum CError {
     USER_NOT_BOOKER_OF_RESERV("Fooding-Member is not Owner of Reservation"),
     USER_NOT_AUTHOR_OF_COMMENT("Fooding-User is not Author of Comment"),
     USER_NOT_AUTHOR_OF_REVIEW("Fooding-User is not Author of Review");
-
     private String message;
 
     CError(String message){
