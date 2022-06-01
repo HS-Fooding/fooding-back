@@ -3,10 +3,8 @@ package hansung.ac.kr.fooding.domain;
 import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
 import lombok.*;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,10 +13,12 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member extends Account {
-    @ElementCollection
-    @CollectionTable(name = "bookmark",
-            joinColumns = @JoinColumn(name = "member_id"))
-    private Set<Restaurant> bookmark;
+    @ManyToMany
+    @JoinTable(name = "bookmark",
+            joinColumns = @JoinColumn(name = "member_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurant_id")
+    )
+    private Set<Restaurant> bookmark = new HashSet<>();
 
     public Member(JoinReqDTO req) {
         this.identifier = req.getId();
