@@ -59,8 +59,8 @@ class GeocodeServiceTest {
         coord.add(126.72949481);
         coord.add(37.72517723);
 
-        coord2.add(127.007978);
-        coord2.add(37.582613);
+        coord2.add(127.0101779866357);
+        coord2.add(37.58265617070882);
 
         //when
         String result = geocodeService.getRegion(coord);
@@ -70,6 +70,7 @@ class GeocodeServiceTest {
 
         //then
         assertThat(result).isEqualTo("파주시");
+        System.out.println(result2);
         assertThat(result2).isEqualTo("성북구");
     }
 }
