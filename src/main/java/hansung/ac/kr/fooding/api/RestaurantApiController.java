@@ -2,15 +2,11 @@ package hansung.ac.kr.fooding.api;
 
 import hansung.ac.kr.fooding.config.SwaggerConfig;
 import hansung.ac.kr.fooding.domain.Account;
-import hansung.ac.kr.fooding.domain.Member;
-import hansung.ac.kr.fooding.domain.Restaurant;
 import hansung.ac.kr.fooding.dtd.StructGetDTO;
 import hansung.ac.kr.fooding.dto.menu.MenuGetDTO;
 import hansung.ac.kr.fooding.dto.reservation.ReservAvailGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestInfoGetDTO;
-import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetWithLocDTO;
-import hansung.ac.kr.fooding.repository.RestaurantRepository;
 import hansung.ac.kr.fooding.service.MenuService;
 import hansung.ac.kr.fooding.service.RestaurantService;
 import hansung.ac.kr.fooding.service.SecurityService;
@@ -18,7 +14,6 @@ import hansung.ac.kr.fooding.service.StructService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
@@ -26,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Api(tags = {SwaggerConfig.API_RESTAURANT})
 @RequiredArgsConstructor
@@ -105,7 +99,15 @@ public class RestaurantApiController {
 
     @ApiOperation("좌표에 대한 특정 반경 내에 있는 매장 리스트 반환")
     @RequestMapping(path = "/coord", method = RequestMethod.GET)
-    public Slice<RestSimpleGetWithLocDTO> getRestaurantsByCoord(@RequestParam Float x, @RequestParam Float y, Pageable pageable) {
-        return restaurantService.getRestaurantByCoord(x, y, pageable);
+    public ResponseEntity getRestaurantsByCoord(@RequestParam Float x, @RequestParam Float y, Pageable pageable) {
+        Slice<RestSimpleGetWithLocDTO> result;
+        try {
+            Account account = securityService.getAccount();
+            if (account == null) throw new SecurityException("Not Logged in");
+            result = restaurantService.getRestaurantByCoord(x, y, pageable, account);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

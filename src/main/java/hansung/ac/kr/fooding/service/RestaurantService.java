@@ -4,7 +4,6 @@ import hansung.ac.kr.fooding.domain.Account;
 import hansung.ac.kr.fooding.domain.Admin;
 import hansung.ac.kr.fooding.domain.Member;
 import hansung.ac.kr.fooding.domain.Restaurant;
-import hansung.ac.kr.fooding.domain.enumeration.Favor;
 import hansung.ac.kr.fooding.domain.image.Image;
 import hansung.ac.kr.fooding.domain.structure.Floor;
 import hansung.ac.kr.fooding.dtd.StructGetDTO;
@@ -20,17 +19,12 @@ import hansung.ac.kr.fooding.var.CError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.sql.ResultSet;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Service
@@ -44,7 +38,8 @@ public class RestaurantService {
 
     @Transactional
     public Long save(RestaurantPostDTO postDTO) throws SecurityException {
-        if (!(securityService.getAccount() instanceof Admin)) throw new SecurityException(CError.USER_NOT_ADMIN_ACOUNT.getMessage());
+        if (!(securityService.getAccount() instanceof Admin))
+            throw new SecurityException(CError.USER_NOT_ADMIN_ACOUNT.getMessage());
         Admin admin = (Admin) securityService.getAccount(); // TODO: 2022-03-28 Admin으로 수정 필요
         Restaurant restaurant = new Restaurant(postDTO, admin);
         restaurantRepository.save(restaurant);
@@ -80,8 +75,8 @@ public class RestaurantService {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException(CError.REST_NOT_FOUND.getMessage()));
         restaurant.plusViewCount();
-        if(account instanceof Member) {
-            if (((Member)account).getBookmark().contains(restaurant))
+        if (account instanceof Member) {
+            if (((Member) account).getBookmark().contains(restaurant))
                 return RestInfoGetDTO.from(restaurant, true);
             else
                 return RestInfoGetDTO.from(restaurant, false);
@@ -141,13 +136,16 @@ public class RestaurantService {
         return restaurants.map(RestSimpleGetWithLocDTO::from);
     }
 
-    public Slice<RestSimpleGetWithLocDTO> getRestaurantByCoord(Float x, Float y, Pageable pageable) {
+    public Slice<RestSimpleGetWithLocDTO> getRestaurantByCoord(Float x, Float y, Pageable pageable, Account account) {
         // x, y 좌표를 중점으로하고, 특정 반경 내에 위치하는 매장들의 리스트들을 반환
         // Float r = 0.0037f; // "한성대"와 "한성대역 입구" 사이의 직선거리의 절반 거리
-
         Float r = 0.9f; // 0.3(약 300m)에서 0.9로 수정함, 확인 필요
-
         Slice<Restaurant> restaurants = restaurantRepository.findRestByCoord((double) x, (double) y, (double) r, pageable);
-        return restaurants.map(RestSimpleGetWithLocDTO::from);
+
+        List<Restaurant> bookmarkList = restaurants.getContent().stream()
+                .filter(m -> ((Member) account).getBookmark().contains(m))
+                .collect(Collectors.toList());
+
+        return restaurants.map(m -> new RestSimpleGetWithLocDTO(m, bookmarkList));
     }
 }
