@@ -97,4 +97,17 @@ public class MyPageAPIController {
         }
         return new ResponseEntity(result, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "내정보 가져오기")
+    @RequestMapping(path = "/myInfo", method = RequestMethod.GET)
+    public ResponseEntity getMyInfo() {
+        try {
+            Member member = (Member) securityService.getAccount();
+            if (member == null) throw new SecurityException("Not Logged in");
+            return new ResponseEntity<>(accountService.getMyInfo(member), HttpStatus.OK);
+        }  catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

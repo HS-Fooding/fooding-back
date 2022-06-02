@@ -2,6 +2,7 @@ package hansung.ac.kr.fooding.service;
 
 import hansung.ac.kr.fooding.domain.*;
 import hansung.ac.kr.fooding.dto.login.JoinReqDTO;
+import hansung.ac.kr.fooding.dto.mypage.MyInfoDTO;
 import hansung.ac.kr.fooding.dto.restaurant.RestSimpleGetDTO;
 import hansung.ac.kr.fooding.exception.X_IdAlreadyExistsException;
 import hansung.ac.kr.fooding.exception.X_NickNameAlreadyExistsException;
@@ -101,4 +102,8 @@ public class AccountService {
         return result.map(RestSimpleGetDTO::from);
     }
 
+    public MyInfoDTO getMyInfo(Member member) {
+        Account account = accountRepository.findByIdWithFavor(member.getId()).orElseThrow(() -> new IllegalStateException("Member Not Found"));
+        return new MyInfoDTO(account);
+    }
 }
