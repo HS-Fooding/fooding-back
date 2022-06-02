@@ -23,11 +23,13 @@ class GeocodeServiceTest {
         String wrongAddress = "경기도 파주시 교하로";
         String wrongAddress1 = "경기도 파주시";
         String address = "경기도 파주시 교하로 100";
+        String address2 = "서울 종로구 동숭길 29";
 
         //when
         Location result1 = geocodeService.getGeocode(wrongAddress);
         Location result2 = geocodeService.getGeocode(wrongAddress1);
         Location result3 = geocodeService.getGeocode(address);
+        Location result4 = geocodeService.getGeocode(address2);
 
 
         //then
@@ -35,6 +37,10 @@ class GeocodeServiceTest {
         assertThat(result1 == null).isTrue();
         assertThat(result2 == null).isTrue();
         assertThat(result3 == null).isFalse();
+        System.out.println(result1);
+        System.out.println(result2);
+        System.out.println(result3);
+        System.out.println(result4);
     }
 
     @Test

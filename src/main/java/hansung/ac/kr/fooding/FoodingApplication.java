@@ -46,9 +46,8 @@ public class FoodingApplication extends SpringBootServletInitializer {
 
 	@Bean
 	public AuditorAware<String> auditorProvider() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (context == null || context.getAuthentication() == null )
-			return () -> null;
+		if (SecurityContextHolder.getContext() == null || SecurityContextHolder.getContext().getAuthentication().getName() == null )
+			return () -> Optional.ofNullable("sys");
 		return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 }

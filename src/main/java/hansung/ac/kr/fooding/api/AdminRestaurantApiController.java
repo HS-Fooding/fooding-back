@@ -41,6 +41,7 @@ public class AdminRestaurantApiController {
     public ResponseEntity postRestaurant(@RequestPart(value = "restaurant") RestaurantPostDTO dto,
                                          @RequestPart(value = "image", required = false) List<MultipartFile> images) {
         Long id;
+        System.out.println("#####restPostDTO Location: " + dto.getLocation());
         try {
             id = restaurantService.saveWithImage(dto, images);
         } catch (SecurityException e) {

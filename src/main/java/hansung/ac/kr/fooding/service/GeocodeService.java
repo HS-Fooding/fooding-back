@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -101,7 +102,6 @@ public class GeocodeService {
                 return addressName;
             JSONArray jDocuments = jObject.getJSONArray("documents");
             JSONObject jDocument = jDocuments.getJSONObject(0);
-            System.out.println("#####"+jDocument.toString());
 //            JSONObject jAddress = jDocument.getJSONObject("address");
             addressName = jDocument.getString("region_2depth_name");
         } catch (Exception e) {
