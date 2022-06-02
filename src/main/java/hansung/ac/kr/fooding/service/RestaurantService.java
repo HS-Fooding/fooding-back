@@ -117,7 +117,7 @@ public class RestaurantService {
 
     // 키워드로 검색
     @Transactional
-    public Slice<RestSimpleGetWithLocDTO> searchByKeyword(String keyword, Pageable pageable) {
+    public Slice<RestSimpleGetWithLocDTO> searchByKeyword(String keyword, Pageable pageable, Account account) {
         searchService.saveSearch(keyword);
         // keyword - 지역, 음식점 이름, 메뉴, 카테고리 일 수 있음 && 여러 단어일 수도..
         String target = keyword.trim();
@@ -133,7 +133,10 @@ public class RestaurantService {
             result.addAll(restaurantRepository.findAllByMenu(token));
         }
         Slice<Restaurant> restaurants = restaurantRepository.findAllByIds(result, pageable);
-        return restaurants.map(RestSimpleGetWithLocDTO::from);
+        List<Restaurant> bookmarkList = restaurants.getContent().stream()
+                .filter(m -> ((Member) account).getBookmark().contains(m))
+                .collect(Collectors.toList());
+        return restaurants.map(m -> new RestSimpleGetWithLocDTO(m, bookmarkList));
     }
 
     public Slice<RestSimpleGetWithLocDTO> getRestaurantByCoord(Float x, Float y, Pageable pageable, Account account) {

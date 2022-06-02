@@ -32,12 +32,6 @@ public class RestaurantApiController {
     private final MenuService menuService;
     private final SecurityService securityService;
 
-    @ApiOperation("지역, 매장과 메뉴에 포함된 이름, 카테고리 검색 가능")
-    @RequestMapping(path = "/search", method = RequestMethod.GET)
-    public Slice<RestSimpleGetWithLocDTO> searchRestaurant(@RequestParam String keyword, Pageable pageable) {
-
-        return restaurantService.searchByKeyword(keyword, pageable);
-    }
 
     @ApiOperation("특정 매장 클릭")
     @RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -95,6 +89,21 @@ public class RestaurantApiController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(reservAvailGetDTO, HttpStatus.OK);
+    }
+
+    @ApiOperation("지역, 매장과 메뉴에 포함된 이름, 카테고리 검색 가능")
+    @RequestMapping(path = "/search", method = RequestMethod.GET)
+    public ResponseEntity searchRestaurant(@RequestParam String keyword, Pageable pageable) {
+
+        Slice<RestSimpleGetWithLocDTO> result;
+        try {
+            Account account = securityService.getAccount();
+            if (account == null) throw new SecurityException("Not Logged in");
+            result = restaurantService.searchByKeyword(keyword, pageable, account);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @ApiOperation("좌표에 대한 특정 반경 내에 있는 매장 리스트 반환")
