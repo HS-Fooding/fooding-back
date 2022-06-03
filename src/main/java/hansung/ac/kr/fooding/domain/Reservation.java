@@ -63,7 +63,6 @@ public class Reservation extends BaseEntity{
         reserveDate = dto.getReserveDate();
         reserveTime = dto.getReserveTime();
         reserveNum = dto.getReserveNum();
-        booker = dto.getBooker();
         isCar = dto.isCar();
 
     }
