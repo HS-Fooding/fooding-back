@@ -91,7 +91,7 @@ public class ReservationService {
         if (optionalReservation.isEmpty()) throw new IllegalStateException("Fooding-Reservation Not Found");
         Reservation reservation = optionalReservation.get();
 
-        if (reservation.getBooker().getMember_id() != member.getId()) throw new SecurityException("Fooding-Not Reservation Owner");
+        if (!Objects.equals(reservation.getBooker().getMember_id(), member.getId())) throw new SecurityException("Fooding-Not Reservation Owner");
 
         reservation.getRestaurant().getReservations().remove(reservation);
         reservationRepository.delete(reservation);

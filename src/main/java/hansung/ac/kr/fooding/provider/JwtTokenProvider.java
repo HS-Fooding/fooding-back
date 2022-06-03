@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider implements InitializingBean {
     private final String AUTHORITIES_KEY = "auth";
     private final String secret;
-    private final long tokenValidityInseconds;
+    private long tokenValidityInseconds;
     private Key key;
 
     public JwtTokenProvider(
