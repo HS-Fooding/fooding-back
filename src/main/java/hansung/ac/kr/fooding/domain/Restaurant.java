@@ -72,7 +72,7 @@ public class Restaurant extends BaseEntity{
     @JoinColumn(name = "restaurant_id")
     private List<Review> reviews = new ArrayList<>();
 
-    private int viewCount;
+    private int viewCount = 0;
 
     public void setViewCount(int viewCount) {
         this.viewCount = viewCount;
@@ -136,6 +136,6 @@ public class Restaurant extends BaseEntity{
     }
 
     public void plusViewCount() {
-        this.setViewCount(this.getViewCount() + 1);
+        this.setViewCount(getViewCount() + 1);
     }
 }

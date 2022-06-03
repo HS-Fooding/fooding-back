@@ -71,6 +71,7 @@ public class RestaurantService {
         return restaurant.getId();
     }
 
+    @Transactional
     public RestInfoGetDTO getRestaurantInfo(Long id, Account account) throws IllegalStateException {
         Optional<Restaurant> optional = restaurantRepository.findById(id);
         Restaurant restaurant = optional.orElseThrow(() -> new IllegalStateException(CError.REST_NOT_FOUND.getMessage()));
